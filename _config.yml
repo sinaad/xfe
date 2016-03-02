@@ -1,14 +1,13 @@
 # Hexo Configuration
-## Docs: https://hexo.io/docs/configuration.html
+## Docs: http://hexo.io/docs/configuration.html
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: XFE
+title: Hexo
 subtitle:
 description:
-author: SINA FE Team
-avatar: http://tp4.sinaimg.cn/2231440955/180/5749469848/1
-language: zh-Hans
+author: John Doe
+language:
 timezone:
 
 # URL
@@ -41,7 +40,7 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: false
+  auto_detect: true
   tab_replace:
 
 # Category & Tag
@@ -62,11 +61,11 @@ per_page: 10
 pagination_dir: page
 
 # Extensions
-## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
-theme: next
+## Plugins: http://hexo.io/plugins/
+## Themes: http://hexo.io/themes/
+theme: landscape
 
 # Deployment
-## Docs: https://hexo.io/docs/deployment.html
+## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type:

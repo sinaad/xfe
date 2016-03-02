@@ -1,7 +1,8 @@
 ---
-title: when-fe-has-the-power-of-server
+title: 当前端也拥有 Server 的能力
 date: 2016-02-18 16:29:25
-tags:
+tags: [js,server,ServiceWorker]
+categories: share
 ---
 
 > 原文链接：http://www.barretlee.com/blog/2016/02/16/when-fe-has-the-power-of-server/
