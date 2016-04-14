@@ -26,7 +26,7 @@ since: 2015
 # When running hexo in a subdirectory (e.g. domain.tld/blog)
 # Remove leading slashes ( "/archives" -> "archives" )
 menu:
-  home: /xfe
+  home: /
   categories: categories
   about: about
   archives: archives
