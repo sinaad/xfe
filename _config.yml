@@ -1,18 +1,19 @@
 # Hexo Configuration
-## Docs: http://hexo.io/docs/configuration.html
+## Docs: https://hexo.io/docs/configuration.html
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: "{XFE}"
 subtitle:
-description:
-author: John Doe
-language:
+description: 我们一直努力贴好小广告
+author: SINA FE Team
+avatar: http://tp4.sinaimg.cn/2231440955/180/5749469848/1
+language: zh-Hans
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://sinaad.github.io/xfe
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -40,7 +41,7 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: true
+  auto_detect: false
   tab_replace:
 
 # Category & Tag
@@ -61,11 +62,13 @@ per_page: 10
 pagination_dir: page
 
 # Extensions
-## Plugins: http://hexo.io/plugins/
-## Themes: http://hexo.io/themes/
-theme: landscape
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: next
 
 # Deployment
-## Docs: http://hexo.io/docs/deployment.html
-deploy:
-  type:
+## Docs: https://hexo.io/docs/deployment.html
+deploy: 
+  repo: https://github.com/sinaad/xfe.git
+  type: git
+  branch: gh-pages

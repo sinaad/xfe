@@ -3,24 +3,27 @@ date: 2016-04-14 13:33:23
 tags: js, cut, copy, chrome
 author: acelan
 ---
+>本文根据https://developers.google.com/web/updates/2015/04/cut-and-copy-commands翻译
 
-IE10 and above added support for the ‘cut’ and ‘copy’ commands through the Document.execCommand() method. As of Chrome version 43, these commands are also supported in Chrome.
+IE10及以上通过`Document.execCommand()`方法提供了`cut`和`copy`的命令支持。在Chrome43的版本里，Chrome也支持了这个命令。
 
-Any text selected in the browser when one of these commands is executed will be cut or copied to the user’s clipboard. This lets you offer the user a simple way to select a portion of text and copy it to the clipboard.
+当这个命令被执行的时候任何在浏览器中被选中的文本都会被剪切或者拷贝到用户的剪贴板里。这个方法让你能够提供给用户一个简单的方法来选中部分文本并拷贝到剪贴板。
 
-This becomes extremely useful when you combine it with the Selection API to programmatically select text to determine what is copied to the clipboard, which we’ll be looking at in more detail later on in this article.
+它在跟Selection API联合使用，以编程的方式来决定选中那些文本应该被选中并拷贝到剪贴板的时候相当有用，接下来我们能看到更多细节。
 
-Simple Example
-For example’s sake, let’s add a button which copies an email address to the user’s clipboard.
+### 简单的例子
 
-We add the email address in our HTML with a button to initiate the copying when it’s clicked:
+为了举个例子，让我们添加一个按钮用来拷贝一个email到剪贴板。
+
+我们添加一个email地址和一个复制按钮在HTML中：
 
 ```html
 <p>Email me at <a class="js-emaillink" href="mailto:matt@example.co.uk">matt@example.co.uk</a></p>
 
 <p><button class="js-emailcopybtn"><img src="./images/copy-icon.png" /></button></p>
 ```
-Then in our JavaScript, we want to add a click event handler to our button in which we select the email address text from the js-emaillink anchor, execute a copy command so that the email address is in the user’s clipboard and then we deselect the email address so the user doesn’t see the selection occur.
+
+然后在javascript中，我们给按钮添加一个click事件，当我们点击按钮的时候从js-emaillink中选中email地址，执行copy命令让email地址拷贝到剪贴板然后立刻取消掉对email地址的选择以保证用户看不到我们选中过程的发生。
 
 ```javascript
 var copyEmailBtn = document.querySelector('.js-emailcopybtn');  
@@ -45,19 +48,22 @@ copyEmailBtn.addEventListener('click', function(event) {
   window.getSelection().removeAllRanges();  
 });
 ```
-What we are doing here is using a method of the Selection API, `window.getSelection()` to programmatically set the ‘selection’ of text to the anchor, which is the text we want to copy to the user’s clipboard. After calling `document.execCommand()` we can remove the selection by calling `window.getSelection().removeAllRanges().`
-If you wanted to confirm everything worked as expected you can examine the response of `document.execCommand();` it returns false if the command is not supported or enabled. We wrap `execCommand()` in a try and catch since the ‘cut’ and ‘copy’ commands can throw an error in a few scenarios.
 
-The ‘cut’ command can be used for text fields where you want to remove the text content and make it accessible via the clipboard.
+我们所做的这些使用了Selection API的方法，`window.getSelection()`用程序来为锚点的文本设置选中区域，也就是想要被拷贝到剪贴板中的文本。调用`document.execCommand()`后，我们可以通过调用`window.getSelection().removeAllRanges()`来取消选中区域。
 
-Using a textarea and a button in our HTML:
+如果你想要确认这一切是否如预期工作，你可以测试`document.execCommand()`的返回，如果这个命令不被支持，它会返回false。由于在某些场景cut和copy的时候可能会抛出异常，所以我们把`execCommand()`放在try，catch中。
+
+`cut`命令能够被用在文本域中当你想要移除文本内容并且让它存放在剪贴板的时候。
+
+在HTML中使用textarea和一个按钮：
 
 ```html
 <p><textarea class="js-cuttextarea">Hello I'm some text</textarea></p>
 
 <p><button class="js-textareacutbtn" disable>Cut Textarea</button></p>
 ```
-We can do the following to cut the content:
+
+我们用下面的方法来执行剪切
 
 ```javascript
 var cutTextareaBtn = document.querySelector('.js-textareacutbtn');
@@ -75,23 +81,24 @@ cutTextareaBtn.addEventListener('click', function(event) {
   }  
 });
 ```
-queryCommandSupported and queryCommandEnabled
-Ahead of calling `document.execCommand()`, you should ensure that this API is supported using the `document.queryCommandSupported()` method. In our example above we could set the button disabled state based on support like so:
+
+### queryCommandSupported 和 queryCommandEnabled
+调用`document.execCommand()`之前, 你应该用`document.queryCommandSupported()`方法来确认这个API是被支持的。在上面的例子中，我们能够基于支持情况来给按钮设置disabled状态，如下：
+
 ```javascript
 copyEmailBtn.disabled = !document.queryCommandSupported('copy');
 ```
-The difference between `document.queryCommandSupported()` and document.`queryCommandEnabled() ` is that cut and copy could be supported by a browser, but if no text is currently selected, they won’t be enabled. This is useful in scenarios where you aren’t setting the selection of text programmatically and want to ensure the command will do as expected, otherwise present a message to the user.
 
-### Browser Support
+`document.queryCommandSupported()`和`document.queryCommandEnabled() `的区别在于前者表示浏览器是否支持cut和copy命令，后者表示cut和copy是否能够使用。
+>以上没有按照文章原有的内容来翻译，译者尝试了一下，大概是这样的意思：supported表示浏览器是否支持该特性，不管是否选中文本。enabled只有在选中文本的情况下才返回true，且如果当前选中文本不能被移除，比如在普通的html中而不是editable或者文本域中，cut返回false，这个跟我们的期望的行为一致。
+
+他们在某些场景中很有用，当你没有通过程序来设置选中区域的时候来确认命令是否能按预期执行，否则给用户显示一个信息。
+
+### 浏览器支持情况
 * IE 10+
 * Chrome 43+
 * Firefox 41+
 * Opera 29+
 
-Safari does not support these commands.
-
-### Known Bugs
-~~Calling queryCommandSupported() for cut or copy always returns false until after a user interaction. This prevents you from disabling your UI for browsers which don’t actually support it.~~ Fixed on Chrome 48.
-Calling queryCommandSupported() from devtools will always return false.
-At the moment cut only works when you programmatically select text.
+safari不支持这些命令（现在貌似已经支持了，译者）
 
