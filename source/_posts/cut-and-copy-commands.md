@@ -1,6 +1,6 @@
-title: cut-and-copy-commands
+title: cut和copy命令
 date: 2016-04-14 13:33:23
-tags: js, cut, copy, chrome
+tags: [js, cut, copy, chrome]
 author: acelan
 ---
 >本文根据https://developers.google.com/web/updates/2015/04/cut-and-copy-commands翻译
