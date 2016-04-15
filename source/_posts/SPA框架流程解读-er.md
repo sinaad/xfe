@@ -182,7 +182,7 @@ author: 赵鹏
 
 为了更直观的表述，下面再加个流程图(*这里好像不支持直接画流程图，所以上个图片*)：
 
-![er_flow](../../../../uploads/er_flow.jpg)
+![er_flow](er_flow.jpg)
 
 #### 小结
 上述从代码到描述，再加上最后的流程图，解释了Action的两个入口。即第一次进入，会通过`setTimeout('forwardHash', 0)`的方式，其他则通过`locator.redirect(url)`。
