@@ -40,4 +40,12 @@ date: 2016-04-14 13:33:23
 tags: [js, cut, copy, chrome]
 author: acelan
 ---
+```
 
+## 文章内图片的使用方法
+1. 在文章中创建与标题同名的文件夹
+2. 讲图片放到这个文件夹中，比如a.png
+3. 使用下面的md语法进行图片引用
+```text
+![altText](a.png)
+```
