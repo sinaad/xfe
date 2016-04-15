@@ -3,7 +3,7 @@ title: 暂时性死区(TDZ)并不神秘
 date: 2016-02-26 17:16:19
 tags: [js, es6, tdz, translate]
 categories: js
-author: acelan
+author: acelan，徐DerDer
 ---
 
 本文根据 http://jsrocks.org/2015/01/temporal-dead-zone-tdz-demystified/ 翻译

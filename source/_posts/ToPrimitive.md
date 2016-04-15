@@ -1,6 +1,7 @@
 ---
-title: js隐式装箱ToPrimitive
+title: js隐式装箱-ToPrimitive
 tags: [js,隐式装箱,toPrimitive]
+author: 徐DerDer
 ---
 
 # js隐式装箱ToPrimitive
