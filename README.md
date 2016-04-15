@@ -6,6 +6,9 @@
 # 先克隆本项目
 git clone https://github.com/sinaad/xfe.git
 
+# 进入项目目录
+cd xfe
+
 # 安装hexo及对应的包，详见package.json
 npm install
 
