@@ -9,7 +9,7 @@ tags:
 
 ### 顶线、中线、基线、底线
 
-![baseline](./img/baseline.png)
+![baseline](./css-line-height/baseline.png)
 
 上图所示线条从上到下为：
 ```vbscript-html
@@ -27,7 +27,7 @@ vertical-align:text-bottom;
 ### 行距 、半行距、内容区、inline-box、line-box、line-height
 
 下图从上到下分别是顶线，中线，基线，底线
-![baseline](./img/baseline2.png)
+![baseline](./css-line-height/baseline2.png)
 
 **行距**：底线到下一文本行顶线之间的垂直距离(行高与字体的差)，即图中3所示区域；
 **半行距**：行距/2；
@@ -45,7 +45,7 @@ vertical-align:text-bottom;
 5，对于一个非替换内联元素,行高指的是line-box的计算高度。
 >>The line box height is the distance between the uppermost box top and the lowermost box bottom.
 
-![box](./img/box.png)
+![box](./css-line-height/box.png)
 
 [**line-height**:](https://www.w3.org/TR/2011/REC-CSS2-20110607/visudet.html#line-height)
 其实，行高存在的主要意义就是影响line-box的布局，懵逼吗？来，上代码：
@@ -60,13 +60,13 @@ vertical-align:text-bottom;
 ```
 
 
-![line height](./img/lineHeight1.png)
+![line height](./css-line-height/lineHeight1.png)
 
 
 >此时没有为父容器div设置行高,行高默认是能包裹所有inline-box的最小高度(灰色背景区)
 为div设置行高:`line-height:20px;`
 
-![line height](./img/lineHeight2.png)
+![line height](./css-line-height/lineHeight2.png)
 
 可以看到line-box(浅灰色部分)收缩了,文字也发生了重叠,而且文字顶部紧跟着浅灰色背景的底部。
 
@@ -126,7 +126,7 @@ The following values align the element relative to the line box. Since the eleme
 </div>
 ```
 如果span里面内容太多，发生了换行，由于这多行内容还是在同一个内联元素中，因此这多行文字的基线仍然是第一行文字的基线。此时再用vertical-align:middle只能使第一行文字垂直居中，如何 实现多行文字的垂直居中？
-![center](./img/center.png)
+![center](./css-line-height/center.png)
 
 **多行文字垂直居中**：
 再此之前，先来看看图片的垂直居中。
@@ -136,19 +136,19 @@ The following values align the element relative to the line box. Since the eleme
 <img src="http://i1.sinaimg.cn/dy/deco/2013/0329/logo/LOGO_1x.png" alt="test test test" style="width:100px;height:50px;vertical-align:middle;border:1px solid red"/>
 </div>
 ```
-![sina](./img/sina.png)
+![sina](./css-line-height/sina.png)
 
 如果我们把这多行文字看成是一个图片，再利用图片的垂直居中不就可以了吗？
 现在我们回忆一下img的特性:虽然是内联元素，但是可以设置宽高,这不就是inline-block的特点吗？
 为此，我们需要为span设置display:inlne-block，vertical-align:middle：
-![middle1](./img/middle1.png)
+![middle1](./css-line-height/middle1.png)
 文字已经居中了，但是每行文字隔的太开了，这是因为line-height是继承属性，span在没有设置line-height的情况下会继承父元素的，因此需要为span设置一个line-height属性来约束这多行文字的行间距。
 ```vbscript-html
 <div style="width:150px;line-height:100px;background-color:#ccc;text-align:center;">
 <span style="display:inline-block;font-size:10px;vertical-align:middle;">This is a test.This is a test.This is a test.</span>
 </div>
 ```
-![middle2](./img/middle2.png)
+![middle2](./css-line-height/middle2.png)
 
 ### 拓展阅读
 [控制盒](https://github.com/acelan86/css/wiki/9.2-%E6%8E%A7%E5%88%B6%E7%9B%92%E7%9A%84%E4%BA%A7%E7%94%9F%EF%BC%88done%EF%BC%89)
