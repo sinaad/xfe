@@ -276,6 +276,19 @@ hexo d
 ```
 
 
+### 文章内图片的使用方法
+参考 http://www.tuicool.com/articles/umEBVfI
+```bash
+# 安装图片相关模块
+npm install https://github.com/CodeFalling/hexo-asset-image --save
+
+# 在根目录下设置_config.yml配置post_asset_folder:true
+post_asset_folder:true
+
+# 新建文章的语法不变，安装完插件后会自动生成对应的文件夹
+hexo new
+```
+
 欢迎评论补充你遇到的问题～
 
 
