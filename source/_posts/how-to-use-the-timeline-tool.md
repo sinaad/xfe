@@ -4,6 +4,7 @@ tags: [tool, devtool, guide]
 author: acelan
 categories: devtool
 ---
+> 本文根据 https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/timeline-tool?hl=cn 翻译
 
 使用Chrome开发者工具的Timeline面板来记录和分析你的应用执行过程的所有的活动。这是开始调查你的应用性能问题的最好的地方。
 
@@ -50,19 +51,18 @@ Timeline面板包括以下四个部分：
 
 ### 记录提示
 1. 保持记录尽可能短。越短的记录通常越容易分析。
-2. 避免不必要的动作。避免行为(鼠标点击，网络加载，等)
-3. 
-Keep recordings as short as possible. Shorter recordings generally make analysis easier.
-Avoid unnecessary actions. Avoid actions (mouse clicks, network loads, etc.) that are extraneous to the activity you want to record and analyze. For example, if you want to record events that occur after you click a Login button, don’t also scroll the page, load an image, and so on.
-Disable the browser cache. When recording network operations, it’s a good idea to disable the browser’s cache from the DevTools Settings panel or the Network conditions drawer.
-Disable extensions. Chrome extensions can add unrelated noise to Timeline recordings of your application. Open a Chrome window in incognito mode, or create a new Chrome user profile to ensure that your environment has no extensions.
+2. 避免不必要的动作。避免那些跟你的记录和分析无关的行为(鼠标点击，网络加载等)。比如，你要记录点击登陆按钮这个动作，不要滚动页面，也不要加载图片，等等。
+3. 禁用浏览器缓存。当记录网络操作的时候，从开发工具的设置面板或者Network面板的条件控制中禁用浏览器缓存是一个好的做法。
+4. 禁用扩展。Chrome扩展会给你的应用的Timeline记录增加无关的噪音。用隐身模式打开Chrome窗口或者创建一个新的配置文件确保你的环境中没有扩展程序。
 
-##　查看记录细节
+
+## 查看记录细节
+
 当你在火焰图中选择一个事件时，详细内容面板会显示关于这个事件的额外信息。
 
 ![details pane](details-pane.png)
 
-某些页签，比如Summary, 在所有的事件中都会显示。其他的页签只在某些特定的事件类型中展现。详见Timeline事件的每种记录类型的细节说明。
+某些页签，比如Summary, 在所有的事件中都会显示。其他的页签只在某些特定的事件类型中展现。详见[Timeline事件](/xfe/2016/04/22/timeline-event-reference/#more)的每种记录类型的细节说明。
 
 
 ## 记录过程中截图
@@ -73,51 +73,53 @@ Timeline面板可以捕获屏幕在页面加载的时候。这个功能通过Fil
 
 ![timeline recording with filmstrip](timeline-filmstrip.png)
 
-把你的鼠标移动到屏幕截图上或者
-Hover your mouse over the Screenshots or Overview pane to view a zoomed screenshot of that point in the recording. Move your mouse left and right to simulate an animation of the recording.
-
+可以把你的鼠标悬停在屏幕截图上或者概览面板来查看某个记录点上的放大截图。左右移动鼠标来模拟记录的整个动态过程。
 
 <video src="https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/animations/hover.mp4" controls></video>
 
 
 ## 审查JavaScript
-Enable the JS Profile checkbox before you take a recording to capture JavaScript stacks in your timeline recording. When the JS profiler is enabled, your flame chart shows every JavaScript function that was called.
+
+在开始记录之前启用JS审查的复选框用来捕获js的执行栈。当Js审查被启用的时候，你的火焰图中会现实每一个被调用的JS函数。
 
 ![flame chart with JS profile enabled](js-profile.png)
 
 ## 审查绘图
-Enable the Paint checkbox before you take a recording to gain more insight into Paint events. When paint profiling is enabled and you click on a Paint event, a new Paint Profiler tab is displayed in the Details pane that shows much more granular information about the event.
+
+在开始记录之前启用Paint的复选框用来获得更多关于绘制事件的信息。当绘制审查启用并且在一个绘制事件上点击的时候，一个新的绘制审查页签会被显示在详细面板中，它会显示更多更细致的关于这个事件的信息。
 
 ![paint profiler](paint-profiler.png)
 
-Rendering settings
-Open the main DevTools menu and select More tools > Rendering settings to access rendering settings that may be helpful when debugging paint issues. The rendering settings opens up as a tab next to the Console drawer (press esc to show the drawer, if it’s hiding).
+### 渲染设置
+打开主菜单，选择更多工具>渲染设置, 进入渲染设置选项卡，在调试绘制的问题时它非常有用。渲染设置以紧跟在Console面板后面的一个页签形式打开（如果Console是隐藏的，可以用ESC打开）。
 
 ![rendering settings](rendering-settings.png)
 
 ## 查找记录
-While looking at events you may want to focus on one type of events. For example, perhaps you need to view the details of every Parse HTML event.
 
-Press Cmd+F (Mac) or Ctrl+F (Windows / Linux) while the Timeline is in focus to open a find toolbar. Type in the name of the event type that you wish to inspect, such as Event.
+在查看事件的时候，你可能想集中在一个类型的事件。例如，你需要查看每一个解析HTML事件的细节。
 
-The toolbar only applies to the currently selected timeframe. Any events outside of the selected timeframe are not included in the results.
+激活Timeline并按CMD + F（MAC）或Ctrl + F（Windows/Linux）能够打开一个查找工具栏，键入要检查的事件类型的名称，比如Event。
 
-The up and down arrows move you chronologically through the results. So, the first result represents the earliest event in the selected timeframe, and the last result represents the last event. Every time that you press the up or down arrow, a new event is selected, so you can view its details in the Details pane. Pressing the up and down arrows is equivalent to clicking on an event in the Flame Chart.
+工具栏只适用于当前选定的时间范围内。在选定的时间段以外的任何事件都不包括在结果中。
+
+向上和向下箭头可以移动搜索结果。因此，第一个结果表示最早的事件在选定的时间内，最后的结果是最后的事件。每次按“上”或“向下”箭头，选择一个新事件，这样你就细节面板中的查看它的细节。按上下箭头相当于在火焰图中点击一个事件。
 
 ![find toolbar](find-toolbar.png)
 
 ## 在Timeline区域缩放
-You can zoom in on a section of a recording to make analysis easier. You use the Overview pane to zoom in on a section of the recording. After zooming, the Flame Chart is automatically zoomed to match the same section.
+
+你可以在一个记录中放大某一个区域来方便分析。你可以使用概述面板来放大记录中的某个部分。放大后，火焰图也会自动放大以匹配相同的部分。
 
 ![zoom in on a section of a timeline recording](zoom.png)
 
-To zoom in on a Timeline section:
+如果要放大某个部分，可以使用下面两种方式:
 
-In the Overview pane, drag out a Timeline selection with your mouse.
-Adjust the gray sliders in the ruler area.
-Once you have a section selected, you can use the W,A, S, and D keys to adjust your selection. W and S zoom in and zoom out, respectively. A and D move left and right, respectively.
+1. 在概览面板中，用鼠标拖出要放大的区域。
+2. 在标尺中调整灰色滑块。
+
+如果你选中了一个区域，你可以使用W, A, S, D来调整这个区域。W，S对应放大和缩小，A，D对应左移和右移。
 
 ## 保存和加载记录
-You can save and open recordings by right-clicking inside the Overview or Flame Chart panes and selecting the relevant option.
-
+你可以保存或者打开一个记录，通过在概览面板或者燃烧图中点击右键，然后选中相关选项进行操作。
 ![save and open recordings](save-open.png)
