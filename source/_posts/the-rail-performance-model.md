@@ -2,74 +2,82 @@ title: RAIL性能模型
 date: 2016-04-22 13:21:54
 tags: [devtool, guide, translate, tool]
 categories: devtool
-author: acelan
+author: 可撸死露露(胡月)
 ---
 > 本文根据 https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/rail?hl=en 翻译
 
-RAIL is a user-centric performance model. Every web app has these four distinct aspects to its life cycle, and performance fits into them in very different ways:
+RAIL（**R**esponse、**A**nimation、**I**del、**L**oad）是一个以用户为中心的性能模型，每个web app的生命周期中分为四个不同的方面，根据这四个不同的方面有对应的四个不同的性能优化方案：
 
-![RAIL performance model](rail.png)
+![rail](./rail.png)
 
-## Focus on the user
-Make users the focal point of your performance effort. The majority of time users spend in your site isn’t waiting for it to load, but waiting for it to respond while using it. Understand how users perceive performance delays:
+### 以用户为中心
 
-| Delay |  User Reaction |
-|-------|----------------|
-| 0 - 16ms |   Given a screen that is updating 60 times per second, this window represents the time to get a single frame to the screen (Professor Math says "1000/60 ~= 16"). People are exceptionally good at tracking motion, and they dislike it when the expectation of motion isn’t met, either through variable frame rates or periodic halting. |
-| 0 - 100ms  | Respond to a user action within this time window and they will feel like the result was immediate. Any longer, and the connection between action and reaction is broken. |
-| 100 - 300ms | Users experience a slight perceptible delay. |
-| 300 - 1000ms  |  Within this window, things feel part of a natural and continuous progression of tasks. For most users on the web, loading pages or changing views represents a task. |
-| 1000+ms | Beyond 1 second, the user loses focus on the task they are performing. |
-| 10,000+ms  | The user is frustrated and is likely to abandon the task; they may or may not come back later. |
+让用户成为性能优化的焦点。当用户访问您的网站时，让用户的主要时间花费在应答上而不是加载上。下面了解一下用户是如何看待延时的:
 
-## Response: respond in under 100ms
-You have 100ms to respond to user input before they notice a lag. This applies to any input, whether they are clicking a button, toggling form controls, or starting an animation.
+| 延时(ms)     |用户行为      |
+| ----------- | --------| 
+| 0 - 16   | 对于一个60fps刷新频率的屏幕，这个时间范围代表了屏幕渲染一个单独帧的时间(1000/60 ~=16ms)。人们非常擅长跟踪运动，他们喜欢那些不符合预期的运动，也不喜欢可变帧率和周期性停止。| 
+| 0 - 100 |在这个时间范围内作出响应，会让用户觉得结果是即时的。超过这个延时（100ms），行动和反应之间的连接就会被破坏。| 
+| 100 - 300 | 用户能感觉到轻微的可察觉的延时| 
+| 300 - 1000 | 在这个时间范围内，事情看起来是断断续续的。对web上的大多数用户，加载页面和改变视图都代表了一个任务。|
+| 1000+ |超过1s，用户将会失去正在执行的任务耐心。| 
+| 10,000+ | 用户开始感到沮丧并且有可能会放弃任务，并且之后有可能不会再回来继续此次任务|
 
-If you don’t respond, the connection between action and reaction is broken. Users will notice.
+### Response(响应)：在100ms以内作出响应
 
-While it may seem obvious to respond to user’s actions immediately, that’s not always the right call. Use this 100ms window to do other expensive work, but be careful not to block the user. If possible, do work in the background.
+我们必须在100ms内对用户的输入作出响应，否则用户会感到延时。这适用于任何输入，不管他们是在点击按钮，切换表单还是在开启一个动画。
 
-For actions that take longer than 500ms to complete, always provide feedback.
+如果你没有及时应答，行为和反应之间的连接就会被破坏，用户将会感觉到时延。
 
-> Remember
->   Respond to user's touchmoves and scrolling in under 16ms.
+虽然看起来好像是很明显的对用户的操作立即作出了响应，但是这可能并不是正确的应答。我们可以用这100ms来做其他昂贵的工作(预计算)但是要注意不要阻塞用户的交互。如果可以的话，尽量在后台工作。
+对于需要超过500ms才能完成的动作，通常会提供一个反馈。
 
-## Animation: render frames every 16ms
-Animations aren’t trivial actions that web apps can opt into. For example, scrolling and touchmoves are types of animation. Your users will really notice if the animation frame rate varies. Your goal is to produce 60 frames per second, and every frame has to go through all of these steps:
+>记住：
+>对用户的touchmoves和scrolling操作，响应时间最好控制在16ms以内
 
-![Steps to render a frame](render-frame.png)
+### Animition(动画)：每16ms渲染一帧
 
-From a purely mathematical point of view, every frame has a budget of 16.66ms (divide 1 second by 60) but, because browsers have housekeeping to do, the reality is that there is a window of 10ms for your code during animations.
+动画实际上是web app一个不可避免的行为。比如:touchmoves和scrolling都是动画。如果动画的帧率是变化的，用户是可以真切的感受到的。我们的目标就是要在1s内产生60帧(**因为当前大多数设备的屏幕刷新频率都是60次/秒**)，并且每一帧要经过以下所有步骤：
 
-In high pressure points like animations, the key is to do nothing where you can, and where you can’t, do the absolute minimum. Whenever possible, make use of the 100ms response to pre-calculate expensive work so that you maximize your chances of hitting 60fps.
+![render-frame](./render-frame.png)
 
-For more information, see [Rendering Performance](https://developers.google.com/web/fundamentals/performance/rendering/).
+从一个纯数学的角度来看，每一帧都有16.66ms的预算(1000/60)
+实际上，在渲染某一帧画面的同时，由于浏览器还有额外的事情要去处理，因此单纯的渲染的工作需要控制在10ms内才能达到流畅的视觉效果。
 
-## Idle: maximize idle time
-Use idle time to complete deferred work. For example, keep pre-load data to a minimum so that your app loads fast, and use idle time to load remaining data.
+尽可能的充分利用100ms响应预加载的昂贵工作来最大限度的让你有机会达到60fps。
 
-Deferred work should be grouped into blocks of about 50ms. Should a user begin interacting, then the highest priority is to respond to that.
+详情请参考：[渲染性能](https://developers.google.com/web/fundamentals/performance/rendering/)
 
-To allow for <100ms response, the app must yield control back to main thread every <100ms, such that it can execute its pixel pipeline, react to user input, and so on.
+### Idel(浏览器空闲状态):最大化空闲时间
 
-Working in 50ms blocks allows the task to finish while still ensuring instant response.
+我们可以利用空闲时间来完成延迟任务，比如：通过最小化预加载数据来保证应用程序快速完成加载，这样我们就可以利用空闲时间来加载剩余数据。
 
-## Load: deliver content under 1000ms
-Load your site in under 1 second. If you don’t, your user’s attention wanders, and their perception of dealing with the task is broken.
+延迟任务应该按照50ms进行分组。因为最高优先级的工作是：在100ms内响应用户任何输入。
 
-Focus on [optimizing the critical rendering path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/) to unblock rendering.
+为了保证<100ms的响应，应用程序必须在每个<100ms的时间内把控制权交回给主线程，这样主线程才能响应用户输入。
 
-You don’t have to load everything in under 1 second to produce the perception of a complete load. Enable progressive rendering and do some work in the background. Defer non-essential loads to periods of idle time (see this [Website Performance Optimization Udacity course](https://www.udacity.com/course/website-performance-optimization--ud884) for more information).
+在每个50ms时间片段内工作，可以保证延时任务的完成，同时也能立即响应用户操作。
 
-## Summary of key rail metrics
-To evaluate your site against RAIL metrics, use the Chrome DevTools [Timeline tool](/xfe/2016/04/21/how-to-use-the-timeline-tool/#more) to record user actions. Then check the recording times in the Timeline against these key rail metrics:
+### Load(加载)：在1s内传递内容
 
-| RAIL Step  |  Key Metric  User Actions |
-|------------|---------------------------|
-| Response  |  Input latency (from tap to paint) < 100ms.  User taps on an icon or button (e.g., opening the nav menu, tapping Compose). |
-| Response  |  Input latency (from tap to paint) < 16ms.   User drags their finger and the app's response is bound to the finger position (e.g., pull to refresh, swiping a carousel). |
-| Animation  | Input latency (from tap to paint) < 100ms for initial response. User initiates page scroll or animation begins. |
-| Animation  | Each frame's work (JS to paint) completes < 16ms.   User scrolls the page or sees an animation. |
-| Idle |   Main thread JS work chunked no larger than 50ms.    User isn't interacting with the page, but main thread should be available enough to handle the next user input. |
-| Load  |  Page considered ready to use in 1000ms. User loads the page and sees the critical path content. |
-| Load   | Satisfy the Response goals during the full page load process.   User loads the page and starts interacting (e.g., scrolls or opens navigation). |
+要在1s内加载完成站点。如果超过1s，用户的注意力会转移，他们处理任务的感觉就会被打断。
+
+集中于[优化关键呈现路径](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/)来解锁渲染
+
+实际上我们并不需要在1s内加载完所有东西，我们只需在1s内完成关键呈现路径即可，这样就可以给用户提供 一种已经全部加载完成的错觉，开启渐进式渲染并且在后台执行一些任务，延迟一些非关键加载到空闲时间中。
+
+>更多内容，可以参考[优化关键呈现路径](https://cn.udacity.com/course/website-performance-optimization--ud884/)
+
+### 性能优化关键指标小结
+
+为了评估你的网站是否符合RAIL指标，可以使用Chrome的开发者工具[Timeline](http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/#more)来记录用户操作。然后检查timeline上的记录时间是否符合以下这些关键指标：
+
+| RAIL步骤    |关键指标用户操作|
+| -------- | --------| 
+| Response  |   输入潜伏期(从输入到绘制)<100ms。用户点击图标或按钮(如：打开导航菜单，点击编辑)|
+| Response  |   输入潜伏期<16ms。用户滑动手指，应用程序的响应绑定到手指所在的位置上(如：拉动刷新，滑动旋转)|
+| Animation |   输入潜伏期<100ms，初始化响应。用户初始化页面滚动或者动画开始|
+| Animation |   每一帧工作(JS绘制)完成<16ms。用户滚动页面或者浏览一个动画|
+| Idel |   主线程JS工作块<=50ms。用户不与页面交互，但是主线程足以应付下一个用户输入|
+| Load |  页面在1000ms内准备好被使用。用户加载页面并且看到关键路径的内容|
+| Load |  在全页面加载过程中满足响应目标。用户加载页面并且开始交互(如：滚动或者打开导航)|
