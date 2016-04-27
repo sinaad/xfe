@@ -1,6 +1,6 @@
 title: 理解资源时间线
 date: 2016-04-27 13:56:58
-tags: [devtool, guide, translate]
+tags: [devtool, guide, translate, 域名碎片化]
 categories: devtool
 author: 彤阳
 ---
