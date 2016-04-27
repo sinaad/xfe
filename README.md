@@ -4,7 +4,7 @@
 ## 贡献文章方法
 ```bash
 # 先克隆本项目
-git clone https://github.com/sinaad/xfe.git
+git fork https://github.com/sinaad/xfe.git
 
 # 进入项目目录
 cd xfe
