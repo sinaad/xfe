@@ -1,4 +1,4 @@
-title: 诊断强制同步布局（待翻译）
+title: 诊断强制同步布局
 date: 2016-04-27 15:16:08
 tags: [devtool, translate, guide]
 author: acelan

@@ -1,4 +1,4 @@
-title: 测量资源加载时间
+title: 测量资源加载时间(待翻译，江霞)
 date: 2016-04-27 13:58:38
 tags: [devtool, guide]
 author: 宋江霞
