@@ -1,0 +1,850 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/xfe/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+
+
+<link href="/xfe/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/xfe/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="js,cut,copy,chrome," />
+
+
+
+
+
+  <link rel="alternate" href="/xfe/atom.xml" title="{XFE}" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xfe/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E;https://developers.google.com/web/updates/2015/04/cut-and-copy-commands&amp;#x7FFB;&amp;#x8BD1;
+
+IE10&amp;#x53CA;&amp;#x4EE5;&amp;#x4E0A;&amp;#x901A;&amp;#x8FC7;Document.execCommand()&amp;#x65B9;&amp;#x6">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cut和copy命令">
+<meta property="og:url" content="http://sinaad.github.io/2016/04/14/cut-and-copy-commands/index.html">
+<meta property="og:site_name" content="{XFE}">
+<meta property="og:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E;https://developers.google.com/web/updates/2015/04/cut-and-copy-commands&amp;#x7FFB;&amp;#x8BD1;
+
+IE10&amp;#x53CA;&amp;#x4EE5;&amp;#x4E0A;&amp;#x901A;&amp;#x8FC7;Document.execCommand()&amp;#x65B9;&amp;#x6">
+<meta property="og:updated_time" content="2016-04-14T10:36:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cut和copy命令">
+<meta name="twitter:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E;https://developers.google.com/web/updates/2015/04/cut-and-copy-commands&amp;#x7FFB;&amp;#x8BD1;
+
+IE10&amp;#x53CA;&amp;#x4EE5;&amp;#x4E0A;&amp;#x901A;&amp;#x8FC7;Document.execCommand()&amp;#x65B9;&amp;#x6">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> cut和copy命令 | {XFE} </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?13989991106bdad30ea927ab9ae93a09";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/xfe/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">{XFE}</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xfe/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/xfe/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/xfe/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xfe/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xfe/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                cut和copy命令
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-14T13:33:23+08:00" content="2016-04-14">
+              2016-04-14
+            </time>
+          </span>
+
+          
+          <span class="post-author">
+            &nbsp; | &nbsp;
+            acelan
+          </span>
+          
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/xfe/2016/04/14/cut-and-copy-commands/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/14/cut-and-copy-commands/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>&#x672C;&#x6587;&#x6839;&#x636E;<a href="https://developers.google.com/web/updates/2015/04/cut-and-copy-commands&#x7FFB;&#x8BD1;" target="_blank" rel="external">https://developers.google.com/web/updates/2015/04/cut-and-copy-commands&#x7FFB;&#x8BD1;</a></p>
+</blockquote>
+<p>IE10&#x53CA;&#x4EE5;&#x4E0A;&#x901A;&#x8FC7;<code>Document.execCommand()</code>&#x65B9;&#x6CD5;&#x63D0;&#x4F9B;&#x4E86;<code>cut</code>&#x548C;<code>copy</code>&#x7684;&#x547D;&#x4EE4;&#x652F;&#x6301;&#x3002;&#x5728;Chrome43&#x7684;&#x7248;&#x672C;&#x91CC;&#xFF0C;Chrome&#x4E5F;&#x652F;&#x6301;&#x4E86;&#x8FD9;&#x4E2A;&#x547D;&#x4EE4;&#x3002;</p>
+<p>&#x5F53;&#x8FD9;&#x4E2A;&#x547D;&#x4EE4;&#x88AB;&#x6267;&#x884C;&#x7684;&#x65F6;&#x5019;&#x4EFB;&#x4F55;&#x5728;&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#x88AB;&#x9009;&#x4E2D;&#x7684;&#x6587;&#x672C;&#x90FD;&#x4F1A;&#x88AB;&#x526A;&#x5207;&#x6216;&#x8005;&#x62F7;&#x8D1D;&#x5230;&#x7528;&#x6237;&#x7684;&#x526A;&#x8D34;&#x677F;&#x91CC;&#x3002;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x8BA9;&#x4F60;&#x80FD;&#x591F;&#x63D0;&#x4F9B;&#x7ED9;&#x7528;&#x6237;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x65B9;&#x6CD5;&#x6765;&#x9009;&#x4E2D;&#x90E8;&#x5206;&#x6587;&#x672C;&#x5E76;&#x62F7;&#x8D1D;&#x5230;&#x526A;&#x8D34;&#x677F;&#x3002;</p>
+<p>&#x5B83;&#x5728;&#x8DDF;Selection API&#x8054;&#x5408;&#x4F7F;&#x7528;&#xFF0C;&#x4EE5;&#x7F16;&#x7A0B;&#x7684;&#x65B9;&#x5F0F;&#x6765;&#x51B3;&#x5B9A;&#x9009;&#x4E2D;&#x90A3;&#x4E9B;&#x6587;&#x672C;&#x5E94;&#x8BE5;&#x88AB;&#x9009;&#x4E2D;&#x5E76;&#x62F7;&#x8D1D;&#x5230;&#x526A;&#x8D34;&#x677F;&#x7684;&#x65F6;&#x5019;&#x76F8;&#x5F53;&#x6709;&#x7528;&#xFF0C;&#x63A5;&#x4E0B;&#x6765;&#x6211;&#x4EEC;&#x80FD;&#x770B;&#x5230;&#x66F4;&#x591A;&#x7EC6;&#x8282;&#x3002;</p>
+<h3 id="&#x7B80;&#x5355;&#x7684;&#x4F8B;&#x5B50;"><a href="#&#x7B80;&#x5355;&#x7684;&#x4F8B;&#x5B50;" class="headerlink" title="&#x7B80;&#x5355;&#x7684;&#x4F8B;&#x5B50;"></a>&#x7B80;&#x5355;&#x7684;&#x4F8B;&#x5B50;</h3><p>&#x4E3A;&#x4E86;&#x4E3E;&#x4E2A;&#x4F8B;&#x5B50;&#xFF0C;&#x8BA9;&#x6211;&#x4EEC;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x6309;&#x94AE;&#x7528;&#x6765;&#x62F7;&#x8D1D;&#x4E00;&#x4E2A;email&#x5230;&#x526A;&#x8D34;&#x677F;&#x3002;</p>
+<p>&#x6211;&#x4EEC;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;email&#x5730;&#x5740;&#x548C;&#x4E00;&#x4E2A;&#x590D;&#x5236;&#x6309;&#x94AE;&#x5728;HTML&#x4E2D;&#xFF1A;</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Email me at <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">&quot;js-emaillink&quot;</span> <span class="attr">href</span>=<span class="string">&quot;mailto:matt@example.co.uk&quot;</span>&gt;</span>matt@example.co.uk<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;js-emailcopybtn&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;./images/copy-icon.png&quot;</span> /&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>&#x7136;&#x540E;&#x5728;javascript&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x7ED9;&#x6309;&#x94AE;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;click&#x4E8B;&#x4EF6;&#xFF0C;&#x5F53;&#x6211;&#x4EEC;&#x70B9;&#x51FB;&#x6309;&#x94AE;&#x7684;&#x65F6;&#x5019;&#x4ECE;js-emaillink&#x4E2D;&#x9009;&#x4E2D;email&#x5730;&#x5740;&#xFF0C;&#x6267;&#x884C;copy&#x547D;&#x4EE4;&#x8BA9;email&#x5730;&#x5740;&#x62F7;&#x8D1D;&#x5230;&#x526A;&#x8D34;&#x677F;&#x7136;&#x540E;&#x7ACB;&#x523B;&#x53D6;&#x6D88;&#x6389;&#x5BF9;email&#x5730;&#x5740;&#x7684;&#x9009;&#x62E9;&#x4EE5;&#x4FDD;&#x8BC1;&#x7528;&#x6237;&#x770B;&#x4E0D;&#x5230;&#x6211;&#x4EEC;&#x9009;&#x4E2D;&#x8FC7;&#x7A0B;&#x7684;&#x53D1;&#x751F;&#x3002;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> copyEmailBtn = <span class="built_in">document</span>.querySelector(<span class="string">&apos;.js-emailcopybtn&apos;</span>);  </span><br><span class="line">copyEmailBtn.addEventListener(<span class="string">&apos;click&apos;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>{  </span><br><span class="line">  <span class="comment">// Select the email link anchor text  </span></span><br><span class="line">  <span class="keyword">var</span> emailLink = <span class="built_in">document</span>.querySelector(<span class="string">&apos;.js-emaillink&apos;</span>);  </span><br><span class="line">  <span class="keyword">var</span> range = <span class="built_in">document</span>.createRange();  </span><br><span class="line">  range.selectNode(emailLink);  </span><br><span class="line">  <span class="built_in">window</span>.getSelection().addRange(range);  </span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> {  </span><br><span class="line">    <span class="comment">// Now that we&apos;ve selected the anchor text, execute the copy command  </span></span><br><span class="line">    <span class="keyword">var</span> successful = <span class="built_in">document</span>.execCommand(<span class="string">&apos;copy&apos;</span>);  </span><br><span class="line">    <span class="keyword">var</span> msg = successful ? <span class="string">&apos;successful&apos;</span> : <span class="string">&apos;unsuccessful&apos;</span>;  </span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&apos;Copy email command was &apos;</span> + msg);  </span><br><span class="line">  } <span class="keyword">catch</span>(err) {  </span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&apos;Oops, unable to copy&apos;</span>);  </span><br><span class="line">  }  </span><br><span class="line"></span><br><span class="line">  <span class="comment">// Remove the selections - <span class="doctag">NOTE:</span> Should use</span></span><br><span class="line">  <span class="comment">// removeRange(range) when it is supported  </span></span><br><span class="line">  <span class="built_in">window</span>.getSelection().removeAllRanges();  </span><br><span class="line">});</span><br></pre></td></tr></table></figure>
+<p>&#x6211;&#x4EEC;&#x6240;&#x505A;&#x7684;&#x8FD9;&#x4E9B;&#x4F7F;&#x7528;&#x4E86;Selection API&#x7684;&#x65B9;&#x6CD5;&#xFF0C;<code>window.getSelection()</code>&#x7528;&#x7A0B;&#x5E8F;&#x6765;&#x4E3A;&#x951A;&#x70B9;&#x7684;&#x6587;&#x672C;&#x8BBE;&#x7F6E;&#x9009;&#x4E2D;&#x533A;&#x57DF;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x60F3;&#x8981;&#x88AB;&#x62F7;&#x8D1D;&#x5230;&#x526A;&#x8D34;&#x677F;&#x4E2D;&#x7684;&#x6587;&#x672C;&#x3002;&#x8C03;&#x7528;<code>document.execCommand()</code>&#x540E;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x8C03;&#x7528;<code>window.getSelection().removeAllRanges()</code>&#x6765;&#x53D6;&#x6D88;&#x9009;&#x4E2D;&#x533A;&#x57DF;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x4F60;&#x60F3;&#x8981;&#x786E;&#x8BA4;&#x8FD9;&#x4E00;&#x5207;&#x662F;&#x5426;&#x5982;&#x9884;&#x671F;&#x5DE5;&#x4F5C;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x6D4B;&#x8BD5;<code>document.execCommand()</code>&#x7684;&#x8FD4;&#x56DE;&#xFF0C;&#x5982;&#x679C;&#x8FD9;&#x4E2A;&#x547D;&#x4EE4;&#x4E0D;&#x88AB;&#x652F;&#x6301;&#xFF0C;&#x5B83;&#x4F1A;&#x8FD4;&#x56DE;false&#x3002;&#x7531;&#x4E8E;&#x5728;&#x67D0;&#x4E9B;&#x573A;&#x666F;cut&#x548C;copy&#x7684;&#x65F6;&#x5019;&#x53EF;&#x80FD;&#x4F1A;&#x629B;&#x51FA;&#x5F02;&#x5E38;&#xFF0C;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x628A;<code>execCommand()</code>&#x653E;&#x5728;try&#xFF0C;catch&#x4E2D;&#x3002;</p>
+<p><code>cut</code>&#x547D;&#x4EE4;&#x80FD;&#x591F;&#x88AB;&#x7528;&#x5728;&#x6587;&#x672C;&#x57DF;&#x4E2D;&#x5F53;&#x4F60;&#x60F3;&#x8981;&#x79FB;&#x9664;&#x6587;&#x672C;&#x5185;&#x5BB9;&#x5E76;&#x4E14;&#x8BA9;&#x5B83;&#x5B58;&#x653E;&#x5728;&#x526A;&#x8D34;&#x677F;&#x7684;&#x65F6;&#x5019;&#x3002;</p>
+<p>&#x5728;HTML&#x4E2D;&#x4F7F;&#x7528;textarea&#x548C;&#x4E00;&#x4E2A;&#x6309;&#x94AE;&#xFF1A;</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">textarea</span> <span class="attr">class</span>=<span class="string">&quot;js-cuttextarea&quot;</span>&gt;</span>Hello I&apos;m some text<span class="tag">&lt;/<span class="name">textarea</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">&quot;js-textareacutbtn&quot;</span> <span class="attr">disable</span>&gt;</span>Cut Textarea<span class="tag">&lt;/<span class="name">button</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>&#x6211;&#x4EEC;&#x7528;&#x4E0B;&#x9762;&#x7684;&#x65B9;&#x6CD5;&#x6765;&#x6267;&#x884C;&#x526A;&#x5207;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cutTextareaBtn = <span class="built_in">document</span>.querySelector(<span class="string">&apos;.js-textareacutbtn&apos;</span>);</span><br><span class="line"></span><br><span class="line">cutTextareaBtn.addEventListener(<span class="string">&apos;click&apos;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>{  </span><br><span class="line">  <span class="keyword">var</span> cutTextarea = <span class="built_in">document</span>.querySelector(<span class="string">&apos;.js-cuttextarea&apos;</span>);  </span><br><span class="line">  cutTextarea.select();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> {  </span><br><span class="line">    <span class="keyword">var</span> successful = <span class="built_in">document</span>.execCommand(<span class="string">&apos;cut&apos;</span>);  </span><br><span class="line">    <span class="keyword">var</span> msg = successful ? <span class="string">&apos;successful&apos;</span> : <span class="string">&apos;unsuccessful&apos;</span>;  </span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&apos;Cutting text command was &apos;</span> + msg);  </span><br><span class="line">  } <span class="keyword">catch</span>(err) {  </span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&apos;Oops, unable to cut&apos;</span>);  </span><br><span class="line">  }  </span><br><span class="line">});</span><br></pre></td></tr></table></figure>
+<h3 id="queryCommandSupported-&#x548C;-queryCommandEnabled"><a href="#queryCommandSupported-&#x548C;-queryCommandEnabled" class="headerlink" title="queryCommandSupported &#x548C; queryCommandEnabled"></a>queryCommandSupported &#x548C; queryCommandEnabled</h3><p>&#x8C03;&#x7528;<code>document.execCommand()</code>&#x4E4B;&#x524D;, &#x4F60;&#x5E94;&#x8BE5;&#x7528;<code>document.queryCommandSupported()</code>&#x65B9;&#x6CD5;&#x6765;&#x786E;&#x8BA4;&#x8FD9;&#x4E2A;API&#x662F;&#x88AB;&#x652F;&#x6301;&#x7684;&#x3002;&#x5728;&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x80FD;&#x591F;&#x57FA;&#x4E8E;&#x652F;&#x6301;&#x60C5;&#x51B5;&#x6765;&#x7ED9;&#x6309;&#x94AE;&#x8BBE;&#x7F6E;disabled&#x72B6;&#x6001;&#xFF0C;&#x5982;&#x4E0B;&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copyEmailBtn.disabled = !<span class="built_in">document</span>.queryCommandSupported(<span class="string">&apos;copy&apos;</span>);</span><br></pre></td></tr></table></figure>
+<p><code>document.queryCommandSupported()</code>&#x548C;<code>document.queryCommandEnabled()</code>&#x7684;&#x533A;&#x522B;&#x5728;&#x4E8E;&#x524D;&#x8005;&#x8868;&#x793A;&#x6D4F;&#x89C8;&#x5668;&#x662F;&#x5426;&#x652F;&#x6301;cut&#x548C;copy&#x547D;&#x4EE4;&#xFF0C;&#x540E;&#x8005;&#x8868;&#x793A;cut&#x548C;copy&#x662F;&#x5426;&#x80FD;&#x591F;&#x4F7F;&#x7528;&#x3002;</p>
+<blockquote>
+<p>&#x4EE5;&#x4E0A;&#x6CA1;&#x6709;&#x6309;&#x7167;&#x6587;&#x7AE0;&#x539F;&#x6709;&#x7684;&#x5185;&#x5BB9;&#x6765;&#x7FFB;&#x8BD1;&#xFF0C;&#x8BD1;&#x8005;&#x5C1D;&#x8BD5;&#x4E86;&#x4E00;&#x4E0B;&#xFF0C;&#x5927;&#x6982;&#x662F;&#x8FD9;&#x6837;&#x7684;&#x610F;&#x601D;&#xFF1A;supported&#x8868;&#x793A;&#x6D4F;&#x89C8;&#x5668;&#x662F;&#x5426;&#x652F;&#x6301;&#x8BE5;&#x7279;&#x6027;&#xFF0C;&#x4E0D;&#x7BA1;&#x662F;&#x5426;&#x9009;&#x4E2D;&#x6587;&#x672C;&#x3002;enabled&#x53EA;&#x6709;&#x5728;&#x9009;&#x4E2D;&#x6587;&#x672C;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#x624D;&#x8FD4;&#x56DE;true&#xFF0C;&#x4E14;&#x5982;&#x679C;&#x5F53;&#x524D;&#x9009;&#x4E2D;&#x6587;&#x672C;&#x4E0D;&#x80FD;&#x88AB;&#x79FB;&#x9664;&#xFF0C;&#x6BD4;&#x5982;&#x5728;&#x666E;&#x901A;&#x7684;html&#x4E2D;&#x800C;&#x4E0D;&#x662F;editable&#x6216;&#x8005;&#x6587;&#x672C;&#x57DF;&#x4E2D;&#xFF0C;cut&#x8FD4;&#x56DE;false&#xFF0C;&#x8FD9;&#x4E2A;&#x8DDF;&#x6211;&#x4EEC;&#x7684;&#x671F;&#x671B;&#x7684;&#x884C;&#x4E3A;&#x4E00;&#x81F4;&#x3002;</p>
+</blockquote>
+<p>&#x4ED6;&#x4EEC;&#x5728;&#x67D0;&#x4E9B;&#x573A;&#x666F;&#x4E2D;&#x5F88;&#x6709;&#x7528;&#xFF0C;&#x5F53;&#x4F60;&#x6CA1;&#x6709;&#x901A;&#x8FC7;&#x7A0B;&#x5E8F;&#x6765;&#x8BBE;&#x7F6E;&#x9009;&#x4E2D;&#x533A;&#x57DF;&#x7684;&#x65F6;&#x5019;&#x6765;&#x786E;&#x8BA4;&#x547D;&#x4EE4;&#x662F;&#x5426;&#x80FD;&#x6309;&#x9884;&#x671F;&#x6267;&#x884C;&#xFF0C;&#x5426;&#x5219;&#x7ED9;&#x7528;&#x6237;&#x663E;&#x793A;&#x4E00;&#x4E2A;&#x4FE1;&#x606F;&#x3002;</p>
+<h3 id="&#x6D4F;&#x89C8;&#x5668;&#x652F;&#x6301;&#x60C5;&#x51B5;"><a href="#&#x6D4F;&#x89C8;&#x5668;&#x652F;&#x6301;&#x60C5;&#x51B5;" class="headerlink" title="&#x6D4F;&#x89C8;&#x5668;&#x652F;&#x6301;&#x60C5;&#x51B5;"></a>&#x6D4F;&#x89C8;&#x5668;&#x652F;&#x6301;&#x60C5;&#x51B5;</h3><ul>
+<li>IE 10+</li>
+<li>Chrome 43+</li>
+<li>Firefox 41+</li>
+<li>Opera 29+</li>
+</ul>
+<p>safari&#x4E0D;&#x652F;&#x6301;&#x8FD9;&#x4E9B;&#x547D;&#x4EE4;&#xFF08;&#x73B0;&#x5728;&#x8C8C;&#x4F3C;&#x5DF2;&#x7ECF;&#x652F;&#x6301;&#x4E86;&#xFF0C;&#x8BD1;&#x8005;&#xFF09;</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/xfe/tags/js/" rel="tag">#js</a>
+          
+            <a href="/xfe/tags/cut/" rel="tag">#cut</a>
+          
+            <a href="/xfe/tags/copy/" rel="tag">#copy</a>
+          
+            <a href="/xfe/tags/chrome/" rel="tag">#chrome</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xfe/2016/02/26/temporal-dead-zone-tdz-demystified/" rel="next" title="暂时性死区(TDZ)并不神秘">
+                <i class="fa fa-chevron-left"></i> 暂时性死区(TDZ)并不神秘
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/xfe/2016/04/15/css-line-height/" rel="prev" title="详解CSS行高">
+                详解CSS行高 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/04/14/cut-and-copy-commands/"
+     data-title="cut和copy命令"
+     data-content=""
+     data-url="http://sinaad.github.io/xfe/2016/04/14/cut-and-copy-commands/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/14/cut-and-copy-commands/"
+           data-title="cut和copy命令" data-url="http://sinaad.github.io/xfe/2016/04/14/cut-and-copy-commands/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/2231440955/180/5749469848/1"
+               alt="SINA FE Team" />
+          <p class="site-author-name" itemprop="name">SINA FE Team</p>
+          <p class="site-description motion-element" itemprop="description">我们一直努力贴好小广告</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/xfe/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/xfe/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/xfe/tags">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/xfe/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/orgs/sinaad/teams/xfe" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/acelan" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的例子"><span class="nav-number">1.</span> <span class="nav-text">简单的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#queryCommandSupported-和-queryCommandEnabled"><span class="nav-number">2.</span> <span class="nav-text">queryCommandSupported 和 queryCommandEnabled</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器支持情况"><span class="nav-number">3.</span> <span class="nav-text">浏览器支持情况</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SINA FE Team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/xfe/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/xfe/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sinaad-xfe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+        //  do something with the error.  message[2] is the Error object that records the problem.
+        console.log(message);
+      });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+          var all = MathJax.Hub.getAllJax(), i;
+          for(i=0; i < all.length; i += 1) {
+              all[i].SourceElement().parentNode.className += ' has-jax';
+          }
+      });
+  </script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+
+</body>
+</html>

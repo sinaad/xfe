@@ -1,0 +1,919 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/xfe/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+
+
+<link href="/xfe/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/xfe/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="tool,devtool,guide," />
+
+
+
+
+
+  <link rel="alternate" href="/xfe/atom.xml" title="{XFE}" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xfe/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/timeline-tool?hl=cn &amp;#x7FFB;&amp;#x8BD1;
+
+&amp;#x4F7F;&amp;#x7528;Chrome&amp;#x5F00;&amp;#x53D1;&amp;#x80">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何使用Timeline工具">
+<meta property="og:url" content="http://sinaad.github.io/2016/04/21/how-to-use-the-timeline-tool/index.html">
+<meta property="og:site_name" content="{XFE}">
+<meta property="og:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/timeline-tool?hl=cn &amp;#x7FFB;&amp;#x8BD1;
+
+&amp;#x4F7F;&amp;#x7528;Chrome&amp;#x5F00;&amp;#x53D1;&amp;#x80">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/timeline-panel.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/timeline-annotated.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/overview-annotated.jpg">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/details-pane.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/timeline-filmstrip.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/js-profile.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/paint-profiler.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/rendering-settings.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/find-toolbar.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/zoom.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/save-open.png">
+<meta property="og:updated_time" content="2016-04-25T10:28:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何使用Timeline工具">
+<meta name="twitter:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/timeline-tool?hl=cn &amp;#x7FFB;&amp;#x8BD1;
+
+&amp;#x4F7F;&amp;#x7528;Chrome&amp;#x5F00;&amp;#x53D1;&amp;#x80">
+<meta name="twitter:image" content="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/timeline-panel.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 如何使用Timeline工具 | {XFE} </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?13989991106bdad30ea927ab9ae93a09";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/xfe/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">{XFE}</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xfe/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/xfe/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/xfe/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xfe/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xfe/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                如何使用Timeline工具
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-21T14:25:38+08:00" content="2016-04-21">
+              2016-04-21
+            </time>
+          </span>
+
+          
+          <span class="post-author">
+            &nbsp; | &nbsp;
+            acelan
+          </span>
+          
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/xfe/categories/devtool/" itemprop="url" rel="index">
+                    <span itemprop="name">devtool</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/xfe/2016/04/21/how-to-use-the-timeline-tool/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/21/how-to-use-the-timeline-tool/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>&#x672C;&#x6587;&#x6839;&#x636E; <a href="https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/timeline-tool?hl=cn" target="_blank" rel="external">https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/timeline-tool?hl=cn</a> &#x7FFB;&#x8BD1;</p>
+</blockquote>
+<p>&#x4F7F;&#x7528;Chrome&#x5F00;&#x53D1;&#x8005;&#x5DE5;&#x5177;&#x7684;Timeline&#x9762;&#x677F;&#x6765;&#x8BB0;&#x5F55;&#x548C;&#x5206;&#x6790;&#x4F60;&#x7684;&#x5E94;&#x7528;&#x6267;&#x884C;&#x8FC7;&#x7A0B;&#x7684;&#x6240;&#x6709;&#x7684;&#x6D3B;&#x52A8;&#x3002;&#x8FD9;&#x662F;&#x5F00;&#x59CB;&#x8C03;&#x67E5;&#x4F60;&#x7684;&#x5E94;&#x7528;&#x6027;&#x80FD;&#x95EE;&#x9898;&#x7684;&#x6700;&#x597D;&#x7684;&#x5730;&#x65B9;&#x3002;</p>
+<p><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/timeline-panel.png" alt="timeline"></p>
+<h2 id="Timeline&#x9762;&#x677F;&#x6982;&#x89C8;"><a href="#Timeline&#x9762;&#x677F;&#x6982;&#x89C8;" class="headerlink" title="Timeline&#x9762;&#x677F;&#x6982;&#x89C8;"></a>Timeline&#x9762;&#x677F;&#x6982;&#x89C8;</h2><p>Timeline&#x9762;&#x677F;&#x5305;&#x62EC;&#x4EE5;&#x4E0B;&#x56DB;&#x4E2A;&#x90E8;&#x5206;&#xFF1A;</p>
+<ol>
+<li><strong>&#x63A7;&#x5236;&#x6761;</strong> &#x5F00;&#x59CB;&#x8BB0;&#x5F55;&#xFF0C;&#x505C;&#x6B62;&#x8BB0;&#x5F55;&#xFF0C;&#x548C;&#x914D;&#x7F6E;&#x8BB0;&#x5F55;&#x8FC7;&#x7A0B;&#x4E2D;&#x54EA;&#x4E9B;&#x4FE1;&#x606F;&#x9700;&#x8981;&#x6355;&#x83B7;&#x3002;</li>
+<li><strong>&#x603B;&#x89C8;</strong> &#x9875;&#x9762;&#x6027;&#x80FD;&#x6700;&#x9876;&#x5C42;&#x7684;&#x603B;&#x89C8;&#x3002;&#x5B83;&#x4E0B;&#x9762;&#x6709;&#x66F4;&#x591A;&#x7684;&#x4FE1;&#x606F;&#x3002;</li>
+<li><strong>&#x71C3;&#x70E7;&#x56FE;</strong>  &#x4E00;&#x4E2A;&#x53EF;&#x89C6;&#x5316;&#x7684;CPU&#x6267;&#x884C;&#x6808;&#x8FFD;&#x8E2A;&#x3002;</li>
+</ol>
+<blockquote>
+<p>&#x4F60;&#x53EF;&#x4EE5;&#x5728;&#x71C3;&#x70E7;&#x56FE;&#x4E2D;&#x770B;&#x5230;&#x4E00;&#x5230;&#x4E09;&#x6761;&#x5782;&#x76F4;&#x7684;&#x865A;&#x7EBF;&#x3002;&#x84DD;&#x8272;&#x7EBF;&#x8868;&#x793A;<code>DOMContentLoaded</code>&#x4E8B;&#x4EF6;&#x3002;&#x7EFF;&#x8272;&#x7EBF;&#x8868;&#x793A;&#x7B2C;&#x4E00;&#x6B21;&#x7ED8;&#x5236;&#x7684;&#x65F6;&#x95F4;&#x3002;&#x7EA2;&#x8272;&#x7EBF;&#x8868;&#x793A;<code>load</code>&#x4E8B;&#x4EF6;&#x3002;</p>
+</blockquote>
+<ol>
+<li><strong>&#x8BE6;&#x7EC6;</strong> &#x5F53;&#x9009;&#x62E9;&#x4E00;&#x4E2A;&#x4E8B;&#x4EF6;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x8FD9;&#x4E2A;&#x9762;&#x677F;&#x4F1A;&#x73B0;&#x5B9E;&#x66F4;&#x591A;&#x5173;&#x4E8E;&#x8FD9;&#x4E2A;&#x4E8B;&#x4EF6;&#x7684;&#x4FE1;&#x606F;&#x3002;&#x5F53;&#x6CA1;&#x6709;&#x9009;&#x4E2D;&#x4EFB;&#x4F55;&#x4E8B;&#x4EF6;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x8FD9;&#x4E2A;&#x9762;&#x677F;&#x73B0;&#x5B9E;&#x5173;&#x4E8E;&#x9009;&#x4E2D;&#x7684;&#x65F6;&#x95F4;&#x5E27;&#x7684;&#x4FE1;&#x606F;&#x3002;</li>
+</ol>
+<p><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/timeline-annotated.png" alt="annotated timeline panel"></p>
+<h2 id="&#x603B;&#x89C8;&#x9762;&#x677F;"><a href="#&#x603B;&#x89C8;&#x9762;&#x677F;" class="headerlink" title="&#x603B;&#x89C8;&#x9762;&#x677F;"></a>&#x603B;&#x89C8;&#x9762;&#x677F;</h2><p>&#x603B;&#x89C8;&#x9762;&#x677F;&#x5305;&#x62EC;&#x4E09;&#x4E2A;&#x56FE;&#xFF1A;</p>
+<ul>
+<li><strong>FPS</strong> &#x6BCF;&#x79D2;&#x5E27;&#x6570;&#x3002;&#x7EFF;&#x8272;&#x7684;&#x6761;&#x8D8A;&#x9AD8;&#xFF0C;FPS&#x8D8A;&#x9AD8;&#x3002;FPS&#x56FE;&#x4E0A;&#x9762;&#x7684;&#x7EA2;&#x8272;&#x5757;&#x6807;&#x8BB0;&#x51FA;&#x957F;&#x5E27;&#xFF0C;which are likely candidates for jank.</li>
+<li><strong>CPU</strong> CPU&#x8D44;&#x6E90;&#x3002;&#x8FD9;&#x4E2A;&#x533A;&#x57DF;&#x56FE;&#x6807;&#x8BB0;&#x51FA;&#x4EC0;&#x4E48;&#x7C7B;&#x578B;&#x7684;&#x4E8B;&#x4EF6;&#x6D88;&#x8017;&#x4E86;CPU&#x8D44;&#x6E90;&#x3002; This area chart </li>
+<li><strong>NET</strong> &#x6BCF;&#x4E00;&#x4E2A;&#x989C;&#x8272;&#x7684;&#x6761;&#x8868;&#x793A;&#x4E00;&#x79CD;&#x8D44;&#x6E90;&#x3002;&#x6761;&#x8D8A;&#x957F;&#xFF0C;&#x8FD9;&#x79CD;&#x8D44;&#x6E90;&#x5360;&#x7528;&#x7684;&#x5904;&#x7406;&#x65F6;&#x95F4;&#x8D8A;&#x957F;&#x3002;&#x6BCF;&#x4E00;&#x4E2A;&#x6761;&#x4E2D;&#x8F83;&#x6D45;&#x7684;&#x90E8;&#x5206;&#x8868;&#x793A;&#x7B49;&#x5F85;&#x65F6;&#x95F4;&#xFF08;&#x8D44;&#x6E90;&#x8BF7;&#x6C42;&#x5230;&#x8D44;&#x6E90;&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x88AB;&#x4E0B;&#x8F7D;&#x7684;&#x65F6;&#x95F4;&#xFF09;&#x3002;&#x8F83;&#x6DF1;&#x7684;&#x90E8;&#x5206;&#x8868;&#x793A;&#x4F20;&#x8F93;&#x65F6;&#x95F4;&#xFF08;&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x88AB;&#x4E0B;&#x8F7D;&#x5230;&#x4E0B;&#x8F7D;&#x5B8C;&#x6210;&#x7684;&#x65F6;&#x95F4;)&#x3002;</li>
+</ul>
+<p>&#x6761;&#x6309;&#x7167;&#x4E0B;&#x9762;&#x7684;&#x65B9;&#x5F0F;&#x5206;&#x914D;&#x989C;&#x8272;:</p>
+<ul>
+<li>HTML&#x6587;&#x4EF6;&#x662F;<span style="color:hsl(214, 67%, 66%)">&#x84DD;&#x8272;<span>&#x3002;</span></span></li>
+<li>&#x811A;&#x672C;&#x662F;<span style="color:hsl(43, 83%, 64%)">&#x9EC4;&#x8272;</span>&#x3002;</li>
+<li>&#x6837;&#x5F0F;&#x8868;&#x662F;<span style="color:hsl(256, 67%, 70%)">&#x7D2B;&#x8272;</span>&#x3002;</li>
+<li>&#x5A92;&#x4F53;&#x6587;&#x4EF6;&#x662F;<span style="color:hsl(109, 33%, 55%)">&#x7EFF;&#x8272;</span>&#x3002;</li>
+<li>&#x5176;&#x4ED6;&#x8D44;&#x6E90;&#x662F;<span style="color:hsl(0, 0%, 70%)">&#x7070;&#x8272;</span>&#x3002;</li>
+</ul>
+<p><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/overview-annotated.jpg" alt="overview pane, annotated"></p>
+<h2 id="&#x521B;&#x5EFA;&#x8BB0;&#x5F55;"><a href="#&#x521B;&#x5EFA;&#x8BB0;&#x5F55;" class="headerlink" title="&#x521B;&#x5EFA;&#x8BB0;&#x5F55;"></a>&#x521B;&#x5EFA;&#x8BB0;&#x5F55;</h2><p>&#x8981;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x9875;&#x9762;&#x52A0;&#x8F7D;&#x7684;&#x8BB0;&#x5F55;&#xFF0C;&#x6253;&#x5F00;Timeline&#x9762;&#x677F;&#xFF0C;&#x6253;&#x5F00;&#x4F60;&#x60F3;&#x8BB0;&#x5F55;&#x7684;&#x9875;&#x9762;&#xFF0C;&#x7136;&#x540E;&#x91CD;&#x8F7D;&#x9875;&#x9762;&#x3002;Timeline&#x9762;&#x677F;&#x81EA;&#x52A8;&#x8BB0;&#x5F55;&#x9875;&#x9762;&#x7684;&#x91CD;&#x8F7D;&#x3002;</p>
+<p>&#x8981;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x9875;&#x9762;&#x4EA4;&#x4E92;&#x7684;&#x8BB0;&#x5F55;&#xFF0C;&#x6253;&#x5F00;Timeline&#x9762;&#x677F;&#xFF0C;&#x7136;&#x540E;&#x70B9;&#x51FB;&#x8BB0;&#x5F55;&#x6309;&#x94AE;&#x6216;&#x8005;&#x4F7F;&#x7528;Cmd+E(Mac)&#x6216;&#x8005;Ctrl+E(Windows/Linux) &#x5F00;&#x59CB;&#x8BB0;&#x5F55;&#x3002;&#x5F53;&#x5F00;&#x59CB;&#x8BB0;&#x5F55;&#x7684;&#x65F6;&#x5019;&#x8BB0;&#x5F55;&#x6309;&#x94AE;&#x4F1A;&#x53D8;&#x6210;&#x7EA2;&#x8272;&#x3002;&#x6267;&#x884C;&#x9875;&#x9762;&#x4EA4;&#x4E92;&#xFF0C;&#x7136;&#x540E;&#x70B9;&#x51FB;&#x8BB0;&#x5F55;&#x6309;&#x94AE;&#x6216;&#x8005;&#x4F7F;&#x7528;&#x5FEB;&#x6377;&#x952E;&#x505C;&#x6B62;&#x8BB0;&#x5F55;&#x3002;</p>
+<p>&#x5F53;&#x8BB0;&#x5F55;&#x5B8C;&#x6210;&#x7684;&#x65F6;&#x5019;&#xFF0C;DevTools&#x4F1A;&#x731C;&#x6D4B;&#x90A3;&#x4E2A;&#x8BB0;&#x5F55;&#x533A;&#x57DF;&#x5BF9;&#x4F60;&#x6700;&#x6709;&#x4EF7;&#x503C;&#xFF0C;&#x7136;&#x540E;&#x81EA;&#x52A8;&#x7F29;&#x653E;&#x5230;&#x8FD9;&#x4E2A;&#x533A;&#x57DF;&#x3002;</p>
+<h3 id="&#x8BB0;&#x5F55;&#x63D0;&#x793A;"><a href="#&#x8BB0;&#x5F55;&#x63D0;&#x793A;" class="headerlink" title="&#x8BB0;&#x5F55;&#x63D0;&#x793A;"></a>&#x8BB0;&#x5F55;&#x63D0;&#x793A;</h3><ol>
+<li><strong>&#x4FDD;&#x6301;&#x8BB0;&#x5F55;&#x5C3D;&#x53EF;&#x80FD;&#x77ED;&#x3002;</strong>&#x8D8A;&#x77ED;&#x7684;&#x8BB0;&#x5F55;&#x901A;&#x5E38;&#x8D8A;&#x5BB9;&#x6613;&#x5206;&#x6790;&#x3002;</li>
+<li><strong>&#x907F;&#x514D;&#x4E0D;&#x5FC5;&#x8981;&#x7684;&#x52A8;&#x4F5C;&#x3002;</strong>&#x907F;&#x514D;&#x90A3;&#x4E9B;&#x8DDF;&#x4F60;&#x7684;&#x8BB0;&#x5F55;&#x548C;&#x5206;&#x6790;&#x65E0;&#x5173;&#x7684;&#x884C;&#x4E3A;(&#x9F20;&#x6807;&#x70B9;&#x51FB;&#xFF0C;&#x7F51;&#x7EDC;&#x52A0;&#x8F7D;&#x7B49;)&#x3002;&#x6BD4;&#x5982;&#xFF0C;&#x4F60;&#x8981;&#x8BB0;&#x5F55;&#x70B9;&#x51FB;&#x767B;&#x9646;&#x6309;&#x94AE;&#x8FD9;&#x4E2A;&#x52A8;&#x4F5C;&#xFF0C;&#x4E0D;&#x8981;&#x6EDA;&#x52A8;&#x9875;&#x9762;&#xFF0C;&#x4E5F;&#x4E0D;&#x8981;&#x52A0;&#x8F7D;&#x56FE;&#x7247;&#xFF0C;&#x7B49;&#x7B49;&#x3002;</li>
+<li><strong>&#x7981;&#x7528;&#x6D4F;&#x89C8;&#x5668;&#x7F13;&#x5B58;&#x3002;</strong>&#x5F53;&#x8BB0;&#x5F55;&#x7F51;&#x7EDC;&#x64CD;&#x4F5C;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4ECE;&#x5F00;&#x53D1;&#x5DE5;&#x5177;&#x7684;&#x8BBE;&#x7F6E;&#x9762;&#x677F;&#x6216;&#x8005;Network&#x9762;&#x677F;&#x7684;&#x6761;&#x4EF6;&#x63A7;&#x5236;&#x4E2D;&#x7981;&#x7528;&#x6D4F;&#x89C8;&#x5668;&#x7F13;&#x5B58;&#x662F;&#x4E00;&#x4E2A;&#x597D;&#x7684;&#x505A;&#x6CD5;&#x3002;</li>
+<li><strong>&#x7981;&#x7528;&#x6269;&#x5C55;&#x3002;</strong>Chrome&#x6269;&#x5C55;&#x4F1A;&#x7ED9;&#x4F60;&#x7684;&#x5E94;&#x7528;&#x7684;Timeline&#x8BB0;&#x5F55;&#x589E;&#x52A0;&#x65E0;&#x5173;&#x7684;&#x566A;&#x97F3;&#x3002;&#x7528;&#x9690;&#x8EAB;&#x6A21;&#x5F0F;&#x6253;&#x5F00;Chrome&#x7A97;&#x53E3;&#x6216;&#x8005;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x786E;&#x4FDD;&#x4F60;&#x7684;&#x73AF;&#x5883;&#x4E2D;&#x6CA1;&#x6709;&#x6269;&#x5C55;&#x7A0B;&#x5E8F;&#x3002;</li>
+</ol>
+<h2 id="&#x67E5;&#x770B;&#x8BB0;&#x5F55;&#x7EC6;&#x8282;"><a href="#&#x67E5;&#x770B;&#x8BB0;&#x5F55;&#x7EC6;&#x8282;" class="headerlink" title="&#x67E5;&#x770B;&#x8BB0;&#x5F55;&#x7EC6;&#x8282;"></a>&#x67E5;&#x770B;&#x8BB0;&#x5F55;&#x7EC6;&#x8282;</h2><p>&#x5F53;&#x4F60;&#x5728;&#x706B;&#x7130;&#x56FE;&#x4E2D;&#x9009;&#x62E9;&#x4E00;&#x4E2A;&#x4E8B;&#x4EF6;&#x65F6;&#xFF0C;&#x8BE6;&#x7EC6;&#x5185;&#x5BB9;&#x9762;&#x677F;&#x4F1A;&#x663E;&#x793A;&#x5173;&#x4E8E;&#x8FD9;&#x4E2A;&#x4E8B;&#x4EF6;&#x7684;&#x989D;&#x5916;&#x4FE1;&#x606F;&#x3002;</p>
+<p><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/details-pane.png" alt="details pane"></p>
+<p>&#x67D0;&#x4E9B;&#x9875;&#x7B7E;&#xFF0C;&#x6BD4;&#x5982;Summary, &#x5728;&#x6240;&#x6709;&#x7684;&#x4E8B;&#x4EF6;&#x4E2D;&#x90FD;&#x4F1A;&#x663E;&#x793A;&#x3002;&#x5176;&#x4ED6;&#x7684;&#x9875;&#x7B7E;&#x53EA;&#x5728;&#x67D0;&#x4E9B;&#x7279;&#x5B9A;&#x7684;&#x4E8B;&#x4EF6;&#x7C7B;&#x578B;&#x4E2D;&#x5C55;&#x73B0;&#x3002;&#x8BE6;&#x89C1;<a href="/xfe/2016/04/22/timeline-event-reference/#more">Timeline&#x4E8B;&#x4EF6;</a>&#x7684;&#x6BCF;&#x79CD;&#x8BB0;&#x5F55;&#x7C7B;&#x578B;&#x7684;&#x7EC6;&#x8282;&#x8BF4;&#x660E;&#x3002;</p>
+<h2 id="&#x8BB0;&#x5F55;&#x8FC7;&#x7A0B;&#x4E2D;&#x622A;&#x56FE;"><a href="#&#x8BB0;&#x5F55;&#x8FC7;&#x7A0B;&#x4E2D;&#x622A;&#x56FE;" class="headerlink" title="&#x8BB0;&#x5F55;&#x8FC7;&#x7A0B;&#x4E2D;&#x622A;&#x56FE;"></a>&#x8BB0;&#x5F55;&#x8FC7;&#x7A0B;&#x4E2D;&#x622A;&#x56FE;</h2><p>Timeline&#x9762;&#x677F;&#x53EF;&#x4EE5;&#x6355;&#x83B7;&#x5C4F;&#x5E55;&#x5728;&#x9875;&#x9762;&#x52A0;&#x8F7D;&#x7684;&#x65F6;&#x5019;&#x3002;&#x8FD9;&#x4E2A;&#x529F;&#x80FD;&#x901A;&#x8FC7;Filmstrip&#x4F53;&#x73B0;&#x3002;</p>
+<p>&#x5F53;&#x4F60;&#x8981;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x8BB0;&#x5F55;&#x5E76;&#x4E14;&#x9700;&#x8981;&#x622A;&#x53D6;&#x5C4F;&#x5E55;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5728;&#x63A7;&#x5236;&#x9762;&#x677F;&#x4E2D;&#x542F;&#x7528;&#x622A;&#x5C4F;&#x7684;checkbox&#x3002;&#x5C4F;&#x5E55;&#x622A;&#x56FE;&#x5C06;&#x4F1A;&#x663E;&#x793A;&#x5728;&#x6982;&#x89C8;&#x9762;&#x677F;&#x7684;&#x4E0B;&#x9762;&#x3002;</p>
+<p><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/timeline-filmstrip.png" alt="timeline recording with filmstrip"></p>
+<p>&#x53EF;&#x4EE5;&#x628A;&#x4F60;&#x7684;&#x9F20;&#x6807;&#x60AC;&#x505C;&#x5728;&#x5C4F;&#x5E55;&#x622A;&#x56FE;&#x4E0A;&#x6216;&#x8005;&#x6982;&#x89C8;&#x9762;&#x677F;&#x6765;&#x67E5;&#x770B;&#x67D0;&#x4E2A;&#x8BB0;&#x5F55;&#x70B9;&#x4E0A;&#x7684;&#x653E;&#x5927;&#x622A;&#x56FE;&#x3002;&#x5DE6;&#x53F3;&#x79FB;&#x52A8;&#x9F20;&#x6807;&#x6765;&#x6A21;&#x62DF;&#x8BB0;&#x5F55;&#x7684;&#x6574;&#x4E2A;&#x52A8;&#x6001;&#x8FC7;&#x7A0B;&#x3002;</p>
+<video src="https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/animations/hover.mp4" controls></video>
+
+
+<h2 id="&#x5BA1;&#x67E5;JavaScript"><a href="#&#x5BA1;&#x67E5;JavaScript" class="headerlink" title="&#x5BA1;&#x67E5;JavaScript"></a>&#x5BA1;&#x67E5;JavaScript</h2><p>&#x5728;&#x5F00;&#x59CB;&#x8BB0;&#x5F55;&#x4E4B;&#x524D;&#x542F;&#x7528;JS&#x5BA1;&#x67E5;&#x7684;&#x590D;&#x9009;&#x6846;&#x7528;&#x6765;&#x6355;&#x83B7;js&#x7684;&#x6267;&#x884C;&#x6808;&#x3002;&#x5F53;Js&#x5BA1;&#x67E5;&#x88AB;&#x542F;&#x7528;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F60;&#x7684;&#x706B;&#x7130;&#x56FE;&#x4E2D;&#x4F1A;&#x73B0;&#x5B9E;&#x6BCF;&#x4E00;&#x4E2A;&#x88AB;&#x8C03;&#x7528;&#x7684;JS&#x51FD;&#x6570;&#x3002;</p>
+<p><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/js-profile.png" alt="flame chart with JS profile enabled"></p>
+<h2 id="&#x5BA1;&#x67E5;&#x7ED8;&#x56FE;"><a href="#&#x5BA1;&#x67E5;&#x7ED8;&#x56FE;" class="headerlink" title="&#x5BA1;&#x67E5;&#x7ED8;&#x56FE;"></a>&#x5BA1;&#x67E5;&#x7ED8;&#x56FE;</h2><p>&#x5728;&#x5F00;&#x59CB;&#x8BB0;&#x5F55;&#x4E4B;&#x524D;&#x542F;&#x7528;Paint&#x7684;&#x590D;&#x9009;&#x6846;&#x7528;&#x6765;&#x83B7;&#x5F97;&#x66F4;&#x591A;&#x5173;&#x4E8E;&#x7ED8;&#x5236;&#x4E8B;&#x4EF6;&#x7684;&#x4FE1;&#x606F;&#x3002;&#x5F53;&#x7ED8;&#x5236;&#x5BA1;&#x67E5;&#x542F;&#x7528;&#x5E76;&#x4E14;&#x5728;&#x4E00;&#x4E2A;&#x7ED8;&#x5236;&#x4E8B;&#x4EF6;&#x4E0A;&#x70B9;&#x51FB;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x7ED8;&#x5236;&#x5BA1;&#x67E5;&#x9875;&#x7B7E;&#x4F1A;&#x88AB;&#x663E;&#x793A;&#x5728;&#x8BE6;&#x7EC6;&#x9762;&#x677F;&#x4E2D;&#xFF0C;&#x5B83;&#x4F1A;&#x663E;&#x793A;&#x66F4;&#x591A;&#x66F4;&#x7EC6;&#x81F4;&#x7684;&#x5173;&#x4E8E;&#x8FD9;&#x4E2A;&#x4E8B;&#x4EF6;&#x7684;&#x4FE1;&#x606F;&#x3002;</p>
+<p><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/paint-profiler.png" alt="paint profiler"></p>
+<h3 id="&#x6E32;&#x67D3;&#x8BBE;&#x7F6E;"><a href="#&#x6E32;&#x67D3;&#x8BBE;&#x7F6E;" class="headerlink" title="&#x6E32;&#x67D3;&#x8BBE;&#x7F6E;"></a>&#x6E32;&#x67D3;&#x8BBE;&#x7F6E;</h3><p>&#x6253;&#x5F00;&#x4E3B;&#x83DC;&#x5355;&#xFF0C;&#x9009;&#x62E9;&#x66F4;&#x591A;&#x5DE5;&#x5177;&gt;&#x6E32;&#x67D3;&#x8BBE;&#x7F6E;, &#x8FDB;&#x5165;&#x6E32;&#x67D3;&#x8BBE;&#x7F6E;&#x9009;&#x9879;&#x5361;&#xFF0C;&#x5728;&#x8C03;&#x8BD5;&#x7ED8;&#x5236;&#x7684;&#x95EE;&#x9898;&#x65F6;&#x5B83;&#x975E;&#x5E38;&#x6709;&#x7528;&#x3002;&#x6E32;&#x67D3;&#x8BBE;&#x7F6E;&#x4EE5;&#x7D27;&#x8DDF;&#x5728;Console&#x9762;&#x677F;&#x540E;&#x9762;&#x7684;&#x4E00;&#x4E2A;&#x9875;&#x7B7E;&#x5F62;&#x5F0F;&#x6253;&#x5F00;&#xFF08;&#x5982;&#x679C;Console&#x662F;&#x9690;&#x85CF;&#x7684;&#xFF0C;&#x53EF;&#x4EE5;&#x7528;ESC&#x6253;&#x5F00;&#xFF09;&#x3002;</p>
+<p><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/rendering-settings.png" alt="rendering settings"></p>
+<h2 id="&#x67E5;&#x627E;&#x8BB0;&#x5F55;"><a href="#&#x67E5;&#x627E;&#x8BB0;&#x5F55;" class="headerlink" title="&#x67E5;&#x627E;&#x8BB0;&#x5F55;"></a>&#x67E5;&#x627E;&#x8BB0;&#x5F55;</h2><p>&#x5728;&#x67E5;&#x770B;&#x4E8B;&#x4EF6;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F60;&#x53EF;&#x80FD;&#x60F3;&#x96C6;&#x4E2D;&#x5728;&#x4E00;&#x4E2A;&#x7C7B;&#x578B;&#x7684;&#x4E8B;&#x4EF6;&#x3002;&#x4F8B;&#x5982;&#xFF0C;&#x4F60;&#x9700;&#x8981;&#x67E5;&#x770B;&#x6BCF;&#x4E00;&#x4E2A;&#x89E3;&#x6790;HTML&#x4E8B;&#x4EF6;&#x7684;&#x7EC6;&#x8282;&#x3002;</p>
+<p>&#x6FC0;&#x6D3B;Timeline&#x5E76;&#x6309;CMD + F&#xFF08;MAC&#xFF09;&#x6216;Ctrl + F&#xFF08;Windows/Linux&#xFF09;&#x80FD;&#x591F;&#x6253;&#x5F00;&#x4E00;&#x4E2A;&#x67E5;&#x627E;&#x5DE5;&#x5177;&#x680F;&#xFF0C;&#x952E;&#x5165;&#x8981;&#x68C0;&#x67E5;&#x7684;&#x4E8B;&#x4EF6;&#x7C7B;&#x578B;&#x7684;&#x540D;&#x79F0;&#xFF0C;&#x6BD4;&#x5982;Event&#x3002;</p>
+<p>&#x5DE5;&#x5177;&#x680F;&#x53EA;&#x9002;&#x7528;&#x4E8E;&#x5F53;&#x524D;&#x9009;&#x5B9A;&#x7684;&#x65F6;&#x95F4;&#x8303;&#x56F4;&#x5185;&#x3002;&#x5728;&#x9009;&#x5B9A;&#x7684;&#x65F6;&#x95F4;&#x6BB5;&#x4EE5;&#x5916;&#x7684;&#x4EFB;&#x4F55;&#x4E8B;&#x4EF6;&#x90FD;&#x4E0D;&#x5305;&#x62EC;&#x5728;&#x7ED3;&#x679C;&#x4E2D;&#x3002;</p>
+<p>&#x5411;&#x4E0A;&#x548C;&#x5411;&#x4E0B;&#x7BAD;&#x5934;&#x53EF;&#x4EE5;&#x79FB;&#x52A8;&#x641C;&#x7D22;&#x7ED3;&#x679C;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x7B2C;&#x4E00;&#x4E2A;&#x7ED3;&#x679C;&#x8868;&#x793A;&#x6700;&#x65E9;&#x7684;&#x4E8B;&#x4EF6;&#x5728;&#x9009;&#x5B9A;&#x7684;&#x65F6;&#x95F4;&#x5185;&#xFF0C;&#x6700;&#x540E;&#x7684;&#x7ED3;&#x679C;&#x662F;&#x6700;&#x540E;&#x7684;&#x4E8B;&#x4EF6;&#x3002;&#x6BCF;&#x6B21;&#x6309;&#x201C;&#x4E0A;&#x201D;&#x6216;&#x201C;&#x5411;&#x4E0B;&#x201D;&#x7BAD;&#x5934;&#xFF0C;&#x9009;&#x62E9;&#x4E00;&#x4E2A;&#x65B0;&#x4E8B;&#x4EF6;&#xFF0C;&#x8FD9;&#x6837;&#x4F60;&#x5C31;&#x7EC6;&#x8282;&#x9762;&#x677F;&#x4E2D;&#x7684;&#x67E5;&#x770B;&#x5B83;&#x7684;&#x7EC6;&#x8282;&#x3002;&#x6309;&#x4E0A;&#x4E0B;&#x7BAD;&#x5934;&#x76F8;&#x5F53;&#x4E8E;&#x5728;&#x706B;&#x7130;&#x56FE;&#x4E2D;&#x70B9;&#x51FB;&#x4E00;&#x4E2A;&#x4E8B;&#x4EF6;&#x3002;</p>
+<p><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/find-toolbar.png" alt="find toolbar"></p>
+<h2 id="&#x5728;Timeline&#x533A;&#x57DF;&#x7F29;&#x653E;"><a href="#&#x5728;Timeline&#x533A;&#x57DF;&#x7F29;&#x653E;" class="headerlink" title="&#x5728;Timeline&#x533A;&#x57DF;&#x7F29;&#x653E;"></a>&#x5728;Timeline&#x533A;&#x57DF;&#x7F29;&#x653E;</h2><p>&#x4F60;&#x53EF;&#x4EE5;&#x5728;&#x4E00;&#x4E2A;&#x8BB0;&#x5F55;&#x4E2D;&#x653E;&#x5927;&#x67D0;&#x4E00;&#x4E2A;&#x533A;&#x57DF;&#x6765;&#x65B9;&#x4FBF;&#x5206;&#x6790;&#x3002;&#x4F60;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x6982;&#x8FF0;&#x9762;&#x677F;&#x6765;&#x653E;&#x5927;&#x8BB0;&#x5F55;&#x4E2D;&#x7684;&#x67D0;&#x4E2A;&#x90E8;&#x5206;&#x3002;&#x653E;&#x5927;&#x540E;&#xFF0C;&#x706B;&#x7130;&#x56FE;&#x4E5F;&#x4F1A;&#x81EA;&#x52A8;&#x653E;&#x5927;&#x4EE5;&#x5339;&#x914D;&#x76F8;&#x540C;&#x7684;&#x90E8;&#x5206;&#x3002;</p>
+<p><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/zoom.png" alt="zoom in on a section of a timeline recording"></p>
+<p>&#x5982;&#x679C;&#x8981;&#x653E;&#x5927;&#x67D0;&#x4E2A;&#x90E8;&#x5206;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x4E0B;&#x9762;&#x4E24;&#x79CD;&#x65B9;&#x5F0F;:</p>
+<ol>
+<li>&#x5728;&#x6982;&#x89C8;&#x9762;&#x677F;&#x4E2D;&#xFF0C;&#x7528;&#x9F20;&#x6807;&#x62D6;&#x51FA;&#x8981;&#x653E;&#x5927;&#x7684;&#x533A;&#x57DF;&#x3002;</li>
+<li>&#x5728;&#x6807;&#x5C3A;&#x4E2D;&#x8C03;&#x6574;&#x7070;&#x8272;&#x6ED1;&#x5757;&#x3002;</li>
+</ol>
+<p>&#x5982;&#x679C;&#x4F60;&#x9009;&#x4E2D;&#x4E86;&#x4E00;&#x4E2A;&#x533A;&#x57DF;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;W, A, S, D&#x6765;&#x8C03;&#x6574;&#x8FD9;&#x4E2A;&#x533A;&#x57DF;&#x3002;W&#xFF0C;S&#x5BF9;&#x5E94;&#x653E;&#x5927;&#x548C;&#x7F29;&#x5C0F;&#xFF0C;A&#xFF0C;D&#x5BF9;&#x5E94;&#x5DE6;&#x79FB;&#x548C;&#x53F3;&#x79FB;&#x3002;</p>
+<h2 id="&#x4FDD;&#x5B58;&#x548C;&#x52A0;&#x8F7D;&#x8BB0;&#x5F55;"><a href="#&#x4FDD;&#x5B58;&#x548C;&#x52A0;&#x8F7D;&#x8BB0;&#x5F55;" class="headerlink" title="&#x4FDD;&#x5B58;&#x548C;&#x52A0;&#x8F7D;&#x8BB0;&#x5F55;"></a>&#x4FDD;&#x5B58;&#x548C;&#x52A0;&#x8F7D;&#x8BB0;&#x5F55;</h2><p>&#x4F60;&#x53EF;&#x4EE5;&#x4FDD;&#x5B58;&#x6216;&#x8005;&#x6253;&#x5F00;&#x4E00;&#x4E2A;&#x8BB0;&#x5F55;&#xFF0C;&#x901A;&#x8FC7;&#x5728;&#x6982;&#x89C8;&#x9762;&#x677F;&#x6216;&#x8005;&#x71C3;&#x70E7;&#x56FE;&#x4E2D;&#x70B9;&#x51FB;&#x53F3;&#x952E;&#xFF0C;&#x7136;&#x540E;&#x9009;&#x4E2D;&#x76F8;&#x5173;&#x9009;&#x9879;&#x8FDB;&#x884C;&#x64CD;&#x4F5C;&#x3002;<br><img src="/xfe/2016/04/21/how-to-use-the-timeline-tool/save-open.png" alt="save and open recordings"></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/xfe/tags/tool/" rel="tag">#tool</a>
+          
+            <a href="/xfe/tags/devtool/" rel="tag">#devtool</a>
+          
+            <a href="/xfe/tags/guide/" rel="tag">#guide</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xfe/2016/04/20/sinaads-intro/" rel="next" title="sinaads介绍">
+                <i class="fa fa-chevron-left"></i> sinaads介绍
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/xfe/2016/04/22/timeline-event-reference/" rel="prev" title="Timeline事件说明">
+                Timeline事件说明 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/04/21/how-to-use-the-timeline-tool/"
+     data-title="如何使用Timeline工具"
+     data-content=""
+     data-url="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/21/how-to-use-the-timeline-tool/"
+           data-title="如何使用Timeline工具" data-url="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/2231440955/180/5749469848/1"
+               alt="SINA FE Team" />
+          <p class="site-author-name" itemprop="name">SINA FE Team</p>
+          <p class="site-description motion-element" itemprop="description">我们一直努力贴好小广告</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/xfe/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/xfe/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/xfe/tags">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/xfe/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/orgs/sinaad/teams/xfe" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/acelan" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Timeline面板概览"><span class="nav-number">1.</span> <span class="nav-text">Timeline面板概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总览面板"><span class="nav-number">2.</span> <span class="nav-text">总览面板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建记录"><span class="nav-number">3.</span> <span class="nav-text">创建记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#记录提示"><span class="nav-number">3.1.</span> <span class="nav-text">记录提示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看记录细节"><span class="nav-number">4.</span> <span class="nav-text">查看记录细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#记录过程中截图"><span class="nav-number">5.</span> <span class="nav-text">记录过程中截图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#审查JavaScript"><span class="nav-number">6.</span> <span class="nav-text">审查JavaScript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#审查绘图"><span class="nav-number">7.</span> <span class="nav-text">审查绘图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#渲染设置"><span class="nav-number">7.1.</span> <span class="nav-text">渲染设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找记录"><span class="nav-number">8.</span> <span class="nav-text">查找记录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Timeline区域缩放"><span class="nav-number">9.</span> <span class="nav-text">在Timeline区域缩放</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保存和加载记录"><span class="nav-number">10.</span> <span class="nav-text">保存和加载记录</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SINA FE Team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/xfe/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/xfe/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sinaad-xfe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+        //  do something with the error.  message[2] is the Error object that records the problem.
+        console.log(message);
+      });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+          var all = MathJax.Hub.getAllJax(), i;
+          for(i=0; i < all.length; i += 1) {
+              all[i].SourceElement().parentNode.className += ' has-jax';
+          }
+      });
+  </script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+
+</body>
+</html>

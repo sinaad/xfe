@@ -1,0 +1,909 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/xfe/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+
+
+<link href="/xfe/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/xfe/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="er," />
+
+
+
+
+
+  <link rel="alternate" href="/xfe/atom.xml" title="{XFE}" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xfe/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#x672C;&amp;#x6587;&amp;#x5C06;&amp;#x4ECE;&amp;#x4EE3;&amp;#x7801;&amp;#x5C42;&amp;#x7EA7;&amp;#x89E3;&amp;#x8BFB;er&amp;#x542F;&amp;#x52A8;&amp;#x540E;&amp;#x4EE5;&amp;#x600E;&amp;#x6837;&amp;#x7684;&amp;#x65B9;&amp;#x5F0F;&amp;#x8FDB;&amp;#x5165;Action&amp;#xFF0C;&amp;#x5E76;&amp;#x4E14">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SPA框架流程解读-er">
+<meta property="og:url" content="http://sinaad.github.io/2016/04/15/intro-spa-framework-er/index.html">
+<meta property="og:site_name" content="{XFE}">
+<meta property="og:description" content="&amp;#x672C;&amp;#x6587;&amp;#x5C06;&amp;#x4ECE;&amp;#x4EE3;&amp;#x7801;&amp;#x5C42;&amp;#x7EA7;&amp;#x89E3;&amp;#x8BFB;er&amp;#x542F;&amp;#x52A8;&amp;#x540E;&amp;#x4EE5;&amp;#x600E;&amp;#x6837;&amp;#x7684;&amp;#x65B9;&amp;#x5F0F;&amp;#x8FDB;&amp;#x5165;Action&amp;#xFF0C;&amp;#x5E76;&amp;#x4E14">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/15/intro-spa-framework-er/er_flow.jpg">
+<meta property="og:updated_time" content="2016-04-15T09:10:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SPA框架流程解读-er">
+<meta name="twitter:description" content="&amp;#x672C;&amp;#x6587;&amp;#x5C06;&amp;#x4ECE;&amp;#x4EE3;&amp;#x7801;&amp;#x5C42;&amp;#x7EA7;&amp;#x89E3;&amp;#x8BFB;er&amp;#x542F;&amp;#x52A8;&amp;#x540E;&amp;#x4EE5;&amp;#x600E;&amp;#x6837;&amp;#x7684;&amp;#x65B9;&amp;#x5F0F;&amp;#x8FDB;&amp;#x5165;Action&amp;#xFF0C;&amp;#x5E76;&amp;#x4E14">
+<meta name="twitter:image" content="http://sinaad.github.io/xfe/2016/04/15/intro-spa-framework-er/er_flow.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> SPA框架流程解读-er | {XFE} </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?13989991106bdad30ea927ab9ae93a09";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/xfe/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">{XFE}</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xfe/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/xfe/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/xfe/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xfe/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xfe/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                SPA框架流程解读-er
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-15T13:39:28+08:00" content="2016-04-15">
+              2016-04-15
+            </time>
+          </span>
+
+          
+          <span class="post-author">
+            &nbsp; | &nbsp;
+            赵鹏
+          </span>
+          
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/xfe/categories/er/" itemprop="url" rel="index">
+                    <span itemprop="name">er</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/xfe/2016/04/15/intro-spa-framework-er/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/15/intro-spa-framework-er/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>&#x672C;&#x6587;&#x5C06;&#x4ECE;&#x4EE3;&#x7801;&#x5C42;&#x7EA7;&#x89E3;&#x8BFB;er&#x542F;&#x52A8;&#x540E;&#x4EE5;&#x600E;&#x6837;&#x7684;&#x65B9;&#x5F0F;&#x8FDB;&#x5165;Action&#xFF0C;&#x5E76;&#x4E14;&#x901A;&#x8FC7;&#x600E;&#x6837;&#x7684;&#x6D41;&#x7A0B;&#x8D70;&#x5B8C;Action&#x7684;&#x6574;&#x4E2A;&#x751F;&#x547D;&#x5468;&#x671F;&#x3002;</p>
+</blockquote>
+<h2 id="&#x9996;&#x5148;&#x4E86;&#x89E3;&#x4E0B;er&#x542F;&#x52A8;&#x7684;&#x4E09;&#x4E2A;&#x6838;&#x5FC3;&#x7EC4;&#x4EF6;&#x3002;"><a href="#&#x9996;&#x5148;&#x4E86;&#x89E3;&#x4E0B;er&#x542F;&#x52A8;&#x7684;&#x4E09;&#x4E2A;&#x6838;&#x5FC3;&#x7EC4;&#x4EF6;&#x3002;" class="headerlink" title="&#x9996;&#x5148;&#x4E86;&#x89E3;&#x4E0B;er&#x542F;&#x52A8;&#x7684;&#x4E09;&#x4E2A;&#x6838;&#x5FC3;&#x7EC4;&#x4EF6;&#x3002;"></a>&#x9996;&#x5148;&#x4E86;&#x89E3;&#x4E0B;er&#x542F;&#x52A8;&#x7684;&#x4E09;&#x4E2A;&#x6838;&#x5FC3;&#x7EC4;&#x4EF6;&#x3002;</h2><ul>
+<li>locator</li>
+<li>router</li>
+<li>controller</li>
+</ul>
+<h3 id="locator-&#x5730;&#x5740;&#x76D1;&#x542C;&#x5BF9;&#x8C61;"><a href="#locator-&#x5730;&#x5740;&#x76D1;&#x542C;&#x5BF9;&#x8C61;" class="headerlink" title="locator &#x5730;&#x5740;&#x76D1;&#x542C;&#x5BF9;&#x8C61;"></a>locator &#x5730;&#x5740;&#x76D1;&#x542C;&#x5BF9;&#x8C61;</h3><blockquote>
+<p>&#x8BE5;&#x5BF9;&#x8C61;&#x7528;&#x4E8E;&#x76D1;&#x542C;&#x5730;&#x5740;&#x4E2D;&#x7684;hash&#x90E8;&#x5206;&#x7684;&#x53D8;&#x5316;&#xFF0C;&#x4EE5;&#x53CA;&#x6839;&#x636E;&#x8981;&#x6C42;&#x66F4;&#x65B0;hash&#x503C;&#x3002;</p>
+</blockquote>
+<p><strong>locator&#x7684;&#x57FA;&#x672C;&#x5DE5;&#x4F5C;&#x6D41;&#x7A0B;&#xFF1A;</strong></p>
+<ul>
+<li>&#x76D1;&#x542C;hash&#x7684;&#x53D8;&#x5316;</li>
+<li>&#x5F53;hash&#x53D8;&#x5316;&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x786E;&#x5B9E;&#x53D1;&#x751F;&#x53D8;&#x5316;&#xFF08;&#x4E0E;&#x4E0A;&#x4E00;&#x6B21;&#x7684;&#x503C;&#x4E0D;&#x540C;&#xFF09;&#xFF0C;&#x5219;&#x6267;&#x884C;&#x903B;&#x8F91;</li>
+<li>&#x4FDD;&#x5B58;&#x5F53;&#x524D;&#x7684;&#x5730;&#x5740;&#x4FE1;&#x606F;&#xFF08;&#x9AD8;&#x7248;&#x672C;&#x6D4F;&#x89C8;&#x5668;&#x6B64;&#x65F6;&#x81EA;&#x52A8;&#x8BB0;&#x5F55;&#x5386;&#x53F2;&#x9879;&#xFF09;</li>
+<li>&#x89E6;&#x53D1;<code>redirect</code>&#x4E8B;&#x4EF6;</li>
+</ul>
+<p>&#x5728;<code>locator.js</code>&#x4E2D;&#x7684;&#x4E3B;&#x8981;&#x5BF9;&#x5E94;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">locator.redirect = <span class="function"><span class="keyword">function</span> (<span class="params">url, options</span>) </span>{</span><br><span class="line">    options = options || {};</span><br><span class="line">    url = locator.resolveURL(url);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> referrer = currentLocation;</span><br><span class="line">    <span class="keyword">var</span> isLocationChanged = updateURL(url, options);</span><br><span class="line">    <span class="keyword">var</span> shouldPerformRedirect = isLocationChanged || options.force;</span><br><span class="line">    <span class="keyword">if</span> (shouldPerformRedirect) {</span><br><span class="line">        <span class="keyword">if</span> (!options.silent) {</span><br><span class="line">            <span class="comment">/**</span><br><span class="line">             + URL&#x8DF3;&#x8F6C;&#x65F6;&#x89E6;&#x53D1;</span><br><span class="line">             *</span><br><span class="line">             + @event redirect</span><br><span class="line">             + @param {Object} e &#x4E8B;&#x4EF6;&#x5BF9;&#x8C61;</span><br><span class="line">             + @param {string} e.url &#x5F53;&#x524D;&#x7684;URL</span><br><span class="line">             */</span></span><br><span class="line">            locator.fire(</span><br><span class="line">                <span class="string">&apos;redirect&apos;</span>,</span><br><span class="line">                { url: url, referrer: referrer }</span><br><span class="line">            );</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="built_in">require</span>(<span class="string">&apos;./events&apos;</span>).fire(</span><br><span class="line">            <span class="string">&apos;redirect&apos;</span>,</span><br><span class="line">            { url: url, referrer: referrer }</span><br><span class="line">        );</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> shouldPerformRedirect;</span><br><span class="line">};</span><br></pre></td></tr></table></figure></p>
+<p>&#x6CE8;&#xFF1A;&#x4EE3;&#x7801;&#x4E2D;&#x53D8;&#x91CF;<code>isLocationChanged</code>&#x5224;&#x65AD;location&#x662F;&#x5426;&#x53D8;&#x5316;&#xFF0C;&#x5982;&#x679C;&#x53D8;&#x5316;&#x5219;<code>fire</code>(&#x89E6;&#x53D1;)<code>redirect</code>&#x4E8B;&#x4EF6;&#x3002;</p>
+<h3 id="router-&#x8DEF;&#x7531;&#x7C7B;"><a href="#router-&#x8DEF;&#x7531;&#x7C7B;" class="headerlink" title="router &#x8DEF;&#x7531;&#x7C7B;"></a>router &#x8DEF;&#x7531;&#x7C7B;</h3><blockquote>
+<p>&#x8DEF;&#x7531;&#x7528;&#x4E8E;&#x5C06;&#x7279;&#x5B9A;&#x7684;URL&#x5BF9;&#x5E94;&#x5230;&#x7279;&#x5B9A;&#x7684;&#x51FD;&#x6570;&#x4E0A;&#xFF0C;&#x5E76;&#x5728;URL&#x53D8;&#x5316;&#xFF08;locator&#x5BF9;&#x8C61;&#x652F;&#x6301;&#xFF09;&#x65F6;&#xFF0C;&#x6267;&#x884C;&#x76F8;&#x5E94;&#x7684;&#x51FD;&#x6570;&#x3002;</p>
+</blockquote>
+<p><strong>URL&#x4E0E;&#x51FD;&#x6570;&#x7684;&#x5BF9;&#x5E94;&#x89C4;&#x5219;&#x6709;3&#x79CD;&#x5F62;&#x5F0F;&#xFF1A;</strong></p>
+<ul>
+<li>&#x5F53;&#x4F7F;&#x7528;&#x5B57;&#x7B26;&#x4E32;&#x4F5C;&#x4E3A;&#x89C4;&#x5219;&#x65F6;&#xFF0C;URL&#x7684;path&#x90E8;&#x5206;&#x4E0E;&#x5B57;&#x7B26;&#x4E32;&#x5B8C;&#x5168;&#x5339;&#x914D;</li>
+<li>&#x5F53;&#x4F7F;&#x7528;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x4F5C;&#x4E3A;&#x89C4;&#x5219;&#x65F6;&#xFF0C;URL&#x7684;path&#x90E8;&#x5206;&#x5339;&#x914D;&#x8BE5;&#x6B63;&#x5219;</li>
+<li>&#x5F53;&#x6240;&#x6709;&#x8DEF;&#x7531;&#x89C4;&#x5219;&#x5747;&#x4E0D;&#x5339;&#x914D;&#x67D0;&#x4E2A;URL&#x65F6;&#xFF0C;&#x4F1A;&#x8C03;&#x7528;setBackup&#x63D0;&#x4F9B;&#x7684;&#x51FD;&#x6570;</li>
+</ul>
+<p>&#x5728;<code>router.js</code>&#x4E2D;&#x7684;&#x4E3B;&#x8981;&#x5BF9;&#x5E94;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">executeRoute</span>(<span class="params">e</span>) </span>{</span><br><span class="line">    <span class="keyword">var</span> url = <span class="built_in">require</span>(<span class="string">&apos;./URL&apos;</span>).parse(e.url);</span><br><span class="line">    <span class="keyword">var</span> path = url.getPath();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.routes.length; i++) {</span><br><span class="line">        <span class="keyword">var</span> route = <span class="keyword">this</span>.routes[i];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ((route.rule <span class="keyword">instanceof</span> <span class="built_in">RegExp</span> &amp;&amp; route.rule.test(path)) || route.rule === path) {</span><br><span class="line">            route.handler.call(<span class="keyword">this</span>, url);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.backup) {</span><br><span class="line">        <span class="keyword">this</span>.backup(url);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.getEventBus().fire(<span class="string">&apos;route&apos;</span>, { url: url, router: <span class="keyword">this</span> });</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
+<p>&#x6CE8;&#xFF1A;&#x4EE3;&#x7801;&#x4E2D;for&#x5FAA;&#x73AF;&#x91CC;&#x7684;routes&#x5FAA;&#x73AF;&#x503C;&#xFF0C;&#x5373;&#x4E3A;&#x6240;&#x6709;&#x6CE8;&#x518C;&#x597D;&#x7684;&#x8DEF;&#x7531;&#x89C4;&#x5219;&#x3002;</p>
+<ol>
+<li>&#x9996;&#x5148;&#x6821;&#x9A8C;&#x5224;&#x65AD;&#x662F;&#x5426;&#x4E3A;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#xFF0C;&#x5E76;&#x4E14;&#x6EE1;&#x8DB3;&#x6B63;&#x5219;&#x6761;&#x4EF6;&#x3002;<code>route.rule instanceof RegExp &amp;&amp; route.rule.test(path)</code></li>
+<li>&#x5982;&#x679C;&#x6761;&#x4EF6;1&#x4E0D;&#x6210;&#x7ACB;&#xFF0C;&#x5219;&#x5224;&#x65AD;&#x5B57;&#x7B26;&#x4E32;&#x7C7B;&#x578B;&#x7684;&#x89C4;&#x5219;&#x662F;&#x5426;&#x5B8C;&#x5168;&#x76F8;&#x7B49;&#x3002;<code>route.rule === path</code></li>
+<li>&#x6761;&#x4EF6;1&#x3001;2&#x5747;&#x4E0D;&#x6210;&#x7ACB;&#xFF0C;&#x5219;&#x6267;&#x884C;<code>this.backup(url)</code>&#xFF0C;&#x5373;&#x4E0A;&#x6587;&#x63D0;&#x5230;&#x7684;&#x201D;setBackup&#x63D0;&#x4F9B;&#x7684;&#x51FD;&#x6570;&#x201D;&#x3002;</li>
+</ol>
+<h3 id="controller-&#x63A7;&#x5236;&#x5668;&#x7C7B;"><a href="#controller-&#x63A7;&#x5236;&#x5668;&#x7C7B;" class="headerlink" title="controller &#x63A7;&#x5236;&#x5668;&#x7C7B;"></a>controller &#x63A7;&#x5236;&#x5668;&#x7C7B;</h3><blockquote>
+<p>&#x8D1F;&#x8D23;URL&#x4E0E;Action&#x7684;&#x8C03;&#x5EA6;&#xFF0C;&#x5C06;URL&#x6620;&#x5C04;&#x5230;&#x5177;&#x4F53;&#x7684;&#x4E00;&#x4E2A;Action&#x7684;&#x6267;&#x884C;&#x4E0A;&#x3002;</p>
+</blockquote>
+<p>&#x5728;<code>controller.js</code>&#x4E2D;&#x7684;&#x4E3B;&#x8981;&#x5BF9;&#x5E94;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">exports.renderAction = <span class="function"><span class="keyword">function</span> (<span class="params">url</span>) </span>{</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> url === <span class="string">&apos;string&apos;</span>) {</span><br><span class="line">        url = URL.parse(url);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.globalActionLoader &amp;&amp; <span class="keyword">typeof</span> <span class="keyword">this</span>.globalActionLoader.abort === <span class="string">&apos;function&apos;</span>) {</span><br><span class="line">        <span class="keyword">this</span>.globalActionLoader.abort();</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.currentAction</span><br><span class="line">        &amp;&amp; <span class="keyword">typeof</span> <span class="keyword">this</span>.currentAction.filterRedirect === <span class="string">&apos;function&apos;</span></span><br><span class="line">        &amp;&amp; <span class="keyword">this</span>.currentAction.filterRedirect(url) === <span class="literal">false</span></span><br><span class="line">    ) {</span><br><span class="line">        <span class="keyword">return</span> Deferred.rejected(<span class="string">&apos;Redirect aborted by previous action&apos;</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.globalActionLoader = <span class="keyword">this</span>.forward(url, <span class="keyword">this</span>.getMainContainer(), <span class="literal">null</span>, <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">var</span> events = <span class="keyword">this</span>.getEventBus();</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.globalActionLoader</span><br><span class="line">        .then(util.bind(<span class="keyword">this</span>.enterAction, <span class="keyword">this</span>))</span><br><span class="line">        .fail(util.bind(events.notifyError, events));</span><br><span class="line">};</span><br></pre></td></tr></table></figure></p>
+<p>&#x6CE8;&#xFF1A;&#x5728;&#x4E4B;&#x524D;&#x4E00;&#x76F4;&#x63D0;&#x5230;&#x4E00;&#x53E5;&#x8BDD;&#x201D;setBackup&#x63D0;&#x4F9B;&#x7684;&#x51FD;&#x6570;&#x201D;&#xFF0C;&#x8FD9;&#x91CC;&#x6240;&#x8BF4;&#x7684;&#x201D;&#x63D0;&#x4F9B;&#x7684;&#x51FD;&#x6570;&#x201D;&#x5C31;&#x662F;&#x4E0A;&#x6587;&#x4E2D;&#x7684;<code>renderAction</code>&#x3002;<code>renderAction</code>&#x63A5;&#x6536;&#x4E00;&#x4E2A;&#x53C2;&#x6570;<code>url</code>&#xFF0C;&#x5E76;&#x5C06;&#x5176;&#x6620;&#x5C04;<code>forward</code>&#x5230;&#x5177;&#x4F53;&#x7684;Action&#x4E0A;&#xFF0C;&#x968F;&#x540E;&#x5F00;&#x59CB;&#x8FDB;&#x5165;Action&#x3002;&#x5373;&#x4EE3;&#x7801;&#x6700;&#x540E;&#x7684;<code>enterAction</code></p>
+<h4 id="&#x5C0F;&#x7ED3;"><a href="#&#x5C0F;&#x7ED3;" class="headerlink" title="&#x5C0F;&#x7ED3;"></a>&#x5C0F;&#x7ED3;</h4><p>&#x81F3;&#x6B64;&#xFF0C;&#x4E0A;&#x9762;&#x8BF4;&#x4E86;er&#x4E0B;&#x7684;&#x4E09;&#x4E2A;&#x6838;&#x5FC3;&#x7EC4;&#x4EF6;<code>locator</code>&#x3001;<code>router</code>&#x548C;<code>controller</code>&#xFF0C;&#x4E14;&#x4ECB;&#x7ECD;&#x4E86;&#x6BCF;&#x4E2A;&#x7EC4;&#x4EF6;&#x7684;&#x4F5C;&#x7528;&#x53CA;&#x4E3B;&#x8981;&#x5BF9;&#x5E94;&#x7684;&#x4EE3;&#x7801;&#x5185;&#x5BB9;&#x3002;&#x4F46;&#x8FD9;&#x4E9B;&#x5185;&#x5BB9;&#x662F;&#x901A;&#x8FC7;&#x600E;&#x6837;&#x7684;&#x6D41;&#x7A0B;&#x6267;&#x884C;&#xFF0C;&#x5E76;&#x6700;&#x540E;&#x8D70;&#x5230;<code>renderAction</code>&#x5F00;&#x59CB;Action&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#xFF1F;&#x4E0B;&#x9762;&#x5C06;&#x4F1A;&#x628A;&#x4E0A;&#x8FF0;&#x5185;&#x5BB9;&#x4E32;&#x8054;&#x8D77;&#x6765;&#x3002;</p>
+<h2 id="Aciton-&#x5165;&#x53E3;"><a href="#Aciton-&#x5165;&#x53E3;" class="headerlink" title="Aciton &#x5165;&#x53E3;"></a>Aciton &#x5165;&#x53E3;</h2><p>&#x5728;&#x4ECB;&#x7ECD;&#x5982;&#x4F55;&#x8FDB;&#x5165;Action&#x524D;&#xFF0C;&#x6211;&#x4EEC;&#x5148;&#x770B;&#x4E0B;er&#x542F;&#x52A8;&#x65F6;&#xFF0C;&#x4E09;&#x4E2A;&#x6838;&#x5FC3;&#x7EC4;&#x4EF6;&#x90FD;&#x505A;&#x4E86;&#x4EC0;&#x4E48;&#x4E8B;&#x60C5;&#xFF1F;</p>
+<p><strong>&#x8FDB;&#x5165;locator&#x65F6;&#x505A;&#x7684;&#x4E8B;&#x60C5;</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">start</span>(<span class="params">firstTime</span>) </span>{</span><br><span class="line">    <span class="comment">// &#x5982;&#x679C;&#x6709;hashchange&#x4E8B;&#x4EF6;&#x5219;&#x4F7F;&#x7528;&#x4E8B;&#x4EF6;&#xFF0C;&#x5426;&#x5219;&#x5B9A;&#x65F6;&#x76D1;&#x542C;</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.addEventListener) {</span><br><span class="line">        <span class="built_in">window</span>.addEventListener(<span class="string">&apos;hashchange&apos;</span>, forwardHash, <span class="literal">false</span>);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&apos;onhashchange&apos;</span> <span class="keyword">in</span> <span class="built_in">window</span> &amp;&amp; <span class="built_in">document</span>.documentMode &gt; <span class="number">7</span>) {</span><br><span class="line">        <span class="built_in">window</span>.attachEvent(<span class="string">&apos;onhashchange&apos;</span>, forwardHash);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> {</span><br><span class="line">        rollTimer = setInterval(forwardHash, <span class="number">100</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// &#x5904;&#x7406;&#x521D;&#x6B21;&#x8FDB;&#x5165;&#x7684;hash</span></span><br><span class="line">    <span class="keyword">if</span> (firstTime) {</span><br><span class="line">        startupTimer = setTimeout(forwardHash, <span class="number">0</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">forwardHash</span>(<span class="params"></span>) </span>{</span><br><span class="line">    <span class="keyword">var</span> url = getLocation();</span><br><span class="line">    locator.redirect(url);</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
+<p><strong>&#x8FDB;&#x5165;router&#x65F6;&#x505A;&#x7684;&#x4E8B;&#x60C5;</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">exports.start = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>{</span><br><span class="line">    <span class="keyword">this</span>.getLocator().on(<span class="string">&apos;redirect&apos;</span>, executeRoute, <span class="keyword">this</span>);</span><br><span class="line">};</span><br></pre></td></tr></table></figure>
+<p><strong>&#x8FDB;&#x5165;controller&#x65F6;&#x505A;&#x7684;&#x4E8B;&#x60C5;</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">exports.start = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>{</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.getDefaultTitle()) {</span><br><span class="line">        <span class="keyword">this</span>.setDefaultTitle(config.systemName || <span class="built_in">document</span>.title);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// &#x5E72;&#x8106;&#x63A5;&#x7BA1;&#x6240;&#x6709;&#x8DEF;&#x7531;</span></span><br><span class="line">    <span class="keyword">this</span>.getRouter().setBackup(util.bind(<span class="keyword">this</span>.renderAction, <span class="keyword">this</span>));</span><br><span class="line">};</span><br></pre></td></tr></table></figure></p>
+<p>&#x76F4;&#x63A5;&#x770B;&#x4E0A;&#x9762;&#x7684;&#x4EE3;&#x7801;&#xFF0C;&#x53EF;&#x80FD;&#x6CA1;&#x90A3;&#x4E48;&#x597D;&#x7406;&#x89E3;&#x3002;&#x5148;&#x89E3;&#x91CA;&#x4E0B;&#xFF0C;&#x56DE;&#x5934;&#x518D;&#x770B;&#x5C31;&#x4F1A;&#x6BD4;&#x8F83;&#x6E05;&#x695A;&#x3002;<br>&#x90A3;&#x4E48;&#x4E0A;&#x9762;&#x8BF4;&#x7684;&#x4E00;&#x4E2A;&#x4EC0;&#x4E48;&#x610F;&#x601D;&#x5462;&#xFF1F;</p>
+<ol>
+<li>&#x8FDB;&#x5165;locator&#xFF0C;&#x53D8;&#x91CF;<code>firstTime</code>&#x5224;&#x65AD;&#x662F;&#x5426;&#x7B2C;&#x4E00;&#x6B21;&#x8FDB;&#x5165;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x5219;&#x7ACB;&#x5373;&#x5F02;&#x6B65;&#x6267;&#x884C;&#x3002;<code>setTimeout(forwardHash, 0)</code>&#xFF0C;&#x6267;&#x884C;&#x4E86;&#x51FD;&#x6570;forwardHash&#x3002;&#x518D;&#x770B;&#xFF0C;forwardHash&#x4E2D;&#x7D27;&#x63A5;&#x7740;&#x53C8;&#x6267;&#x884C;&#x4E86;<code>locator.redirect(url)</code>&#x3002;&#x800C;<code>redirect</code>&#x53C8;&#x505A;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;&#x63A5;&#x7740;&#x5F80;&#x4E0B;&#x8D70;&#x2026;&#x2026;</li>
+<li>&#x8FDB;&#x5165;router&#xFF0C;&#x5219;&#x662F;&#x76F4;&#x63A5;&#x83B7;&#x53D6;&#x4E86;locator&#x5BF9;&#x8C61;&#xFF0C;&#x5E76;&#x6CE8;&#x518C;&#x4E86;<code>redirect</code>&#x4E8B;&#x4EF6;&#xFF0C;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x662F;<code>executeRoute</code>&#x3002;ctrl + f &#x4E0B;&#x8FD9;&#x4E2A;&#x5173;&#x952E;&#x8BCD;&#xFF0C;&#x662F;&#x4E0D;&#x662F;&#x53D1;&#x73B0;&#x8FD9;&#x4E2A;&#x5728;&#x4E0A;&#x9762;&#x51FA;&#x73B0;&#x8FC7;&#x3002;&#x6CA1;&#x9519;&#xFF0C;&#x8FD9;&#x91CC;&#x5F53;&#x53D1;&#x751F;<code>redirect</code>&#x65F6;&#xFF0C;&#x4FBF;&#x4F1A;&#x8FDB;&#x5165;&#x65B9;&#x6CD5;<code>executeRoute</code>&#x4E2D;&#xFF0C;&#x5728;&#x6B64;&#x51FD;&#x6570;&#x4E2D;&#x5224;&#x65AD;&#x8DEF;&#x7531;&#x89C4;&#x5219;&#xFF0C;&#x4E0D;&#x6EE1;&#x8DB3;&#x6761;&#x4EF6;&#x5219;&#x6267;&#x884C;<code>this.backup(url)</code>&#xFF0C;&#x5373;&#x53C8;&#x662F;&#x6211;&#x4EEC;&#x591A;&#x6B21;&#x63D0;&#x5230;&#x7684;&#x201D;setBackup&#x63D0;&#x4F9B;&#x7684;&#x51FD;&#x6570;&#x201D;<code>renderAction</code>&#x3002;&#x4E3A;&#x4EC0;&#x4E48;&#x662F;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x5462;&#xFF1F;&#x4E0B;&#x9762;&#x2026;&#x2026;</li>
+<li>&#x8FDB;&#x5165;controller&#xFF0C;<code>setBackup(util.bind(this.renderAction, this))</code>&#x8FD9;&#x884C;&#x4EE3;&#x7801;&#x662F;&#x4E0D;&#x662F;&#x5C31;&#x6E05;&#x695A;&#x4E86;&#x3002;</li>
+</ol>
+<p>&#x4E3A;&#x4E86;&#x66F4;&#x76F4;&#x89C2;&#x7684;&#x8868;&#x8FF0;&#xFF0C;&#x4E0B;&#x9762;&#x518D;&#x52A0;&#x4E2A;&#x6D41;&#x7A0B;&#x56FE;(<em>&#x8FD9;&#x91CC;&#x597D;&#x50CF;&#x4E0D;&#x652F;&#x6301;&#x76F4;&#x63A5;&#x753B;&#x6D41;&#x7A0B;&#x56FE;&#xFF0C;&#x6240;&#x4EE5;&#x4E0A;&#x4E2A;&#x56FE;&#x7247;</em>)&#xFF1A;</p>
+<p><img src="/xfe/2016/04/15/intro-spa-framework-er/er_flow.jpg" alt="er_flow"></p>
+<h4 id="&#x5C0F;&#x7ED3;-1"><a href="#&#x5C0F;&#x7ED3;-1" class="headerlink" title="&#x5C0F;&#x7ED3;"></a>&#x5C0F;&#x7ED3;</h4><p>&#x4E0A;&#x8FF0;&#x4ECE;&#x4EE3;&#x7801;&#x5230;&#x63CF;&#x8FF0;&#xFF0C;&#x518D;&#x52A0;&#x4E0A;&#x6700;&#x540E;&#x7684;&#x6D41;&#x7A0B;&#x56FE;&#xFF0C;&#x89E3;&#x91CA;&#x4E86;Action&#x7684;&#x4E24;&#x4E2A;&#x5165;&#x53E3;&#x3002;&#x5373;&#x7B2C;&#x4E00;&#x6B21;&#x8FDB;&#x5165;&#xFF0C;&#x4F1A;&#x901A;&#x8FC7;<code>setTimeout(&apos;forwardHash&apos;, 0)</code>&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x5176;&#x4ED6;&#x5219;&#x901A;&#x8FC7;<code>locator.redirect(url)</code>&#x3002;</p>
+<h2 id="er&#x4E2D;Action&#x7C7B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;"><a href="#er&#x4E2D;Action&#x7C7B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;" class="headerlink" title="er&#x4E2D;Action&#x7C7B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;"></a>er&#x4E2D;Action&#x7C7B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;</h2><ul>
+<li>enter</li>
+<li>beforemodelload</li>
+<li>modelloaded</li>
+<li>beforerender</li>
+<li>rendered</li>
+<li>entercomplete</li>
+</ul>
+<p>er&#x4E2D;Action&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#x4E3B;&#x8981;&#x5C31;&#x662F;&#x4E0A;&#x9762;6&#x4E2A;&#x8282;&#x70B9;&#x3002;&#x4E0B;&#x9762;&#x5148;&#x628A;&#x76F8;&#x5173;&#x4EE3;&#x7801;&#x8D34;&#x4E0A;&#x6765;&#xFF0C;&#x4E4B;&#x540E;&#x5BF9;&#x5173;&#x952E;&#x70B9;&#x8FDB;&#x884C;&#x8BF4;&#x660E;&#xFF1A;<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">exports.enter = <span class="function"><span class="keyword">function</span> (<span class="params">actionContext</span>) </span>{</span><br><span class="line">    <span class="keyword">this</span>.context = actionContext || {};</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *@event enter</span><br><span class="line">     *</span><br><span class="line">     *Action&#x751F;&#x547D;&#x5468;&#x671F;&#x5F00;&#x59CB;&#x6267;&#x884C;&#x65F6;&#x89E6;&#x53D1;</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">this</span>.fire(<span class="string">&apos;enter&apos;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// `actionContext.args`&#x91CC;&#x6709;URL&#x91CC;&#x7684;&#x53C2;&#x6570;&#x548C;&#x5B50;Action&#x65F6;&#x4F20;&#x5165;&#x7684;`options`&#xFF0C;&#x5168;&#x90E8;&#x653E;&#x5230;`Model`&#x4E0A;&#x53BB;</span></span><br><span class="line">    <span class="keyword">var</span> args = util.mix({}, actionContext &amp;&amp; actionContext.args);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.model) {</span><br><span class="line">        <span class="keyword">this</span>.model.fill(args);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> {</span><br><span class="line">        <span class="keyword">this</span>.model = <span class="keyword">this</span>.createModel(args);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *@event beforemodelload</span><br><span class="line">     *</span><br><span class="line">     *`Model`&#x5DF2;&#x7ECF;&#x521B;&#x5EFA;&#x5B8C;&#x6BD5;&#xFF0C;&#x5F00;&#x59CB;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x52A0;&#x8F7D;&#x524D;&#x89E6;&#x53D1;</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">this</span>.fire(<span class="string">&apos;beforemodelload&apos;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.model &amp;&amp; <span class="keyword">typeof</span> <span class="keyword">this</span>.model.load === <span class="string">&apos;function&apos;</span>) {</span><br><span class="line">        <span class="keyword">var</span> loadingModel = <span class="keyword">this</span>.model.load();</span><br><span class="line">        <span class="keyword">return</span> loadingModel.then(</span><br><span class="line">            util.bind(<span class="keyword">this</span>.forwardToView, <span class="keyword">this</span>),</span><br><span class="line">            util.bind(reportErrors, <span class="keyword">this</span>)</span><br><span class="line">        );</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> {</span><br><span class="line">        <span class="keyword">this</span>.forwardToView();</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">require</span>(<span class="string">&apos;./Deferred&apos;</span>).resolved(<span class="keyword">this</span>);</span><br><span class="line">    }</span><br><span class="line">};</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">exports.forwardToView = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>{</span><br><span class="line">    <span class="comment">// &#x5982;&#x679C;&#x5DF2;&#x7ECF;&#x9500;&#x6BC1;&#x4E86;&#x5C31;&#x522B;&#x518D;&#x7EE7;&#x7EED;&#x4E0B;&#x53BB;</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.disposed) {</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *@event modelloaded</span><br><span class="line">     *</span><br><span class="line">     *Model&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x65F6;&#x89E6;&#x53D1;</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">this</span>.fire(<span class="string">&apos;modelloaded&apos;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.view) {</span><br><span class="line">        <span class="keyword">this</span>.view = <span class="keyword">this</span>.createView();</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.view) {</span><br><span class="line">        <span class="keyword">this</span>.view.model = <span class="keyword">this</span>.model;</span><br><span class="line">        <span class="comment">// &#x5982;&#x679C;&#x521B;&#x5EFA;View&#x7684;&#x65F6;&#x5019;&#x5DF2;&#x7ECF;&#x8BBE;&#x7F6E;&#x4E86;`container`&#xFF0C;&#x5C31;&#x4E0D;&#x8981;&#x5F3A;&#x884C;&#x5E72;&#x6270;&#x4E86;</span></span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.view.container) {</span><br><span class="line">            <span class="keyword">this</span>.view.container = <span class="keyword">this</span>.context.container;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span><br><span class="line">         *@event beforerender</span><br><span class="line">         *</span><br><span class="line">         *&#x89C6;&#x56FE;&#x5F00;&#x59CB;&#x6E32;&#x67D3;&#x65F6;&#x89E6;&#x53D1;</span><br><span class="line">         */</span></span><br><span class="line">        <span class="keyword">this</span>.fire(<span class="string">&apos;beforerender&apos;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.view.render();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span><br><span class="line">         *@event rendered</span><br><span class="line">         *</span><br><span class="line">         *&#x89C6;&#x56FE;&#x6E32;&#x67D3;&#x5B8C;&#x6BD5;&#x540E;&#x89E6;&#x53D1;</span><br><span class="line">         */</span></span><br><span class="line">        <span class="keyword">this</span>.fire(<span class="string">&apos;rendered&apos;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.initBehavior();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span><br><span class="line">         *@event entercomplete</span><br><span class="line">         *</span><br><span class="line">         *Action&#x8FDB;&#x5165;&#x5B8C;&#x6BD5;&#x540E;&#x89E6;&#x53D1;</span><br><span class="line">         */</span></span><br><span class="line">        <span class="keyword">this</span>.fire(<span class="string">&apos;entercomplete&apos;</span>);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> {</span><br><span class="line">        <span class="keyword">var</span> events = <span class="built_in">require</span>(<span class="string">&apos;./events&apos;</span>);</span><br><span class="line">        events.notifyError(<span class="string">&apos;No view attached to this action&apos;</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">};</span><br></pre></td></tr></table></figure>
+<p>&#x7B80;&#x5355;&#x770B;&#x4E0A;&#x8FF0;&#x4EE3;&#x7801;&#x53D1;&#x73B0;&#x4E4B;&#x524D;&#x63D0;&#x5230;&#x7684;6&#x4E2A;&#x8282;&#x70B9;&#x5747;&#x80FD;&#x627E;&#x5230;&#x3002;OK&#xFF0C;&#x90A3;&#x4E48;&#x2026;</p>
+<ol>
+<li>Action&#x751F;&#x547D;&#x5468;&#x671F;&#x5F00;&#x59CB;&#x6267;&#x884C;&#x65F6;&#x89E6;&#x53D1;<code>this.fire(&apos;enter&apos;)</code></li>
+<li>&#x8FDB;&#x5165;Action&#x9996;&#x5148;&#x4F1A;&#x521B;&#x5EFA;model&#x6216;&#x8005;&#x586B;&#x5145;&#x5DF2;&#x5B58;&#x5728;&#x7684;model&#xFF0C;&#x5373;createModel/model.fill</li>
+<li>Model&#x521B;&#x5EFA;&#x5B8C;&#x6BD5;&#xFF0C;&#x5F00;&#x59CB;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x52A0;&#x8F7D;&#x524D;&#x89E6;&#x53D1;<code>this.fire(&apos;beforemodelload&apos;)</code></li>
+<li>Model&#x52A0;&#x8F7D;&#x6570;&#x636E;&#xFF0C;&#x6210;&#x529F;&#x540E;&#x6307;&#x5411;forwardToView&#xFF0C;&#x5373;model.load-&gt;then(this.forwardToView)</li>
+<li>Model&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x65F6;&#x89E6;&#x53D1;<code>this.fire(&apos;modelloaded&apos;)</code></li>
+<li>Model&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x63A5;&#x7740;&#x5C31;&#x4F1A;&#x521B;&#x5EFA;View&#xFF0C;&#x5373;this.view = this.createView()</li>
+<li>&#x5F53;View&#x4E5F;&#x521B;&#x5EFA;&#x597D;&#x540E;&#xFF0C;&#x5219;&#x5F00;&#x59CB;&#x6E32;&#x67D3;&#xFF0C;&#x6E32;&#x67D3;&#x524D;&#x5148;&#x89E6;&#x53D1;&#x4E8B;&#x4EF6;<code>this.fire(&apos;beforerender&apos;)</code></li>
+<li>&#x6E32;&#x67D3;&#x89C6;&#x56FE;View&#xFF0C;&#x5373;view.render()</li>
+<li>&#x89C6;&#x56FE;&#x6E32;&#x67D3;&#x5B8C;&#x6BD5;&#x540E;&#x89E6;&#x53D1;<code>this.fire(&apos;rendered&apos;)</code></li>
+<li>&#x4E3A;&#x89C6;&#x56FE;View&#x4E2D;&#x7684;&#x63A7;&#x4EF6;&#x4E8B;&#x4EF6;&#xFF0C;&#x521D;&#x59CB;&#x5316;&#x5404;&#x81EA;&#x7684;&#x884C;&#x4E3A;&#x3002;&#x5373;this.initBehavior()</li>
+<li>Action&#x8FDB;&#x5165;&#x5B8C;&#x6BD5;&#x540E;&#x89E6;&#x53D1;<code>this.fire(&apos;entercomplete&apos;)</code></li>
+</ol>
+<h4 id="&#x5C0F;&#x7ED3;-2"><a href="#&#x5C0F;&#x7ED3;-2" class="headerlink" title="&#x5C0F;&#x7ED3;"></a>&#x5C0F;&#x7ED3;</h4><p>&#x4E0A;&#x8FF0;&#x57FA;&#x672C;&#x6B65;&#x9AA4;&#xFF0C;&#x89E3;&#x91CA;&#x4E86;Action&#x6574;&#x4E2A;&#x751F;&#x547D;&#x5468;&#x671F;&#x6240;&#x505A;&#x7684;&#x4E8B;&#x60C5;&#x3002;&#x4ECE;&#x8FDB;&#x5165;Action&#x5230;Model&#x7684;&#x521B;&#x5EFA;&#x53CA;&#x6570;&#x636E;&#x52A0;&#x8F7D;&#xFF0C;&#x518D;&#x5230;&#x89C6;&#x56FE;View&#x7684;&#x521B;&#x5EFA;&#x53CA;&#x6E32;&#x67D3;&#x5C55;&#x793A;&#x3002;<br>&#x4E0B;&#x9762;&#x662F;&#x4E00;&#x4E2A;&#x8111;&#x56FE;&#xFF0C;&#x5305;&#x542B;&#x4E86;&#x4E00;&#x4E2A;&#x4E1A;&#x52A1;&#x6A21;&#x5757;&#x4ECE;&#x5F00;&#x59CB;&#x8FDB;&#x5165;&#x5230;&#x6700;&#x7EC8;&#x5C55;&#x793A;&#xFF0C;er&#x6240;&#x5BF9;&#x5E94;&#x7684;&#x6267;&#x884C;&#x6D41;&#x7A0B;&#x3002;&#x5305;&#x542B;&#x4E86;&#x4E0A;&#x9762;&#x8BB2;&#x7684;&#x6240;&#x6709;&#x5185;&#x5BB9;&#xFF0C;&#x53CA;&#x4E00;&#x4E9B;&#x8FD9;&#x91CC;&#x6CA1;&#x6709;&#x6D89;&#x53CA;&#x7684;&#x7EC6;&#x8282;&#x3002;&#x53EF;&#x5BF9;&#x7167;&#x5206;&#x6790;&#x2026;</p>
+<p><a href="http://naotu.baidu.com/file/3c795abd2fa8883aa52d0587a926a931" target="_blank" rel="external">&#x601D;&#x7EF4;&#x5BFC;&#x56FE;</a><em>&#x5BC6;&#x7801;:12Be</em></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/xfe/tags/er/" rel="tag">#er</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xfe/2016/04/15/css-line-height/" rel="next" title="详解CSS行高">
+                <i class="fa fa-chevron-left"></i> 详解CSS行高
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/xfe/2016/04/15/ToPrimitive/" rel="prev" title="js隐式装箱-ToPrimitive">
+                js隐式装箱-ToPrimitive <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/04/15/intro-spa-framework-er/"
+     data-title="SPA框架流程解读-er"
+     data-content=""
+     data-url="http://sinaad.github.io/xfe/2016/04/15/intro-spa-framework-er/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/15/intro-spa-framework-er/"
+           data-title="SPA框架流程解读-er" data-url="http://sinaad.github.io/xfe/2016/04/15/intro-spa-framework-er/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/2231440955/180/5749469848/1"
+               alt="SINA FE Team" />
+          <p class="site-author-name" itemprop="name">SINA FE Team</p>
+          <p class="site-description motion-element" itemprop="description">我们一直努力贴好小广告</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/xfe/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/xfe/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/xfe/tags">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/xfe/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/orgs/sinaad/teams/xfe" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/acelan" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#首先了解下er启动的三个核心组件。"><span class="nav-number">1.</span> <span class="nav-text">首先了解下er启动的三个核心组件。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#locator-地址监听对象"><span class="nav-number">1.1.</span> <span class="nav-text">locator 地址监听对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#router-路由类"><span class="nav-number">1.2.</span> <span class="nav-text">router 路由类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#controller-控制器类"><span class="nav-number">1.3.</span> <span class="nav-text">controller 控制器类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">1.3.1.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Aciton-入口"><span class="nav-number">2.</span> <span class="nav-text">Aciton 入口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小结-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#er中Action类的生命周期"><span class="nav-number">3.</span> <span class="nav-text">er中Action类的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#小结-2"><span class="nav-number">3.0.1.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SINA FE Team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/xfe/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/xfe/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sinaad-xfe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+        //  do something with the error.  message[2] is the Error object that records the problem.
+        console.log(message);
+      });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+          var all = MathJax.Hub.getAllJax(), i;
+          for(i=0; i < all.length; i += 1) {
+              all[i].SourceElement().parentNode.className += ' has-jax';
+          }
+      });
+  </script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+
+</body>
+</html>

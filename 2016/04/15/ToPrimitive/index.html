@@ -1,0 +1,1037 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/xfe/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+
+
+<link href="/xfe/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/xfe/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="js,隐式装箱,toPrimitive," />
+
+
+
+
+
+  <link rel="alternate" href="/xfe/atom.xml" title="{XFE}" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xfe/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="js&amp;#x9690;&amp;#x5F0F;&amp;#x88C5;&amp;#x7BB1;ToPrimitive&amp;#x5F88;&amp;#x591A;&amp;#x524D;&amp;#x7AEF;&amp;#x9762;&amp;#x8BD5;&amp;#x9898;&amp;#x4E2D;&amp;#x4F1A;&amp;#x6709;&amp;#x8FD9;&amp;#x6837;&amp;#x4EE4;&amp;#x4EBA;&amp;#x4E00;&amp;#x5934;&amp;#x96FE;&amp;#x6C34;&amp;#x7684;&amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js隐式装箱-ToPrimitive">
+<meta property="og:url" content="http://sinaad.github.io/2016/04/15/ToPrimitive/index.html">
+<meta property="og:site_name" content="{XFE}">
+<meta property="og:description" content="js&amp;#x9690;&amp;#x5F0F;&amp;#x88C5;&amp;#x7BB1;ToPrimitive&amp;#x5F88;&amp;#x591A;&amp;#x524D;&amp;#x7AEF;&amp;#x9762;&amp;#x8BD5;&amp;#x9898;&amp;#x4E2D;&amp;#x4F1A;&amp;#x6709;&amp;#x8FD9;&amp;#x6837;&amp;#x4EE4;&amp;#x4EBA;&amp;#x4E00;&amp;#x5934;&amp;#x96FE;&amp;#x6C34;&amp;#x7684;&amp;#x">
+<meta property="og:updated_time" content="2016-04-15T07:34:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js隐式装箱-ToPrimitive">
+<meta name="twitter:description" content="js&amp;#x9690;&amp;#x5F0F;&amp;#x88C5;&amp;#x7BB1;ToPrimitive&amp;#x5F88;&amp;#x591A;&amp;#x524D;&amp;#x7AEF;&amp;#x9762;&amp;#x8BD5;&amp;#x9898;&amp;#x4E2D;&amp;#x4F1A;&amp;#x6709;&amp;#x8FD9;&amp;#x6837;&amp;#x4EE4;&amp;#x4EBA;&amp;#x4E00;&amp;#x5934;&amp;#x96FE;&amp;#x6C34;&amp;#x7684;&amp;#x">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> js隐式装箱-ToPrimitive | {XFE} </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?13989991106bdad30ea927ab9ae93a09";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/xfe/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">{XFE}</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xfe/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/xfe/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/xfe/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xfe/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xfe/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                js隐式装箱-ToPrimitive
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-15T15:26:30+08:00" content="2016-04-15">
+              2016-04-15
+            </time>
+          </span>
+
+          
+          <span class="post-author">
+            &nbsp; | &nbsp;
+            徐DerDer
+          </span>
+          
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/xfe/2016/04/15/ToPrimitive/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/15/ToPrimitive/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="js&#x9690;&#x5F0F;&#x88C5;&#x7BB1;ToPrimitive"><a href="#js&#x9690;&#x5F0F;&#x88C5;&#x7BB1;ToPrimitive" class="headerlink" title="js&#x9690;&#x5F0F;&#x88C5;&#x7BB1;ToPrimitive"></a>js&#x9690;&#x5F0F;&#x88C5;&#x7BB1;ToPrimitive</h1><p>&#x5F88;&#x591A;&#x524D;&#x7AEF;&#x9762;&#x8BD5;&#x9898;&#x4E2D;&#x4F1A;&#x6709;&#x8FD9;&#x6837;&#x4EE4;&#x4EBA;&#x4E00;&#x5934;&#x96FE;&#x6C34;&#x7684;&#x9898;&#x76EE;&#xFF1A;<br>[]+[]&#x3001;{}+{}&#x3001;[]+{}&#x3001;{}+[]<br>&#x5728;&#x770B;&#x5B8C;&#x672C;&#x6587;&#x540E;&#xFF0C;&#x5927;&#x5BB6;&#x5E94;&#x8BE5;&#x80FD;&#x591F;&#x6BD4;&#x8F83;&#x8F7B;&#x677E;&#x7684;&#x5F97;&#x51FA;&#x7B54;&#x6848;&#xFF0C;&#x5E76;&#x4E14;&#x660E;&#x767D;&#x539F;&#x7406;&#x3002;</p>
+<p><strong>Ps1&#xFF1A;</strong>&#x672C;&#x6587;&#x57FA;&#x4E8E;ES6&#x7248;&#x672C;<br><strong>Ps2&#xFF1A;</strong>&#x201C;&#xA7;&#x201D;&#x6307;ecma-262 6.0&#x7684;&#x7AE0;&#x8282;&#xFF0C;&#x4F8B;&#x5982;&#x201C;&#xA7;12.7.3 The Addition operator ( + )&#x201D;<br><strong>Ps3&#xFF1A;</strong>&#x672C;&#x6587;&#x53EA;&#x8BA8;&#x8BBA;&#x52A0;&#x6CD5;</p>
+<hr>
+<h2 id="&#x503C;&#x7C7B;&#x578B;"><a href="#&#x503C;&#x7C7B;&#x578B;" class="headerlink" title="&#x503C;&#x7C7B;&#x578B;"></a>&#x503C;&#x7C7B;&#x578B;</h2><p>&#x539F;&#x59CB;&#x503C;&#xFF1A;string number boolean null undefined symbol<br>&#x5BF9;&#x8C61;&#x503C;&#xFF1A;object</p>
+<h2 id="&#x52A0;&#x53F7;"><a href="#&#x52A0;&#x53F7;" class="headerlink" title="&#x52A0;&#x53F7;"></a>&#x52A0;&#x53F7;</h2><h3 id="&#x52A0;&#x6CD5;&#x8FD0;&#x7B97;&#x7B26;"><a href="#&#x52A0;&#x6CD5;&#x8FD0;&#x7B97;&#x7B26;" class="headerlink" title="&#x52A0;&#x6CD5;&#x8FD0;&#x7B97;&#x7B26;"></a>&#x52A0;&#x6CD5;&#x8FD0;&#x7B97;&#x7B26;</h3><p>&#x5148;&#x6765;&#x770B;&#x4E00;&#x4E0B;&#x6807;&#x51C6;&#x91CC;&#x662F;&#x5982;&#x4F55;&#x5B9A;&#x4E49;&#x52A0;&#x6CD5;&#x8FD0;&#x7B97;&#x7B26;&#x201C;+&#x201D;&#x7684;&#xFF1A;</p>
+<blockquote>
+<p>&#x52A0;&#x6CD5;&#x8FD0;&#x7B97;&#x7B26;&#x662F;&#x7528;&#x6765;&#x8FDE;&#x63A5;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x6570;&#x5B57;&#x76F8;&#x52A0;&#x7684;&#x3002;&#x2014;&#x2014;<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-addition-operator-plus" target="_blank" rel="external">&#xA7;12.7.3</a></p>
+</blockquote>
+<p>&#x518D;&#x6765;&#x770B;&#x4E00;&#x4E0B;&#x6807;&#x51C6;&#x91CC;&#x662F;&#x5982;&#x4F55;&#x5B9A;&#x4E49;&#x52A0;&#x6CD5;&#x8FC7;&#x7A0B;&#x7684;<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-addition-operator-plus-runtime-semantics-evaluation" target="_blank" rel="external">&#xA7;12.7.3.1</a>&#xFF1A;</p>
+<blockquote>
+<p>AdditiveExpression : AdditiveExpression + MultiplicativeExpression</p>
+</blockquote>
+<ol>
+<li>&#x628A;AdditiveExpression&#x7684;result&#x8D4B;&#x503C;&#x7ED9;lref</li>
+<li>&#x628A;GetValue(lref)&#x7684;&#x7ED3;&#x679C;&#x8D4B;&#x503C;&#x7ED9;lval</li>
+<li>&#x628A;MultiplicativeExpression&#x7684;result&#x8D4B;&#x503C;&#x7ED9;rref</li>
+<li>&#x628A;GetValue(rref)&#x7684;&#x7ED3;&#x679C;&#x8D4B;&#x503C;&#x7ED9;rval</li>
+<li>&#x628A;ToPrimitive(lval)&#x7684;&#x7ED3;&#x679C;&#x8D4B;&#x503C;&#x7ED9;lprim</li>
+<li>&#x628A;ToPrimitive(lval)&#x7684;&#x7ED3;&#x679C;&#x8D4B;&#x503C;&#x7ED9;rprim</li>
+<li>&#x5982;&#x679C;Type(lprim)&#x548C;Type(rprim)&#x4E2D;&#x6709;&#x4E00;&#x4E2A;&#x662F;String&#xFF0C;&#x5219;<br> a.&#x628A;ToString(lprim)&#x7684;&#x7ED3;&#x679C;&#x8D4B;&#x7ED9;lstr<br> b.&#x628A;ToString(rprim)&#x7684;&#x7ED3;&#x679C;&#x8D4B;&#x7ED9;rstr<br> c.&#x8FD4;&#x56DE;lstr&#x548C;rstr&#x62FC;&#x63A5;&#x7684;&#x5B57;&#x7B26;&#x4E32;</li>
+<li>&#x628A;ToNumber(lprim)&#x7684;&#x7ED3;&#x679C;&#x8D4B;&#x7ED9;lnum</li>
+<li>&#x628A;ToNumber(rprim)&#x7684;&#x7ED3;&#x679C;&#x8D4B;&#x7ED9;rnum</li>
+<li>&#x8FD4;&#x56DE;lnum&#x548C;rnum&#x76F8;&#x52A0;&#x7684;&#x6570;&#x503C;</li>
+</ol>
+<p>&#x5728;&#x52A0;&#x6CD5;&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x9996;&#x5148;&#x628A;&#x7B49;&#x53F7;&#x5DE6;&#x53F3;&#x4E24;&#x8FB9;&#x8FDB;&#x884C;&#x4E86;&#x6C42;&#x539F;&#x503C;ToPrimitive()&#x64CD;&#x4F5C;&#xFF0C;&#x7136;&#x540E;&#x5982;&#x679C;&#x4E24;&#x4E2A;&#x539F;&#x503C;&#x53EA;&#x8981;&#x6709;&#x4E00;&#x4E2A;&#x662F;String&#x7C7B;&#x578B;&#xFF0C;&#x5C31;&#x628A;&#x4E24;&#x4E2A;&#x539F;&#x503C;&#x90FD;&#x8FDB;&#x884C;&#x8F6C;&#x5316;&#x5B57;&#x7B26;&#x4E32;ToString()&#x64CD;&#x4F5C;&#xFF0C;&#x8FDB;&#x884C;&#x5B57;&#x7B26;&#x4E32;&#x62FC;&#x63A5;&#xFF1B;&#x5426;&#x5219;&#x628A;&#x4E24;&#x4E2A;&#x539F;&#x503C;&#x90FD;&#x8FDB;&#x884C;&#x8F6C;&#x5316;&#x6570;&#x5B57;ToNumber()&#x64CD;&#x4F5C;&#xFF0C;&#x8FDB;&#x884C;&#x6570;&#x5B57;&#x76F8;&#x52A0;&#x3002;<br>&#x4E00;&#x5171;&#x6D89;&#x53CA;&#x4E86;&#x4E09;&#x4E2A;&#x65B9;&#x6CD5;&#xFF1A;ToPrimitive(),ToString(),ToNumber()&#x3002;&#x8FD9;&#x4E09;&#x4E2A;&#x65B9;&#x6CD5;&#x5728;&#x63A5;&#x4E0B;&#x6765;&#x4F1A;&#x6709;&#x4ECB;&#x7ECD;&#x3002;</p>
+<h3 id="&#x4E00;&#x5143;&#x8FD0;&#x7B97;&#x7B26;&#x201C;-&#x201D;"><a href="#&#x4E00;&#x5143;&#x8FD0;&#x7B97;&#x7B26;&#x201C;-&#x201D;" class="headerlink" title="&#x4E00;&#x5143;&#x8FD0;&#x7B97;&#x7B26;&#x201C;+&#x201D;"></a>&#x4E00;&#x5143;&#x8FD0;&#x7B97;&#x7B26;&#x201C;+&#x201D;</h3><p>&#x8001;&#x89C4;&#x77E9;&#xFF0C;&#x5148;&#x6765;&#x770B;&#x4E00;&#x4E0B;&#x6807;&#x51C6;&#x91CC;&#x662F;&#x5982;&#x4F55;&#x5B9A;&#x4E49;&#x4E00;&#x5143;&#x8FD0;&#x7B97;&#x7B26;&#x201C;+&#x201D;&#x7684;&#xFF1A;</p>
+<blockquote>
+<p>&#x4E00;&#x5143;&#x8FD0;&#x7B97;&#x7B26;&#x201C;+&#x201D;&#x662F;&#x7528;&#x6765;&#x628A;&#x76EE;&#x6807;&#x8F6C;&#x5316;&#x6210;&#x6570;&#x5B57;&#x7C7B;&#x578B;&#x7684;&#x3002;&#x2014;&#x2014;<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-unary-plus-operator" target="_blank" rel="external">&#xA7;12.5.9</a></p>
+</blockquote>
+<p>&#x518D;&#x6765;&#x770B;&#x4E00;&#x4E0B;&#x6807;&#x51C6;&#x91CC;&#x662F;&#x5982;&#x4F55;&#x5B9A;&#x4E49;&#x4E00;&#x5143;&#x8FD0;&#x7B97;&#x201C;+&#x201D;&#x8FC7;&#x7A0B;&#x7684;<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-unary-plus-operator-runtime-semantics-evaluation" target="_blank" rel="external">&#xA7;12.5.9.1</a>:</p>
+<blockquote>
+<p>UnaryExpression : + UnaryExpression</p>
+</blockquote>
+<ol>
+<li>&#x628A;UnaryExpression&#x7684;result&#x8D4B;&#x503C;&#x7ED9;expr</li>
+<li>&#x8FD4;&#x56DE;ToNumber(GetValue(expr)).</li>
+</ol>
+<p>&#x5728;&#x4E00;&#x5143;&#x201C;+&#x201D;&#x8FD0;&#x7B97;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x628A;&#x76EE;&#x6807;&#x76F4;&#x63A5;&#x8F6C;&#x5316;&#x6210;&#x6570;&#x5B57;&#x7C7B;&#x578B;&#x3002;<br>&#x4E00;&#x5171;&#x6D89;&#x53CA;&#x4E86;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#xFF1A;ToNumber()&#x3002;</p>
+<h2 id="&#x7C7B;&#x578B;&#x8F6C;&#x6362;"><a href="#&#x7C7B;&#x578B;&#x8F6C;&#x6362;" class="headerlink" title="&#x7C7B;&#x578B;&#x8F6C;&#x6362;"></a>&#x7C7B;&#x578B;&#x8F6C;&#x6362;</h2><p>&#x7531;&#x4E8E;ECMAScript&#x662F;&#x4E00;&#x4E2A;&#x5F31;&#x7C7B;&#x578B;&#x8BED;&#x8A00;&#xFF0C;&#x6240;&#x4EE5;&#x5728;&#x8FDB;&#x884C;&#x503C;&#x52A0;&#x51CF;&#x4E58;&#x9664;&#x7684;&#x64CD;&#x4F5C;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F1A;&#x6709;&#x6C42;&#x539F;&#x503C;&#x7684;&#x95EE;&#x9898;&#x3002;<br>&#x5047;&#x8BBE;&#x6709;&#x8FD9;&#x6837;&#x4E00;&#x9053;&#x9898;&#xFF1A;&#x4E00;&#x5339;&#x9A6C; + &#x4E00;&#x5339;&#x9A74; = &#xFF1F;<br>&#x5728;&#x5F3A;&#x7C7B;&#x578B;&#x8BED;&#x8A00;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x8FDB;&#x884C;&#x5F3A;&#x5236;&#x7C7B;&#x578B;&#x8F6C;&#x5316;&#xFF0C;&#x5C06;&#x4F1A;&#x544A;&#x8BC9;&#x4F60;&#x201C;&#x9A6C;&#x4E0D;&#x80FD;+&#x9A74;&#xFF01;&#x8FD9;&#x662F;&#x4E0D;&#x79D1;&#x5B66;&#x7684;&#xFF01;&#x201D;<br>&#x53EF;&#x662F;&#x5728;ECMAScript&#x4E2D;&#xFF0C;&#x4F1A;&#x8FDB;&#x884C;&#x9690;&#x5F0F;&#x7684;&#x6C42;&#x539F;&#x503C;&#xFF0C;&#x7136;&#x540E;&#x8FDB;&#x884C;&#x76F8;&#x52A0;&#xFF0C;&#x4E8E;&#x662F;&#x4F60;&#x4F1A;&#x53D1;&#x73B0;&#x5F88;&#x795E;&#x5947;&#x7684;&#x4E8B;&#x60C5;&#x201C;&#x9A6C; + &#x9A74; = &#x9A6C;&#x6216;&#x8005;&#x9A74;&#x6216;&#x8005;&#x9AA1;&#x5B50;&#xFF01;&#x4E16;&#x754C;&#x771F;&#x5947;&#x5999;&#xFF01;&#x201D;</p>
+<p>&#x5728;&#x4E0A;&#x4E00;&#x8282;&#x6211;&#x4EEC;&#x770B;&#x5230;&#x4E0D;&#x7BA1;&#x662F;&#x52A0;&#x6CD5;&#x8FD8;&#x662F;&#x4E00;&#x5143;&#x8FD0;&#x7B97;&#x201C;+&#x201D;&#xFF0C;&#x8FC7;&#x7A0B;&#x4E2D;&#x90FD;&#x6D89;&#x53CA;&#x5230;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;&#xFF0C;&#x90A3;&#x4E48;&#x63A5;&#x4E0B;&#x6765;&#x5C31;&#x6765;&#x4ECB;&#x7ECD;&#x4E0A;&#x9762;&#x6D89;&#x53CA;&#x5230;&#x7684;&#x4E09;&#x79CD;&#x65B9;&#x6CD5;&#x3002;</p>
+<h3 id="ToNumber"><a href="#ToNumber" class="headerlink" title="ToNumber"></a>ToNumber</h3><p><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-tonumber" target="_blank" rel="external">&#xA7;7.1.3</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">input</th>
+<th style="text-align:center">result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">null</td>
+<td style="text-align:center">+0</td>
+</tr>
+<tr>
+<td style="text-align:left">undefined</td>
+<td style="text-align:center">NaN</td>
+</tr>
+<tr>
+<td style="text-align:left">number</td>
+<td style="text-align:center">&#x4E0D;&#x8F6C;&#x6362;</td>
+</tr>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:center">+0&#x6216;1</td>
+</tr>
+<tr>
+<td style="text-align:left">string</td>
+<td style="text-align:center">&#x53C2;&#x7167;<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-tonumber-applied-to-the-string-type" target="_blank" rel="external">&#xA7;7.1.3.1</a></td>
+</tr>
+<tr>
+<td style="text-align:left">symbol</td>
+<td style="text-align:center">TypeError</td>
+</tr>
+<tr>
+<td style="text-align:left">object</td>
+<td style="text-align:center">ToNumber(ToPrimitive(input,Number))</td>
+</tr>
+</tbody>
+</table>
+<p>&#x6709;&#x51E0;&#x4E2A;&#x5730;&#x65B9;&#x9700;&#x8981;&#x6CE8;&#x610F;&#xFF1A;</p>
+<ol>
+<li><p>&#x628A;&#x5B57;&#x7B26;&#x4E32;&#x8F6C;&#x6362;&#x6210;&#x6570;&#x5B57;&#xFF0C;&#x4E0D;&#x662F;&#x7B80;&#x5355;&#x5730;&#x201C;&#x53BB;&#x6389;&#x5F15;&#x53F7;&#x201D;&#xFF0C;&#x5177;&#x4F53;&#x89C4;&#x5219;&#x53C2;&#x7167;<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-tonumber-applied-to-the-string-type" target="_blank" rel="external">&#xA7;7.1.3.1</a>&#x3002;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Number</span>(<span class="string">&apos;123&apos;</span>);<span class="comment">//123</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="string">&apos;&apos;</span>);<span class="comment">//0</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="string">&apos; 123 &apos;</span>);<span class="comment">//123</span></span><br><span class="line"><span class="built_in">Number</span>(<span class="string">&apos;a123&apos;</span>);<span class="comment">//NaN</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>&#x628A;symbol&#x8F6C;&#x6362;&#x6210;&#x6570;&#x5B57;&#xFF0C;&#x4F1A;&#x76F4;&#x63A5;&#x629B;&#x51FA;&#x7C7B;&#x578B;&#x9519;&#x8BEF;&#x3002; </p>
+</li>
+<li><p>&#x628A;&#x5BF9;&#x8C61;&#x8F6C;&#x6362;&#x6210;&#x6570;&#x5B57;&#xFF0C;&#x4F1A;&#x5148;&#x8FDB;&#x884C;ToPrimitive(input,Number)&#xFF0C;&#x7136;&#x540E;&#x628A;&#x5F97;&#x5230;&#x7684;&#x503C;&#x8FDB;&#x884C;&#x8F6C;&#x6362;</p>
+<h3 id="ToString"><a href="#ToString" class="headerlink" title="ToString"></a>ToString</h3></li>
+</ol>
+<p><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-tostring" target="_blank" rel="external">&#xA7;7.1.12</a></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">input</th>
+<th style="text-align:center">result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">null</td>
+<td style="text-align:center">&#x2018;null&#x2019;</td>
+</tr>
+<tr>
+<td style="text-align:left">undefined</td>
+<td style="text-align:center">&#x2018;undefined&#x2019;</td>
+</tr>
+<tr>
+<td style="text-align:left">number</td>
+<td style="text-align:center">&#x53C2;&#x7167;<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-tostring-applied-to-the-number-type" target="_blank" rel="external">&#xA7;7.1.12.1</a></td>
+</tr>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:center">&#x2018;true&#x2019;&#x6216;&#x2019;false&#x2019;</td>
+</tr>
+<tr>
+<td style="text-align:left">string</td>
+<td style="text-align:center">&#x4E0D;&#x8F6C;&#x6362;</td>
+</tr>
+<tr>
+<td style="text-align:left">symbol</td>
+<td style="text-align:center">TypeError</td>
+</tr>
+<tr>
+<td style="text-align:left">object</td>
+<td style="text-align:center">ToString(ToPrimitive(input,String))</td>
+</tr>
+</tbody>
+</table>
+<p>&#x6709;&#x51E0;&#x4E2A;&#x5730;&#x65B9;&#x9700;&#x8981;&#x6CE8;&#x610F;&#xFF1A;</p>
+<ol>
+<li>&#x628A;&#x6570;&#x5B57;&#x8F6C;&#x6362;&#x6210;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x4E0D;&#x662F;&#x7B80;&#x5355;&#x5730;&#x201C;&#x52A0;&#x4E0A;&#x5F15;&#x53F7;&#x201D;&#xFF0C;&#x5177;&#x4F53;&#x89C4;&#x5219;&#x53C2;&#x7167;<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-tostring-applied-to-the-number-type" target="_blank" rel="external">&#xA7;7.1.12.1</a>&#x3002;</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="built_in">Number</span>.NaN;</span><br><span class="line"><span class="built_in">String</span>(a);<span class="comment">//&apos;NaN&apos;</span></span><br><span class="line"><span class="built_in">String</span>(<span class="number">123</span>);<span class="comment">//&apos;123&apos;</span></span><br><span class="line"><span class="built_in">String</span>(+<span class="number">0</span>);<span class="comment">//&apos;0&apos;</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>&#x628A;symbol&#x8F6C;&#x6362;&#x6210;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x4F1A;&#x76F4;&#x63A5;&#x629B;&#x51FA;&#x7C7B;&#x578B;&#x9519;&#x8BEF;&#x3002; </li>
+<li>&#x628A;&#x5BF9;&#x8C61;&#x8F6C;&#x6362;&#x6210;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x4F1A;&#x5148;&#x8FDB;&#x884C;ToPrimitive(input,String)&#xFF0C;&#x7136;&#x540E;&#x628A;&#x5F97;&#x5230;&#x7684;&#x503C;&#x8FDB;&#x884C;&#x8F6C;&#x6362;</li>
+</ol>
+<h3 id="ToPrimitive"><a href="#ToPrimitive" class="headerlink" title="ToPrimitive"></a>ToPrimitive</h3><p><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-toprimitive" target="_blank" rel="external">&#xA7;7.1.1</a><br>ToPrimitive(input [, PreferredType])&#x4F7F;&#x7528;&#x6765;&#x628A;input&#x8F6C;&#x6362;&#x6210;&#x539F;&#x59CB;&#x503C;&#x3002;PreferredType&#x4E3A;&#x53EF;&#x9009;&#x53C2;&#x6570;&#xFF0C;&#x53EA;&#x63A5;&#x53D7;Number&#x6216;String&#xFF0C;&#x4F5C;&#x7528;&#x662F;&#x8BBE;&#x7F6E;&#x8F6C;&#x6362;&#x539F;&#x503C;&#x65F6;&#x7684;&#x8F6C;&#x6362;&#x504F;&#x597D;&#x3002;</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">inputTpye</th>
+<th style="text-align:center">result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Null</td>
+<td style="text-align:center">&#x4E0D;&#x8F6C;&#x6362;&#xFF0C;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;</td>
+</tr>
+<tr>
+<td style="text-align:left">Undefined</td>
+<td style="text-align:center">&#x4E0D;&#x8F6C;&#x6362;&#xFF0C;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;</td>
+</tr>
+<tr>
+<td style="text-align:left">Number</td>
+<td style="text-align:center">&#x4E0D;&#x8F6C;&#x6362;&#xFF0C;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;</td>
+</tr>
+<tr>
+<td style="text-align:left">Boolean</td>
+<td style="text-align:center">&#x4E0D;&#x8F6C;&#x6362;&#xFF0C;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;</td>
+</tr>
+<tr>
+<td style="text-align:left">String</td>
+<td style="text-align:center">&#x4E0D;&#x8F6C;&#x6362;&#xFF0C;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;</td>
+</tr>
+<tr>
+<td style="text-align:left">Symbol</td>
+<td style="text-align:center">&#x4E0D;&#x8F6C;&#x6362;&#xFF0C;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;</td>
+</tr>
+<tr>
+<td style="text-align:left">Object</td>
+<td style="text-align:center">&#x6309;&#x7167;&#x4E0B;&#x5217;&#x6B65;&#x9AA4;&#x8FDB;&#x884C;&#x8F6C;&#x6362;</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">ToPrimitive(input [, PreferredType])</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span>&#x5982;&#x679C;&#x6CA1;&#x6709;&#x4F20;&#x5165;PreferredType&#x53C2;&#x6570;&#xFF0C;&#x5219;&#x8BA9;hint&#x7684;&#x503C;&#x4E3A;<span class="string">&apos;default&apos;</span></span><br><span class="line"><span class="number">2.</span>&#x5426;&#x5219;&#xFF0C;&#x5982;&#x679C;PreferredType&#x503C;&#x4E3A;<span class="built_in">String</span>&#xFF0C;&#x5219;&#x8BA9;hint&#x7684;&#x503C;&#x4E3A;<span class="string">&apos;string&apos;</span></span><br><span class="line"><span class="number">3.</span>&#x5426;&#x5219;&#xFF0C;&#x5982;&#x679C;PreferredType&#x503C;&#x4E3A;<span class="built_in">Number</span>&#xFF0C;&#x5219;&#x8BA9;hint&#x7684;&#x503C;&#x4E3A;<span class="string">&apos;number&apos;</span></span><br><span class="line"><span class="number">4.</span>&#x5982;&#x679C;input&#x5BF9;&#x8C61;&#x6709;@@toPrimitive&#x65B9;&#x6CD5;&#xFF0C;&#x5219;&#x8BA9;exoticToPrim&#x7684;&#x503C;&#x4E3A;&#x8FD9;&#x4E2A;&#x65B9;        &#x6CD5;&#xFF0C;&#x5426;&#x5219;&#x8BA9;exoticToPrim&#x7684;&#x503C;&#x4E3A;<span class="literal">undefined</span></span><br><span class="line"><span class="number">5.</span>&#x5982;&#x679C;exoticToPrim&#x7684;&#x503C;&#x4E0D;&#x4E3A;<span class="literal">undefined</span>&#xFF0C;&#x5219;</span><br><span class="line">	a.&#x8BA9;result&#x7684;&#x503C;&#x4E3A;&#x8C03;&#x7528;exoticToPrim&#x540E;&#x5F97;&#x5230;&#x7684;&#x503C;</span><br><span class="line">	b.&#x5982;&#x679C;result&#x662F;&#x539F;&#x503C;&#xFF0C;&#x5219;&#x8FD4;&#x56DE;</span><br><span class="line">	c.&#x629B;&#x51FA;<span class="built_in">TypeError</span>&#x9519;&#x8BEF;</span><br><span class="line"><span class="number">6.</span>&#x5426;&#x5219;&#xFF0C;&#x5982;&#x679C;hint&#x7684;&#x503C;&#x4E3A;<span class="string">&apos;default&apos;</span>&#xFF0C;&#x5219;&#x628A;hint&#x7684;&#x503C;&#x91CD;&#x65B0;&#x8D4B;&#x4E3A;<span class="string">&apos;number&apos;</span></span><br><span class="line"><span class="number">7.</span>&#x8FD4;&#x56DE; OrdinaryToPrimitive(input,hint)</span><br><span class="line"></span><br><span class="line">OrdinaryToPrimitive(input,hint)</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span>&#x5982;&#x679C;hint&#x7684;&#x503C;&#x4E3A;<span class="string">&apos;string&apos;</span>,&#x5219;</span><br><span class="line">	a.&#x8C03;&#x7528;input&#x5BF9;&#x8C61;&#x7684;toString()&#x65B9;&#x6CD5;&#xFF0C;&#x5982;&#x679C;&#x503C;&#x662F;&#x539F;&#x503C;&#x5219;&#x8FD4;&#x56DE;</span><br><span class="line">	b.&#x5426;&#x5219;&#xFF0C;&#x8C03;&#x7528;input&#x5BF9;&#x8C61;&#x7684;valueOf()&#x65B9;&#x6CD5;&#xFF0C;&#x5982;&#x679C;&#x503C;&#x662F;&#x539F;&#x503C;&#x5219;&#x8FD4;&#x56DE;</span><br><span class="line">	c.&#x5426;&#x5219;&#xFF0C;&#x629B;&#x51FA;<span class="built_in">TypeError</span>&#x9519;&#x8BEF;</span><br><span class="line"><span class="number">2.</span>&#x5982;&#x679C;hint&#x7684;&#x503C;&#x4E3A;<span class="string">&apos;number&apos;</span>,&#x5219;</span><br><span class="line">	a.&#x8C03;&#x7528;input&#x5BF9;&#x8C61;&#x7684;valueOf()&#x65B9;&#x6CD5;&#xFF0C;&#x5982;&#x679C;&#x503C;&#x662F;&#x539F;&#x503C;&#x5219;&#x8FD4;&#x56DE;</span><br><span class="line">	b.&#x5426;&#x5219;&#xFF0C;&#x8C03;&#x7528;input&#x5BF9;&#x8C61;&#x7684;toString()&#x65B9;&#x6CD5;&#xFF0C;&#x5982;&#x679C;&#x503C;&#x662F;&#x539F;&#x503C;&#x5219;&#x8FD4;&#x56DE;</span><br><span class="line">	c.&#x5426;&#x5219;&#xFF0C;&#x629B;&#x51FA;<span class="built_in">TypeError</span>&#x9519;&#x8BEF;</span><br></pre></td></tr></table></figure>
+<p>&#x5F53;&#x6CA1;&#x6709;&#x7ED9;ToPrimitive&#x65B9;&#x6CD5;&#x4F20;&#x7C7B;&#x578B;&#x65F6;&#xFF0C;&#x901A;&#x5E38;&#x7684;&#x8868;&#x73B0;&#x5C31;&#x50CF;&#x662F;&#x4F20;&#x9012;&#x4E86;Number&#x7C7B;&#x578B;&#x3002;&#x4F46;&#x662F;&#x5728;ES6&#x4E2D;&#xFF0C;&#x7528;&#x6237;&#x662F;&#x53EF;&#x4EE5;&#x81EA;&#x5B9A;&#x4E49;@@toPrimitive&#x65B9;&#x6CD5;&#x4ECE;&#x800C;&#x8FDB;&#x884C;&#x91CD;&#x5199;&#x8FD9;&#x4E2A;&#x884C;&#x4E3A;&#x3002;&#x5728;&#x672C;&#x6807;&#x51C6;&#x4E2D;&#xFF0C;Symbol&#x5BF9;&#x8C61;<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-symbol.prototype-@@toprimitive" target="_blank" rel="external">(&#xA7;19.4.3.4)</a>&#x548C;Date&#x5BF9;&#x8C61;<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-date.prototype-@@toprimitive" target="_blank" rel="external">(&#xA7;20.3.4.45)</a>&#x5DF2;&#x7ECF;&#x9ED8;&#x8BA4;&#x5B9A;&#x4E49;&#x4E86;@@toPrimitive&#x65B9;&#x6CD5;&#x3002;Date&#x5BF9;&#x8C61;&#x4E0D;&#x4F20;&#x7C7B;&#x578B;&#x65F6;&#xFF0C;&#x8868;&#x73B0;&#x5C31;&#x50CF;&#x662F;&#x4F20;&#x9012;&#x4E86;String&#x7C7B;&#x578B;&#x3002;</p>
+<p>&#x7A0D;&#x5FAE;&#x603B;&#x7ED3;&#x4E00;&#x4E0B;&#xFF1A;&#x5728;&#x6CA1;&#x6709;&#x6539;&#x5199;&#x6216;&#x81EA;&#x5B9A;&#x4E49;@@toPrimitive&#x65B9;&#x6CD5;&#x7684;&#x6761;&#x4EF6;&#x4E0B;&#xFF0C;&#x5982;&#x679C;&#x662F;Date&#x6C42;&#x539F;&#x503C;&#xFF0C;&#x5219;PreferredType&#x662F;String&#xFF0C;&#x5176;&#x4ED6;&#x5747;&#x4E3A;Number&#x3002;PreferredType&#x662F;String&#xFF0C;&#x5219;&#x5148;&#x8C03;&#x7528;toString()&#xFF0C;&#x7ED3;&#x679C;&#x4E0D;&#x662F;&#x539F;&#x59CB;&#x503C;&#x7684;&#x8BDD;&#x518D;&#x8C03;&#x7528;valueOf()&#xFF0C;&#x8FD8;&#x4E0D;&#x662F;&#x539F;&#x59CB;&#x503C;&#x7684;&#x8BDD;&#x5219;&#x629B;&#x51FA;&#x9519;&#x8BEF;&#xFF1B;PreferredType&#x662F;Number&#xFF0C;&#x5219;&#x5148;&#x8C03;&#x7528;valueOf()&#x518D;&#x8C03;&#x7528;toString()&#x3002;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = {</span><br><span class="line">	toString : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&quot;toString&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> {};</span><br><span class="line">	},</span><br><span class="line">	valueOf : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&quot;valueOf&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> {};</span><br><span class="line">	}</span><br><span class="line">};</span><br><span class="line"><span class="built_in">Number</span>(obj);</span><br><span class="line"><span class="comment">/*</span><br><span class="line">	&quot;toString&quot;</span><br><span class="line">	&quot;valueOf&quot;</span><br><span class="line">	TypeError: Cannot convert object to primitive value</span><br><span class="line">*/</span></span><br></pre></td></tr></table></figure>
+<p>&#x63D0;&#x5230;&#x7684;@@toPrimitive&#x65B9;&#x6CD5;&#x662F;Well-Known Symbols<a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-well-known-symbols" target="_blank" rel="external">(&#xA7;6.1.5.1)</a>&#x4E2D;&#x4E00;&#x4E2A;&#xFF0C;&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x662F;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#x540D;&#xFF0C;&#x63D0;&#x4F9B;&#x7ED9;&#x5F15;&#x64CE;&#x53BB;&#x8C03;&#x7528;&#x3002;</p>
+<p>Date&#x9ED8;&#x8BA4;&#x5B9A;&#x4E49;&#x7684;&#x65B9;&#x6CD5;&#x662F;Date.prototype[Symbol.toPrimitive]<br>Symbol&#x9ED8;&#x8BA4;&#x5B9A;&#x4E49;&#x7684;&#x65B9;&#x6CD5;&#x662F;Symbol.prototype[Symbol.toPrimitive]<br>&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x91CD;&#x5199;&#x4E0A;&#x9762;&#x7684;&#x4E24;&#x79CD;&#x65B9;&#x6CD5;&#x6216;&#x8005;&#x7ED9;&#x5176;&#x4ED6;&#x5BF9;&#x8C61;&#x65B0;&#x5B9A;&#x4E49;&#x6C42;&#x539F;&#x503C;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x7528;&#x5982;&#x4E0B;&#x65B9;&#x5F0F;&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.prototype[<span class="built_in">Symbol</span>.toPrimitive] = <span class="function"><span class="keyword">function</span>(<span class="params">hint</span>)</span>{</span><br><span class="line">	<span class="keyword">switch</span>(hint){</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&apos;number&apos;</span> :</span><br><span class="line">			<span class="keyword">return</span> <span class="number">123</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&apos;string&apos;</span> :</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&apos;hello world!&apos;</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&apos;default&apos;</span> : </span><br><span class="line">			<span class="keyword">return</span> <span class="string">&apos;default&apos;</span>;</span><br><span class="line">		<span class="keyword">default</span> :</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>();</span><br><span class="line">	} </span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h3 id="&#x5F00;&#x59CB;&#x505A;&#x9898;"><a href="#&#x5F00;&#x59CB;&#x505A;&#x9898;" class="headerlink" title="&#x5F00;&#x59CB;&#x505A;&#x9898;"></a>&#x5F00;&#x59CB;&#x505A;&#x9898;</h3><blockquote>
+<p>[ ] + [ ]</p>
+</blockquote>
+<p>&#x8FDB;&#x884C;ToPrimitive&#xFF0C;&#x4E24;&#x4E2A;&#x90FD;&#x662F;Array&#x5BF9;&#x8C61;&#xFF0C;&#x4E0D;&#x662F;Date&#x5BF9;&#x8C61;&#xFF0C;&#x6240;&#x4EE5;&#x4EE5;Number&#x4E3A;&#x8F6C;&#x6362;&#x6807;&#x51C6;&#xFF0C;&#x6240;&#x4EE5;&#x5148;&#x8C03;&#x7528;valueOf()&#xFF0C;&#x7ED3;&#x679C;&#x8FD8;&#x662F;[ ]&#xFF0C;&#x4E0D;&#x662F;&#x539F;&#x59CB;&#x503C;&#xFF0C;&#x6240;&#x4EE5;&#x7EE7;&#x7EED;&#x8C03;&#x7528;toString()&#xFF0C;&#x7ED3;&#x679C;&#x662F;&#x201C;&#x201D;&#x539F;&#x59CB;&#x503C;&#xFF0C;&#x5C06;&#x201C;&#x201D;&#x56DE;&#x3002;</p>
+<p>&#x7B2C;&#x4E8C;&#x4E2A;[ ]&#x8FC7;&#x7A0B;&#x662F;&#x76F8;&#x540C;&#x7684;&#xFF0C;&#x8FD4;&#x56DE;&#x201C;&#x201D;&#x3002;</p>
+<p>&#x52A0;&#x53F7;&#x4E24;&#x8FB9;&#x7ED3;&#x679C;&#x90FD;&#x662F;String&#x7C7B;&#x578B;&#xFF0C;&#x6240;&#x4EE5;&#x8FDB;&#x884C;&#x5B57;&#x7B26;&#x4E32;&#x62FC;&#x63A5;&#xFF0C;&#x7ED3;&#x679C;&#x662F;&#x201C;&#x201D;&#x3002;</p>
+<blockquote>
+<p>[ ] + { }</p>
+</blockquote>
+<p>&#x8FDB;&#x884C;ToPrimitive&#xFF0C;&#x4F9D;&#x7136;&#x662F;&#x4EE5;Number&#x4E3A;&#x8F6C;&#x6362;&#x6807;&#x51C6;&#x3002;</p>
+<p>[ ]&#x7684;&#x7ED3;&#x679C;&#x662F;&#x201C;&#x201D;&#x3002;</p>
+<p>{ }&#x5148;&#x8C03;&#x7528;valueOf()&#xFF0C;&#x7ED3;&#x679C;&#x662F;{ }&#xFF0C;&#x4E0D;&#x662F;&#x539F;&#x59CB;&#x503C;&#xFF0C;&#x6240;&#x4EE5;&#x7EE7;&#x7EED;&#x8C03;&#x7528;toString()&#xFF0C;&#x7ED3;&#x679C;&#x662F;&#x201C;[object Object]&#x201D;,&#x662F;&#x539F;&#x59CB;&#x503C;&#xFF0C;&#x5C06;&#x201C;[object Object]&#x201D;&#x8FD4;&#x56DE;&#x3002;</p>
+<p>&#x52A0;&#x53F7;&#x4E24;&#x8FB9;&#x7ED3;&#x679C;&#x90FD;&#x662F;String&#x7C7B;&#x578B;&#xFF0C;&#x6240;&#x4EE5;&#x8FDB;&#x884C;&#x5B57;&#x7B26;&#x4E32;&#x62FC;&#x63A5;&#xFF0C;&#x7ED3;&#x679C;&#x662F;&#x201C;[object Object]&#x201D;&#x3002;</p>
+<blockquote>
+<p>{ } + [ ]</p>
+</blockquote>
+<p>&#x8FD9;&#x9053;&#x9898;&#x6309;&#x7167;&#x4E0A;&#x4E00;&#x9898;&#x7684;&#x6B65;&#x9AA4;&#xFF0C;&#x8BB2;&#x9053;&#x7406;&#x7684;&#x8BDD;&#xFF0C;&#x7ED3;&#x679C;&#x5E94;&#x8BE5;&#x8FD8;&#x662F;&#x201C;[object Object]&#x201D;&#xFF0C;&#x4F46;&#x7ED3;&#x679C;&#x5374;&#x5982;&#x4EBA;&#x610F;&#x6599;&#x2014;&#x2014;&#x663E;&#x793A;&#x7684;&#x7B54;&#x6848;&#x662F;0&#xFF01;</p>
+<p>&#x8FD9;&#x662F;&#x4EC0;&#x4E48;&#x539F;&#x56E0;&#x5462;&#xFF1F;&#x539F;&#x6765;{ } + [ ]&#x88AB;&#x89E3;&#x6790;&#x6210;&#x4E86;{ };+[ ]&#xFF0C;&#x524D;&#x9762;&#x662F;&#x4E00;&#x4E2A;&#x7A7A;&#x4EE3;&#x7801;&#x5757;&#x88AB;&#x7565;&#x8FC7;&#xFF0C;&#x5269;&#x4E0B;+[ ]&#x5C31;&#x6210;&#x4E86;&#x4E00;&#x5143;&#x8FD0;&#x7B97;&#x3002;[ ]&#x7684;&#x539F;&#x503C;&#x662F;&#x201D;&#x201D;&#xFF0C; &#x5C06;&#x201D;&#x201D;&#x8F6C;&#x5316;&#x6210;Number&#x7ED3;&#x679C;&#x662F;0&#x3002;</p>
+<blockquote>
+<p>{ } + { }</p>
+</blockquote>
+<p>&#x8FD9;&#x9053;&#x9898;&#x7684;&#x7ED3;&#x679C;&#x5728;&#x4E0D;&#x540C;&#x7684;&#x73AF;&#x5883;&#x4E0B;&#x7ED3;&#x679C;&#x4E0D;&#x4E00;&#x6837;&#x3002;</p>
+<p>&#x5728;&#x91D1;&#x4E1D;&#x96C0;&#x7248;&#x672C;&#x7684;chrome&#x6D4F;&#x89C8;&#x5668;&#x548C;node&#x4E2D;&#xFF0C;&#x7ED3;&#x679C;&#x7B26;&#x5408;&#x9884;&#x671F;&#x3002;<br>&#x7ED3;&#x679C;&#x662F;&#x201D;[object Object][object Object]&#x201D;&#x3002;</p>
+<p>&#x5728;&#x666E;&#x901A;&#x7248;&#x672C;&#x7684;chrome&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#x7ED3;&#x679C;&#x662F;NaN&#x3002;</p>
+<p>&#x8FD9;&#x662F;&#x4E3A;&#x4EC0;&#x4E48;&#x5462;&#xFF1F;&#x539F;&#x56E0;&#x662F;&#x5728;node&#x4E2D;&#x4F1A;&#x5C06;&#x4EE5;&#x201C;{&#x201D;&#x5F00;&#x59CB;&#xFF0C;&#x201C;}&#x201D;&#x7ED3;&#x675F;&#x7684;&#x8BED;&#x53E5;&#x5916;&#x9762;&#x5305;&#x88F9;&#x4E00;&#x5C42;( )&#xFF0C;&#x5C31;&#x53D8;&#x6210;&#x4E86;({ } + { })&#xFF0C;&#x7ED3;&#x679C;&#x5C31;&#x7B26;&#x5408;&#x9884;&#x671F;&#x3002;&#x800C;&#x666E;&#x901A;&#x7248;&#x672C;&#x7684;chrome&#x4F9D;&#x7136;&#x4F1A;&#x89E3;&#x6790;&#x6210;{};+{}&#xFF0C;&#x7ED3;&#x679C;&#x5C31;&#x53D8;&#x6210;&#x4E86;NaN&#x3002;</p>
+<blockquote>
+<p>++[[ ]][+[ ]]+[+[ ]]</p>
+</blockquote>
+<p>&#x8FD9;&#x9053;&#x9898;&#x7B2C;&#x4E00;&#x773C;&#x770B;&#x4E0A;&#x53BB;&#x5F88;&#x9B3C;&#x755C;&#xFF0C;&#x63A5;&#x4E0B;&#x6765;&#x6211;&#x4EEC;&#x4E00;&#x6B65;&#x4E00;&#x6B65;&#x6765;&#x62C6;&#x89E3;&#xFF0C;&#x6700;&#x540E;&#x4F1A;&#x53D1;&#x73B0;&#x8FD9;&#x9053;&#x9898;&#x4E00;&#x70B9;&#x4E5F;&#x4E0D;&#x9B3C;&#x755C;&#x3002;&#xFF08;&#x62C6;&#x89E3;&#x53EA;&#x662F;&#x7528;&#x6765;&#x7406;&#x6E05;&#x601D;&#x8DEF;&#xFF0C;&#x5E76;&#x4E0D;&#x662F;&#x771F;&#x6B63;&#x7684;&#x89E3;&#x6790;&#x8FC7;&#x7A0B;&#xFF09;&#x3002;</p>
+<ol>
+<li>&#x5148;&#x62C6;&#x5206;&#x6210;A&#xFF1A;++[[ ]][+[ ]]&#x548C;B&#xFF1A;[+[ ]]</li>
+<li>B&#x5F0F;&#x6BD4;&#x8F83;&#x7B80;&#x5355;&#xFF1A;[0]</li>
+<li>A&#x5F0F;&#x8F6C;&#x6362;&#x6210;++[[ ]][0]&#x4E5F;&#x5C31;&#x662F;++[ ]</li>
+<li>A&#x5F0F;&#x7ED3;&#x679C;&#x4E3A;1</li>
+<li>1 + [0]</li>
+<li>&#x7ED3;&#x679C;&#x662F;&#x201D;10&#x201D;</li>
+</ol>
+<h2 id="&#x81EA;&#x5B9A;&#x4E49;&#x6C42;&#x539F;&#x503C;"><a href="#&#x81EA;&#x5B9A;&#x4E49;&#x6C42;&#x539F;&#x503C;" class="headerlink" title="&#x81EA;&#x5B9A;&#x4E49;&#x6C42;&#x539F;&#x503C;"></a>&#x81EA;&#x5B9A;&#x4E49;&#x6C42;&#x539F;&#x503C;</h2><p>&#x4EE5;&#x4E0A;&#x505A;&#x5F97;&#x9898;&#x7684;&#x7ED3;&#x679C;&#x5747;&#x57FA;&#x4E8E;&#x9ED8;&#x8BA4;&#x7684;&#x6C42;&#x539F;&#x503C;&#x65B9;&#x6CD5;&#xFF0C;&#x90A3;&#x4E48;&#x6211;&#x4EEC;&#x5982;&#x4F55;&#x80FD;&#x81EA;&#x5B9A;&#x4E49;&#x6C42;&#x539F;&#x503C;&#x7684;&#x903B;&#x8F91;&#x5462;&#xFF1F;</p>
+<p>&#x6709;&#x4E24;&#x79CD;&#x65B9;&#x6CD5;&#xFF0C;&#x7B2C;&#x4E00;&#x5C31;&#x662F;&#x53BB;&#x6539;&#x5199;valueOf&#x548C;toString&#x8FD9;&#x4E24;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x4ECE;&#x800C;&#x8FBE;&#x5230;&#x6548;&#x679C;&#xFF0C;&#x53E6;&#x4E00;&#x79CD;&#x65B9;&#x6CD5;&#x5C31;&#x662F;&#x53BB;&#x91CD;&#x5199;&#x6216;&#x8005;&#x65B0;&#x5B9A;&#x4E49;@@toPrimitive&#x65B9;&#x6CD5;&#x3002;</p>
+<p>&#x5728;&#x4E4B;&#x524D;&#x6709;&#x63D0;&#x5230;&#x8FC7;@@toPrimitive&#x662F;Well-Known Symbols&#x4E2D;&#x7684;&#x4E00;&#x4E2A;key&#xFF0C;&#x4E8B;&#x5B9E;&#x4E0A;&#xFF0C;Well-Knonw Symbols&#x4E2D;&#x4E00;&#x5171;&#x6709;11&#x4E2A;&#x8FD9;&#x6837;&#x7684;key&#xFF0C;&#x4F5C;&#x4E3A;&#x7D22;&#x5F15;&#x4F9B;&#x5F15;&#x64CE;&#x53BB;&#x8C03;&#x7528;&#x3002;</p>
+<p>&#x63A5;&#x4E0B;&#x6765;&#x6211;&#x4EEC;&#x6765;&#x770B;&#x4E00;&#x4E0B;&#x5982;&#x4F55;&#x7ED9;&#x5BF9;&#x8C61;&#x81EA;&#x5B9A;&#x4E49;&#x6C42;&#x539F;&#x503C;&#x65B9;&#x6CD5;&#x3002;</p>
+<h3 id="&#x65B0;&#x5B9A;&#x4E49;-toPrimitive&#x65B9;&#x6CD5;"><a href="#&#x65B0;&#x5B9A;&#x4E49;-toPrimitive&#x65B9;&#x6CD5;" class="headerlink" title="&#x65B0;&#x5B9A;&#x4E49;@@toPrimitive&#x65B9;&#x6CD5;"></a>&#x65B0;&#x5B9A;&#x4E49;@@toPrimitive&#x65B9;&#x6CD5;</h3><p>&#x9664;&#x4E86;Symbol&#x5BF9;&#x8C61;&#x548C;Date&#x5BF9;&#x8C61;&#xFF0C;&#x5176;&#x4ED6;&#x5BF9;&#x8C61;&#x9ED8;&#x8BA4;&#x662F;&#x6CA1;&#x6709;@@toPrimitive&#x65B9;&#x6CD5;&#x7684;&#xFF0C;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x60F3;&#x81EA;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#xFF0C;&#x5C31;&#x8981;&#x7528;&#x4E0B;&#x9762;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x4F8B;&#x5B50;&#x4E2D;&#x662F;&#x7ED9;&#x6570;&#x7EC4;&#x5BF9;&#x8C61;&#x6DFB;&#x52A0;@@toPrimitive&#x65B9;&#x6CD5;&#x3002;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.prototype[<span class="built_in">Symbol</span>.toPrimitive] = <span class="function"><span class="keyword">function</span>(<span class="params">hint</span>)</span>{</span><br><span class="line">	<span class="keyword">switch</span>(hint){</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&apos;number&apos;</span> :</span><br><span class="line">			<span class="keyword">return</span> <span class="number">123</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&apos;string&apos;</span> :</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&apos;hello world!&apos;</span>;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&apos;default&apos;</span> : </span><br><span class="line">			<span class="keyword">return</span> <span class="string">&apos;default&apos;</span>;</span><br><span class="line">		<span class="keyword">default</span> :</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>();</span><br><span class="line">	} </span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr = [];</span><br><span class="line">arr + <span class="number">2</span>;<span class="comment">//&quot;default2&quot;</span></span><br><span class="line">arr * <span class="number">2</span>;<span class="comment">//&quot;246&quot;</span></span><br><span class="line"><span class="built_in">String</span>(arr);<span class="comment">//&quot;hello world!&quot;</span></span><br></pre></td></tr></table></figure>
+<p>&#x7ED9;Symbol&#x6216;&#x8005;Date&#x5BF9;&#x8C61;&#x91CD;&#x5199;@@toPrimitive&#x65B9;&#x6CD5;&#x9700;&#x8981;&#x7528;&#x4E0B;&#x9762;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x6709;&#x4E00;&#x70B9;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;Symbol&#x548C;Date&#x5BF9;&#x8C61;&#x7684;@@toPrimitive&#x65B9;&#x6CD5;&#xFF0C;&#x9ED8;&#x8BA4;&#x662F;&#x53EF;&#x914D;&#x7F6E;&#xFF0C;&#x4E0D;&#x53EF;&#x5199;&#xFF0C;&#x4E0D;&#x53EF;&#x679A;&#x4E3E;&#xFF0C;&#x6240;&#x4EE5;&#x8981;&#x7528;defineProperty&#x65B9;&#x6CD5;&#x6765;&#x91CD;&#x5199;&#xFF0C;&#x4F8B;&#x5B50;&#x4E2D;&#x662F;&#x7ED9;Date&#x5BF9;&#x8C61;&#x91CD;&#x5199;@@toPrimitive&#x65B9;&#x6CD5;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//&#x91CD;&#x5199;date1[Symbol.toPrimitive],date2&#x4F5C;&#x4E3A;&#x5BF9;&#x7167;</span></span><br><span class="line"><span class="keyword">var</span> date1 = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="keyword">var</span> date2 = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line"><span class="comment">//&#x5F3A;&#x5236;&#x91CD;&#x5199;</span></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(date1,<span class="built_in">Symbol</span>.toPrimitive,{</span><br><span class="line">	value : <span class="function"><span class="keyword">function</span>(<span class="params">hint</span>)</span>{</span><br><span class="line">		<span class="keyword">switch</span>(hint){</span><br><span class="line">			<span class="keyword">case</span> <span class="string">&apos;number&apos;</span> : </span><br><span class="line">				<span class="keyword">return</span> <span class="number">123</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="string">&apos;string&apos;</span> :</span><br><span class="line">				<span class="keyword">return</span> <span class="number">456</span>;</span><br><span class="line">			<span class="keyword">case</span> <span class="string">&apos;default&apos;</span> :</span><br><span class="line">				<span class="keyword">return</span> <span class="string">&apos;default2&apos;</span>;</span><br><span class="line">			<span class="keyword">default</span> :</span><br><span class="line">				<span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>();</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line">});</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">2</span> + date1);<span class="comment">//2default2</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">2</span> * date2);<span class="comment">//2912431204420</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/xfe/tags/js/" rel="tag">#js</a>
+          
+            <a href="/xfe/tags/隐式装箱/" rel="tag">#隐式装箱</a>
+          
+            <a href="/xfe/tags/toPrimitive/" rel="tag">#toPrimitive</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xfe/2016/04/15/intro-spa-framework-er/" rel="next" title="SPA框架流程解读-er">
+                <i class="fa fa-chevron-left"></i> SPA框架流程解读-er
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/xfe/2016/04/18/regexp/" rel="prev" title="走进RegExp">
+                走进RegExp <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/04/15/ToPrimitive/"
+     data-title="js隐式装箱-ToPrimitive"
+     data-content=""
+     data-url="http://sinaad.github.io/xfe/2016/04/15/ToPrimitive/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/15/ToPrimitive/"
+           data-title="js隐式装箱-ToPrimitive" data-url="http://sinaad.github.io/xfe/2016/04/15/ToPrimitive/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/2231440955/180/5749469848/1"
+               alt="SINA FE Team" />
+          <p class="site-author-name" itemprop="name">SINA FE Team</p>
+          <p class="site-description motion-element" itemprop="description">我们一直努力贴好小广告</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/xfe/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/xfe/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/xfe/tags">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/xfe/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/orgs/sinaad/teams/xfe" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/acelan" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#js隐式装箱ToPrimitive"><span class="nav-number">1.</span> <span class="nav-text">js隐式装箱ToPrimitive</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#值类型"><span class="nav-number">1.1.</span> <span class="nav-text">值类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加号"><span class="nav-number">1.2.</span> <span class="nav-text">加号</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加法运算符"><span class="nav-number">1.2.1.</span> <span class="nav-text">加法运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一元运算符“-”"><span class="nav-number">1.2.2.</span> <span class="nav-text">一元运算符“+”</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型转换"><span class="nav-number">1.3.</span> <span class="nav-text">类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ToNumber"><span class="nav-number">1.3.1.</span> <span class="nav-text">ToNumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ToString"><span class="nav-number">1.3.2.</span> <span class="nav-text">ToString</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ToPrimitive"><span class="nav-number">1.3.3.</span> <span class="nav-text">ToPrimitive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开始做题"><span class="nav-number">1.3.4.</span> <span class="nav-text">开始做题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义求原值"><span class="nav-number">1.4.</span> <span class="nav-text">自定义求原值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新定义-toPrimitive方法"><span class="nav-number">1.4.1.</span> <span class="nav-text">新定义@@toPrimitive方法</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SINA FE Team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/xfe/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/xfe/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sinaad-xfe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+        //  do something with the error.  message[2] is the Error object that records the problem.
+        console.log(message);
+      });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+          var all = MathJax.Hub.getAllJax(), i;
+          for(i=0; i < all.length; i += 1) {
+              all[i].SourceElement().parentNode.className += ' has-jax';
+          }
+      });
+  </script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+
+</body>
+</html>

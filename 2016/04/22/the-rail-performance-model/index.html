@@ -1,0 +1,940 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/xfe/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+
+
+<link href="/xfe/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/xfe/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="tool,devtool,translate,guide," />
+
+
+
+
+
+  <link rel="alternate" href="/xfe/atom.xml" title="{XFE}" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xfe/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/rail?hl=en &amp;#x7FFB;&amp;#x8BD1;
+
+RAIL&amp;#xFF08;Response&amp;#x3001;Animation&amp;#x3001;Idel&amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAIL性能模型">
+<meta property="og:url" content="http://sinaad.github.io/2016/04/22/the-rail-performance-model/index.html">
+<meta property="og:site_name" content="{XFE}">
+<meta property="og:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/rail?hl=en &amp;#x7FFB;&amp;#x8BD1;
+
+RAIL&amp;#xFF08;Response&amp;#x3001;Animation&amp;#x3001;Idel&amp;#x">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/22/the-rail-performance-model/./rail.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/22/the-rail-performance-model/./render-frame.png">
+<meta property="og:updated_time" content="2016-04-25T03:00:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RAIL性能模型">
+<meta name="twitter:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/rail?hl=en &amp;#x7FFB;&amp;#x8BD1;
+
+RAIL&amp;#xFF08;Response&amp;#x3001;Animation&amp;#x3001;Idel&amp;#x">
+<meta name="twitter:image" content="http://sinaad.github.io/xfe/2016/04/22/the-rail-performance-model/./rail.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> RAIL性能模型 | {XFE} </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?13989991106bdad30ea927ab9ae93a09";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/xfe/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">{XFE}</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xfe/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/xfe/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/xfe/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xfe/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xfe/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                RAIL性能模型
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-22T13:21:54+08:00" content="2016-04-22">
+              2016-04-22
+            </time>
+          </span>
+
+          
+          <span class="post-author">
+            &nbsp; | &nbsp;
+            可撸死露露(胡月)
+          </span>
+          
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/xfe/categories/devtool/" itemprop="url" rel="index">
+                    <span itemprop="name">devtool</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/xfe/2016/04/22/the-rail-performance-model/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/22/the-rail-performance-model/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>&#x672C;&#x6587;&#x6839;&#x636E; <a href="https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/rail?hl=en" target="_blank" rel="external">https://developers.google.com/web/tools/chrome-devtools/profile/evaluate-performance/rail?hl=en</a> &#x7FFB;&#x8BD1;</p>
+</blockquote>
+<p>RAIL&#xFF08;<strong>R</strong>esponse&#x3001;<strong>A</strong>nimation&#x3001;<strong>I</strong>del&#x3001;<strong>L</strong>oad&#xFF09;&#x662F;&#x4E00;&#x4E2A;&#x4EE5;&#x7528;&#x6237;&#x4E3A;&#x4E2D;&#x5FC3;&#x7684;&#x6027;&#x80FD;&#x6A21;&#x578B;&#xFF0C;&#x6BCF;&#x4E2A;web app&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#x4E2D;&#x5206;&#x4E3A;&#x56DB;&#x4E2A;&#x4E0D;&#x540C;&#x7684;&#x65B9;&#x9762;&#xFF0C;&#x6839;&#x636E;&#x8FD9;&#x56DB;&#x4E2A;&#x4E0D;&#x540C;&#x7684;&#x65B9;&#x9762;&#x6709;&#x5BF9;&#x5E94;&#x7684;&#x56DB;&#x4E2A;&#x4E0D;&#x540C;&#x7684;&#x6027;&#x80FD;&#x4F18;&#x5316;&#x65B9;&#x6848;&#xFF1A;</p>
+<p><img src="/xfe/2016/04/22/the-rail-performance-model/./rail.png" alt="rail"></p>
+<h3 id="&#x4EE5;&#x7528;&#x6237;&#x4E3A;&#x4E2D;&#x5FC3;"><a href="#&#x4EE5;&#x7528;&#x6237;&#x4E3A;&#x4E2D;&#x5FC3;" class="headerlink" title="&#x4EE5;&#x7528;&#x6237;&#x4E3A;&#x4E2D;&#x5FC3;"></a>&#x4EE5;&#x7528;&#x6237;&#x4E3A;&#x4E2D;&#x5FC3;</h3><p>&#x8BA9;&#x7528;&#x6237;&#x6210;&#x4E3A;&#x6027;&#x80FD;&#x4F18;&#x5316;&#x7684;&#x7126;&#x70B9;&#x3002;&#x5F53;&#x7528;&#x6237;&#x8BBF;&#x95EE;&#x60A8;&#x7684;&#x7F51;&#x7AD9;&#x65F6;&#xFF0C;&#x8BA9;&#x7528;&#x6237;&#x7684;&#x4E3B;&#x8981;&#x65F6;&#x95F4;&#x82B1;&#x8D39;&#x5728;&#x5E94;&#x7B54;&#x4E0A;&#x800C;&#x4E0D;&#x662F;&#x52A0;&#x8F7D;&#x4E0A;&#x3002;&#x4E0B;&#x9762;&#x4E86;&#x89E3;&#x4E00;&#x4E0B;&#x7528;&#x6237;&#x662F;&#x5982;&#x4F55;&#x770B;&#x5F85;&#x5EF6;&#x65F6;&#x7684;:</p>
+<table>
+<thead>
+<tr>
+<th>&#x5EF6;&#x65F6;(ms)</th>
+<th>&#x7528;&#x6237;&#x884C;&#x4E3A;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 - 16</td>
+<td>&#x5BF9;&#x4E8E;&#x4E00;&#x4E2A;60fps&#x5237;&#x65B0;&#x9891;&#x7387;&#x7684;&#x5C4F;&#x5E55;&#xFF0C;&#x8FD9;&#x4E2A;&#x65F6;&#x95F4;&#x8303;&#x56F4;&#x4EE3;&#x8868;&#x4E86;&#x5C4F;&#x5E55;&#x6E32;&#x67D3;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x5E27;&#x7684;&#x65F6;&#x95F4;(1000/60 ~=16ms)&#x3002;&#x4EBA;&#x4EEC;&#x975E;&#x5E38;&#x64C5;&#x957F;&#x8DDF;&#x8E2A;&#x8FD0;&#x52A8;&#xFF0C;&#x4ED6;&#x4EEC;&#x559C;&#x6B22;&#x90A3;&#x4E9B;&#x4E0D;&#x7B26;&#x5408;&#x9884;&#x671F;&#x7684;&#x8FD0;&#x52A8;&#xFF0C;&#x4E5F;&#x4E0D;&#x559C;&#x6B22;&#x53EF;&#x53D8;&#x5E27;&#x7387;&#x548C;&#x5468;&#x671F;&#x6027;&#x505C;&#x6B62;&#x3002;</td>
+</tr>
+<tr>
+<td>0 - 100</td>
+<td>&#x5728;&#x8FD9;&#x4E2A;&#x65F6;&#x95F4;&#x8303;&#x56F4;&#x5185;&#x4F5C;&#x51FA;&#x54CD;&#x5E94;&#xFF0C;&#x4F1A;&#x8BA9;&#x7528;&#x6237;&#x89C9;&#x5F97;&#x7ED3;&#x679C;&#x662F;&#x5373;&#x65F6;&#x7684;&#x3002;&#x8D85;&#x8FC7;&#x8FD9;&#x4E2A;&#x5EF6;&#x65F6;&#xFF08;100ms&#xFF09;&#xFF0C;&#x884C;&#x52A8;&#x548C;&#x53CD;&#x5E94;&#x4E4B;&#x95F4;&#x7684;&#x8FDE;&#x63A5;&#x5C31;&#x4F1A;&#x88AB;&#x7834;&#x574F;&#x3002;</td>
+</tr>
+<tr>
+<td>100 - 300</td>
+<td>&#x7528;&#x6237;&#x80FD;&#x611F;&#x89C9;&#x5230;&#x8F7B;&#x5FAE;&#x7684;&#x53EF;&#x5BDF;&#x89C9;&#x7684;&#x5EF6;&#x65F6;</td>
+</tr>
+<tr>
+<td>300 - 1000</td>
+<td>&#x5728;&#x8FD9;&#x4E2A;&#x65F6;&#x95F4;&#x8303;&#x56F4;&#x5185;&#xFF0C;&#x4E8B;&#x60C5;&#x770B;&#x8D77;&#x6765;&#x662F;&#x65AD;&#x65AD;&#x7EED;&#x7EED;&#x7684;&#x3002;&#x5BF9;web&#x4E0A;&#x7684;&#x5927;&#x591A;&#x6570;&#x7528;&#x6237;&#xFF0C;&#x52A0;&#x8F7D;&#x9875;&#x9762;&#x548C;&#x6539;&#x53D8;&#x89C6;&#x56FE;&#x90FD;&#x4EE3;&#x8868;&#x4E86;&#x4E00;&#x4E2A;&#x4EFB;&#x52A1;&#x3002;</td>
+</tr>
+<tr>
+<td>1000+</td>
+<td>&#x8D85;&#x8FC7;1s&#xFF0C;&#x7528;&#x6237;&#x5C06;&#x4F1A;&#x5931;&#x53BB;&#x6B63;&#x5728;&#x6267;&#x884C;&#x7684;&#x4EFB;&#x52A1;&#x8010;&#x5FC3;&#x3002;</td>
+</tr>
+<tr>
+<td>10,000+</td>
+<td>&#x7528;&#x6237;&#x5F00;&#x59CB;&#x611F;&#x5230;&#x6CAE;&#x4E27;&#x5E76;&#x4E14;&#x6709;&#x53EF;&#x80FD;&#x4F1A;&#x653E;&#x5F03;&#x4EFB;&#x52A1;&#xFF0C;&#x5E76;&#x4E14;&#x4E4B;&#x540E;&#x6709;&#x53EF;&#x80FD;&#x4E0D;&#x4F1A;&#x518D;&#x56DE;&#x6765;&#x7EE7;&#x7EED;&#x6B64;&#x6B21;&#x4EFB;&#x52A1;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Response-&#x54CD;&#x5E94;-&#xFF1A;&#x5728;100ms&#x4EE5;&#x5185;&#x4F5C;&#x51FA;&#x54CD;&#x5E94;"><a href="#Response-&#x54CD;&#x5E94;-&#xFF1A;&#x5728;100ms&#x4EE5;&#x5185;&#x4F5C;&#x51FA;&#x54CD;&#x5E94;" class="headerlink" title="Response(&#x54CD;&#x5E94;)&#xFF1A;&#x5728;100ms&#x4EE5;&#x5185;&#x4F5C;&#x51FA;&#x54CD;&#x5E94;"></a>Response(&#x54CD;&#x5E94;)&#xFF1A;&#x5728;100ms&#x4EE5;&#x5185;&#x4F5C;&#x51FA;&#x54CD;&#x5E94;</h3><p>&#x6211;&#x4EEC;&#x5FC5;&#x987B;&#x5728;100ms&#x5185;&#x5BF9;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;&#x4F5C;&#x51FA;&#x54CD;&#x5E94;&#xFF0C;&#x5426;&#x5219;&#x7528;&#x6237;&#x4F1A;&#x611F;&#x5230;&#x5EF6;&#x65F6;&#x3002;&#x8FD9;&#x9002;&#x7528;&#x4E8E;&#x4EFB;&#x4F55;&#x8F93;&#x5165;&#xFF0C;&#x4E0D;&#x7BA1;&#x4ED6;&#x4EEC;&#x662F;&#x5728;&#x70B9;&#x51FB;&#x6309;&#x94AE;&#xFF0C;&#x5207;&#x6362;&#x8868;&#x5355;&#x8FD8;&#x662F;&#x5728;&#x5F00;&#x542F;&#x4E00;&#x4E2A;&#x52A8;&#x753B;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x4F60;&#x6CA1;&#x6709;&#x53CA;&#x65F6;&#x5E94;&#x7B54;&#xFF0C;&#x884C;&#x4E3A;&#x548C;&#x53CD;&#x5E94;&#x4E4B;&#x95F4;&#x7684;&#x8FDE;&#x63A5;&#x5C31;&#x4F1A;&#x88AB;&#x7834;&#x574F;&#xFF0C;&#x7528;&#x6237;&#x5C06;&#x4F1A;&#x611F;&#x89C9;&#x5230;&#x65F6;&#x5EF6;&#x3002;</p>
+<p>&#x867D;&#x7136;&#x770B;&#x8D77;&#x6765;&#x597D;&#x50CF;&#x662F;&#x5F88;&#x660E;&#x663E;&#x7684;&#x5BF9;&#x7528;&#x6237;&#x7684;&#x64CD;&#x4F5C;&#x7ACB;&#x5373;&#x4F5C;&#x51FA;&#x4E86;&#x54CD;&#x5E94;&#xFF0C;&#x4F46;&#x662F;&#x8FD9;&#x53EF;&#x80FD;&#x5E76;&#x4E0D;&#x662F;&#x6B63;&#x786E;&#x7684;&#x5E94;&#x7B54;&#x3002;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x7528;&#x8FD9;100ms&#x6765;&#x505A;&#x5176;&#x4ED6;&#x6602;&#x8D35;&#x7684;&#x5DE5;&#x4F5C;(&#x9884;&#x8BA1;&#x7B97;)&#x4F46;&#x662F;&#x8981;&#x6CE8;&#x610F;&#x4E0D;&#x8981;&#x963B;&#x585E;&#x7528;&#x6237;&#x7684;&#x4EA4;&#x4E92;&#x3002;&#x5982;&#x679C;&#x53EF;&#x4EE5;&#x7684;&#x8BDD;&#xFF0C;&#x5C3D;&#x91CF;&#x5728;&#x540E;&#x53F0;&#x5DE5;&#x4F5C;&#x3002;<br>&#x5BF9;&#x4E8E;&#x9700;&#x8981;&#x8D85;&#x8FC7;500ms&#x624D;&#x80FD;&#x5B8C;&#x6210;&#x7684;&#x52A8;&#x4F5C;&#xFF0C;&#x901A;&#x5E38;&#x4F1A;&#x63D0;&#x4F9B;&#x4E00;&#x4E2A;&#x53CD;&#x9988;&#x3002;</p>
+<blockquote>
+<p>&#x8BB0;&#x4F4F;&#xFF1A;<br>&#x5BF9;&#x7528;&#x6237;&#x7684;touchmoves&#x548C;scrolling&#x64CD;&#x4F5C;&#xFF0C;&#x54CD;&#x5E94;&#x65F6;&#x95F4;&#x6700;&#x597D;&#x63A7;&#x5236;&#x5728;16ms&#x4EE5;&#x5185;</p>
+</blockquote>
+<h3 id="Animition-&#x52A8;&#x753B;-&#xFF1A;&#x6BCF;16ms&#x6E32;&#x67D3;&#x4E00;&#x5E27;"><a href="#Animition-&#x52A8;&#x753B;-&#xFF1A;&#x6BCF;16ms&#x6E32;&#x67D3;&#x4E00;&#x5E27;" class="headerlink" title="Animition(&#x52A8;&#x753B;)&#xFF1A;&#x6BCF;16ms&#x6E32;&#x67D3;&#x4E00;&#x5E27;"></a>Animition(&#x52A8;&#x753B;)&#xFF1A;&#x6BCF;16ms&#x6E32;&#x67D3;&#x4E00;&#x5E27;</h3><p>&#x52A8;&#x753B;&#x5B9E;&#x9645;&#x4E0A;&#x662F;web app&#x4E00;&#x4E2A;&#x4E0D;&#x53EF;&#x907F;&#x514D;&#x7684;&#x884C;&#x4E3A;&#x3002;&#x6BD4;&#x5982;:touchmoves&#x548C;scrolling&#x90FD;&#x662F;&#x52A8;&#x753B;&#x3002;&#x5982;&#x679C;&#x52A8;&#x753B;&#x7684;&#x5E27;&#x7387;&#x662F;&#x53D8;&#x5316;&#x7684;&#xFF0C;&#x7528;&#x6237;&#x662F;&#x53EF;&#x4EE5;&#x771F;&#x5207;&#x7684;&#x611F;&#x53D7;&#x5230;&#x7684;&#x3002;&#x6211;&#x4EEC;&#x7684;&#x76EE;&#x6807;&#x5C31;&#x662F;&#x8981;&#x5728;1s&#x5185;&#x4EA7;&#x751F;60&#x5E27;(<strong>&#x56E0;&#x4E3A;&#x5F53;&#x524D;&#x5927;&#x591A;&#x6570;&#x8BBE;&#x5907;&#x7684;&#x5C4F;&#x5E55;&#x5237;&#x65B0;&#x9891;&#x7387;&#x90FD;&#x662F;60&#x6B21;/&#x79D2;</strong>)&#xFF0C;&#x5E76;&#x4E14;&#x6BCF;&#x4E00;&#x5E27;&#x8981;&#x7ECF;&#x8FC7;&#x4EE5;&#x4E0B;&#x6240;&#x6709;&#x6B65;&#x9AA4;&#xFF1A;</p>
+<p><img src="/xfe/2016/04/22/the-rail-performance-model/./render-frame.png" alt="render-frame"></p>
+<p>&#x4ECE;&#x4E00;&#x4E2A;&#x7EAF;&#x6570;&#x5B66;&#x7684;&#x89D2;&#x5EA6;&#x6765;&#x770B;&#xFF0C;&#x6BCF;&#x4E00;&#x5E27;&#x90FD;&#x6709;16.66ms&#x7684;&#x9884;&#x7B97;(1000/60)<br>&#x5B9E;&#x9645;&#x4E0A;&#xFF0C;&#x5728;&#x6E32;&#x67D3;&#x67D0;&#x4E00;&#x5E27;&#x753B;&#x9762;&#x7684;&#x540C;&#x65F6;&#xFF0C;&#x7531;&#x4E8E;&#x6D4F;&#x89C8;&#x5668;&#x8FD8;&#x6709;&#x989D;&#x5916;&#x7684;&#x4E8B;&#x60C5;&#x8981;&#x53BB;&#x5904;&#x7406;&#xFF0C;&#x56E0;&#x6B64;&#x5355;&#x7EAF;&#x7684;&#x6E32;&#x67D3;&#x7684;&#x5DE5;&#x4F5C;&#x9700;&#x8981;&#x63A7;&#x5236;&#x5728;10ms&#x5185;&#x624D;&#x80FD;&#x8FBE;&#x5230;&#x6D41;&#x7545;&#x7684;&#x89C6;&#x89C9;&#x6548;&#x679C;&#x3002;</p>
+<p>&#x5C3D;&#x53EF;&#x80FD;&#x7684;&#x5145;&#x5206;&#x5229;&#x7528;100ms&#x54CD;&#x5E94;&#x9884;&#x52A0;&#x8F7D;&#x7684;&#x6602;&#x8D35;&#x5DE5;&#x4F5C;&#x6765;&#x6700;&#x5927;&#x9650;&#x5EA6;&#x7684;&#x8BA9;&#x4F60;&#x6709;&#x673A;&#x4F1A;&#x8FBE;&#x5230;60fps&#x3002;</p>
+<p>&#x8BE6;&#x60C5;&#x8BF7;&#x53C2;&#x8003;&#xFF1A;<a href="https://developers.google.com/web/fundamentals/performance/rendering/" target="_blank" rel="external">&#x6E32;&#x67D3;&#x6027;&#x80FD;</a></p>
+<h3 id="Idel-&#x6D4F;&#x89C8;&#x5668;&#x7A7A;&#x95F2;&#x72B6;&#x6001;-&#x6700;&#x5927;&#x5316;&#x7A7A;&#x95F2;&#x65F6;&#x95F4;"><a href="#Idel-&#x6D4F;&#x89C8;&#x5668;&#x7A7A;&#x95F2;&#x72B6;&#x6001;-&#x6700;&#x5927;&#x5316;&#x7A7A;&#x95F2;&#x65F6;&#x95F4;" class="headerlink" title="Idel(&#x6D4F;&#x89C8;&#x5668;&#x7A7A;&#x95F2;&#x72B6;&#x6001;):&#x6700;&#x5927;&#x5316;&#x7A7A;&#x95F2;&#x65F6;&#x95F4;"></a>Idel(&#x6D4F;&#x89C8;&#x5668;&#x7A7A;&#x95F2;&#x72B6;&#x6001;):&#x6700;&#x5927;&#x5316;&#x7A7A;&#x95F2;&#x65F6;&#x95F4;</h3><p>&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5229;&#x7528;&#x7A7A;&#x95F2;&#x65F6;&#x95F4;&#x6765;&#x5B8C;&#x6210;&#x5EF6;&#x8FDF;&#x4EFB;&#x52A1;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;&#x901A;&#x8FC7;&#x6700;&#x5C0F;&#x5316;&#x9884;&#x52A0;&#x8F7D;&#x6570;&#x636E;&#x6765;&#x4FDD;&#x8BC1;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x5FEB;&#x901F;&#x5B8C;&#x6210;&#x52A0;&#x8F7D;&#xFF0C;&#x8FD9;&#x6837;&#x6211;&#x4EEC;&#x5C31;&#x53EF;&#x4EE5;&#x5229;&#x7528;&#x7A7A;&#x95F2;&#x65F6;&#x95F4;&#x6765;&#x52A0;&#x8F7D;&#x5269;&#x4F59;&#x6570;&#x636E;&#x3002;</p>
+<p>&#x5EF6;&#x8FDF;&#x4EFB;&#x52A1;&#x5E94;&#x8BE5;&#x6309;&#x7167;50ms&#x8FDB;&#x884C;&#x5206;&#x7EC4;&#x3002;&#x56E0;&#x4E3A;&#x6700;&#x9AD8;&#x4F18;&#x5148;&#x7EA7;&#x7684;&#x5DE5;&#x4F5C;&#x662F;&#xFF1A;&#x5728;100ms&#x5185;&#x54CD;&#x5E94;&#x7528;&#x6237;&#x4EFB;&#x4F55;&#x8F93;&#x5165;&#x3002;</p>
+<p>&#x4E3A;&#x4E86;&#x4FDD;&#x8BC1;&lt;100ms&#x7684;&#x54CD;&#x5E94;&#xFF0C;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x5FC5;&#x987B;&#x5728;&#x6BCF;&#x4E2A;&lt;100ms&#x7684;&#x65F6;&#x95F4;&#x5185;&#x628A;&#x63A7;&#x5236;&#x6743;&#x4EA4;&#x56DE;&#x7ED9;&#x4E3B;&#x7EBF;&#x7A0B;&#xFF0C;&#x8FD9;&#x6837;&#x4E3B;&#x7EBF;&#x7A0B;&#x624D;&#x80FD;&#x54CD;&#x5E94;&#x7528;&#x6237;&#x8F93;&#x5165;&#x3002;</p>
+<p>&#x5728;&#x6BCF;&#x4E2A;50ms&#x65F6;&#x95F4;&#x7247;&#x6BB5;&#x5185;&#x5DE5;&#x4F5C;&#xFF0C;&#x53EF;&#x4EE5;&#x4FDD;&#x8BC1;&#x5EF6;&#x65F6;&#x4EFB;&#x52A1;&#x7684;&#x5B8C;&#x6210;&#xFF0C;&#x540C;&#x65F6;&#x4E5F;&#x80FD;&#x7ACB;&#x5373;&#x54CD;&#x5E94;&#x7528;&#x6237;&#x64CD;&#x4F5C;&#x3002;</p>
+<h3 id="Load-&#x52A0;&#x8F7D;-&#xFF1A;&#x5728;1s&#x5185;&#x4F20;&#x9012;&#x5185;&#x5BB9;"><a href="#Load-&#x52A0;&#x8F7D;-&#xFF1A;&#x5728;1s&#x5185;&#x4F20;&#x9012;&#x5185;&#x5BB9;" class="headerlink" title="Load(&#x52A0;&#x8F7D;)&#xFF1A;&#x5728;1s&#x5185;&#x4F20;&#x9012;&#x5185;&#x5BB9;"></a>Load(&#x52A0;&#x8F7D;)&#xFF1A;&#x5728;1s&#x5185;&#x4F20;&#x9012;&#x5185;&#x5BB9;</h3><p>&#x8981;&#x5728;1s&#x5185;&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x7AD9;&#x70B9;&#x3002;&#x5982;&#x679C;&#x8D85;&#x8FC7;1s&#xFF0C;&#x7528;&#x6237;&#x7684;&#x6CE8;&#x610F;&#x529B;&#x4F1A;&#x8F6C;&#x79FB;&#xFF0C;&#x4ED6;&#x4EEC;&#x5904;&#x7406;&#x4EFB;&#x52A1;&#x7684;&#x611F;&#x89C9;&#x5C31;&#x4F1A;&#x88AB;&#x6253;&#x65AD;&#x3002;</p>
+<p>&#x96C6;&#x4E2D;&#x4E8E;<a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/" target="_blank" rel="external">&#x4F18;&#x5316;&#x5173;&#x952E;&#x5448;&#x73B0;&#x8DEF;&#x5F84;</a>&#x6765;&#x89E3;&#x9501;&#x6E32;&#x67D3;</p>
+<p>&#x5B9E;&#x9645;&#x4E0A;&#x6211;&#x4EEC;&#x5E76;&#x4E0D;&#x9700;&#x8981;&#x5728;1s&#x5185;&#x52A0;&#x8F7D;&#x5B8C;&#x6240;&#x6709;&#x4E1C;&#x897F;&#xFF0C;&#x6211;&#x4EEC;&#x53EA;&#x9700;&#x5728;1s&#x5185;&#x5B8C;&#x6210;&#x5173;&#x952E;&#x5448;&#x73B0;&#x8DEF;&#x5F84;&#x5373;&#x53EF;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x53EF;&#x4EE5;&#x7ED9;&#x7528;&#x6237;&#x63D0;&#x4F9B; &#x4E00;&#x79CD;&#x5DF2;&#x7ECF;&#x5168;&#x90E8;&#x52A0;&#x8F7D;&#x5B8C;&#x6210;&#x7684;&#x9519;&#x89C9;&#xFF0C;&#x5F00;&#x542F;&#x6E10;&#x8FDB;&#x5F0F;&#x6E32;&#x67D3;&#x5E76;&#x4E14;&#x5728;&#x540E;&#x53F0;&#x6267;&#x884C;&#x4E00;&#x4E9B;&#x4EFB;&#x52A1;&#xFF0C;&#x5EF6;&#x8FDF;&#x4E00;&#x4E9B;&#x975E;&#x5173;&#x952E;&#x52A0;&#x8F7D;&#x5230;&#x7A7A;&#x95F2;&#x65F6;&#x95F4;&#x4E2D;&#x3002;</p>
+<blockquote>
+<p>&#x66F4;&#x591A;&#x5185;&#x5BB9;&#xFF0C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;<a href="https://cn.udacity.com/course/website-performance-optimization--ud884/" target="_blank" rel="external">&#x4F18;&#x5316;&#x5173;&#x952E;&#x5448;&#x73B0;&#x8DEF;&#x5F84;</a></p>
+</blockquote>
+<h3 id="&#x6027;&#x80FD;&#x4F18;&#x5316;&#x5173;&#x952E;&#x6307;&#x6807;&#x5C0F;&#x7ED3;"><a href="#&#x6027;&#x80FD;&#x4F18;&#x5316;&#x5173;&#x952E;&#x6307;&#x6807;&#x5C0F;&#x7ED3;" class="headerlink" title="&#x6027;&#x80FD;&#x4F18;&#x5316;&#x5173;&#x952E;&#x6307;&#x6807;&#x5C0F;&#x7ED3;"></a>&#x6027;&#x80FD;&#x4F18;&#x5316;&#x5173;&#x952E;&#x6307;&#x6807;&#x5C0F;&#x7ED3;</h3><p>&#x4E3A;&#x4E86;&#x8BC4;&#x4F30;&#x4F60;&#x7684;&#x7F51;&#x7AD9;&#x662F;&#x5426;&#x7B26;&#x5408;RAIL&#x6307;&#x6807;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;Chrome&#x7684;&#x5F00;&#x53D1;&#x8005;&#x5DE5;&#x5177;<a href="http://sinaad.github.io/xfe/2016/04/21/how-to-use-the-timeline-tool/#more">Timeline</a>&#x6765;&#x8BB0;&#x5F55;&#x7528;&#x6237;&#x64CD;&#x4F5C;&#x3002;&#x7136;&#x540E;&#x68C0;&#x67E5;timeline&#x4E0A;&#x7684;&#x8BB0;&#x5F55;&#x65F6;&#x95F4;&#x662F;&#x5426;&#x7B26;&#x5408;&#x4EE5;&#x4E0B;&#x8FD9;&#x4E9B;&#x5173;&#x952E;&#x6307;&#x6807;&#xFF1A;</p>
+<table>
+<thead>
+<tr>
+<th>RAIL&#x6B65;&#x9AA4;</th>
+<th>&#x5173;&#x952E;&#x6307;&#x6807;&#x7528;&#x6237;&#x64CD;&#x4F5C;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Response</td>
+<td>&#x8F93;&#x5165;&#x6F5C;&#x4F0F;&#x671F;(&#x4ECE;&#x8F93;&#x5165;&#x5230;&#x7ED8;&#x5236;)&lt;100ms&#x3002;&#x7528;&#x6237;&#x70B9;&#x51FB;&#x56FE;&#x6807;&#x6216;&#x6309;&#x94AE;(&#x5982;&#xFF1A;&#x6253;&#x5F00;&#x5BFC;&#x822A;&#x83DC;&#x5355;&#xFF0C;&#x70B9;&#x51FB;&#x7F16;&#x8F91;)</td>
+</tr>
+<tr>
+<td>Response</td>
+<td>&#x8F93;&#x5165;&#x6F5C;&#x4F0F;&#x671F;&lt;16ms&#x3002;&#x7528;&#x6237;&#x6ED1;&#x52A8;&#x624B;&#x6307;&#xFF0C;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x7684;&#x54CD;&#x5E94;&#x7ED1;&#x5B9A;&#x5230;&#x624B;&#x6307;&#x6240;&#x5728;&#x7684;&#x4F4D;&#x7F6E;&#x4E0A;(&#x5982;&#xFF1A;&#x62C9;&#x52A8;&#x5237;&#x65B0;&#xFF0C;&#x6ED1;&#x52A8;&#x65CB;&#x8F6C;)</td>
+</tr>
+<tr>
+<td>Animation</td>
+<td>&#x8F93;&#x5165;&#x6F5C;&#x4F0F;&#x671F;&lt;100ms&#xFF0C;&#x521D;&#x59CB;&#x5316;&#x54CD;&#x5E94;&#x3002;&#x7528;&#x6237;&#x521D;&#x59CB;&#x5316;&#x9875;&#x9762;&#x6EDA;&#x52A8;&#x6216;&#x8005;&#x52A8;&#x753B;&#x5F00;&#x59CB;</td>
+</tr>
+<tr>
+<td>Animation</td>
+<td>&#x6BCF;&#x4E00;&#x5E27;&#x5DE5;&#x4F5C;(JS&#x7ED8;&#x5236;)&#x5B8C;&#x6210;&lt;16ms&#x3002;&#x7528;&#x6237;&#x6EDA;&#x52A8;&#x9875;&#x9762;&#x6216;&#x8005;&#x6D4F;&#x89C8;&#x4E00;&#x4E2A;&#x52A8;&#x753B;</td>
+</tr>
+<tr>
+<td>Idel</td>
+<td>&#x4E3B;&#x7EBF;&#x7A0B;JS&#x5DE5;&#x4F5C;&#x5757;&lt;=50ms&#x3002;&#x7528;&#x6237;&#x4E0D;&#x4E0E;&#x9875;&#x9762;&#x4EA4;&#x4E92;&#xFF0C;&#x4F46;&#x662F;&#x4E3B;&#x7EBF;&#x7A0B;&#x8DB3;&#x4EE5;&#x5E94;&#x4ED8;&#x4E0B;&#x4E00;&#x4E2A;&#x7528;&#x6237;&#x8F93;&#x5165;</td>
+</tr>
+<tr>
+<td>Load</td>
+<td>&#x9875;&#x9762;&#x5728;1000ms&#x5185;&#x51C6;&#x5907;&#x597D;&#x88AB;&#x4F7F;&#x7528;&#x3002;&#x7528;&#x6237;&#x52A0;&#x8F7D;&#x9875;&#x9762;&#x5E76;&#x4E14;&#x770B;&#x5230;&#x5173;&#x952E;&#x8DEF;&#x5F84;&#x7684;&#x5185;&#x5BB9;</td>
+</tr>
+<tr>
+<td>Load</td>
+<td>&#x5728;&#x5168;&#x9875;&#x9762;&#x52A0;&#x8F7D;&#x8FC7;&#x7A0B;&#x4E2D;&#x6EE1;&#x8DB3;&#x54CD;&#x5E94;&#x76EE;&#x6807;&#x3002;&#x7528;&#x6237;&#x52A0;&#x8F7D;&#x9875;&#x9762;&#x5E76;&#x4E14;&#x5F00;&#x59CB;&#x4EA4;&#x4E92;(&#x5982;&#xFF1A;&#x6EDA;&#x52A8;&#x6216;&#x8005;&#x6253;&#x5F00;&#x5BFC;&#x822A;)</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/xfe/tags/tool/" rel="tag">#tool</a>
+          
+            <a href="/xfe/tags/devtool/" rel="tag">#devtool</a>
+          
+            <a href="/xfe/tags/translate/" rel="tag">#translate</a>
+          
+            <a href="/xfe/tags/guide/" rel="tag">#guide</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xfe/2016/04/22/timeline-event-reference/" rel="next" title="Timeline事件说明">
+                <i class="fa fa-chevron-left"></i> Timeline事件说明
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/xfe/2016/04/27/analyze-runtime-performance/" rel="prev" title="运行时性能分析">
+                运行时性能分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/04/22/the-rail-performance-model/"
+     data-title="RAIL性能模型"
+     data-content=""
+     data-url="http://sinaad.github.io/xfe/2016/04/22/the-rail-performance-model/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/22/the-rail-performance-model/"
+           data-title="RAIL性能模型" data-url="http://sinaad.github.io/xfe/2016/04/22/the-rail-performance-model/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/2231440955/180/5749469848/1"
+               alt="SINA FE Team" />
+          <p class="site-author-name" itemprop="name">SINA FE Team</p>
+          <p class="site-description motion-element" itemprop="description">我们一直努力贴好小广告</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/xfe/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/xfe/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/xfe/tags">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/xfe/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/orgs/sinaad/teams/xfe" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/acelan" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#以用户为中心"><span class="nav-number">1.</span> <span class="nav-text">以用户为中心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Response-响应-：在100ms以内作出响应"><span class="nav-number">2.</span> <span class="nav-text">Response(响应)：在100ms以内作出响应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Animition-动画-：每16ms渲染一帧"><span class="nav-number">3.</span> <span class="nav-text">Animition(动画)：每16ms渲染一帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Idel-浏览器空闲状态-最大化空闲时间"><span class="nav-number">4.</span> <span class="nav-text">Idel(浏览器空闲状态):最大化空闲时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Load-加载-：在1s内传递内容"><span class="nav-number">5.</span> <span class="nav-text">Load(加载)：在1s内传递内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能优化关键指标小结"><span class="nav-number">6.</span> <span class="nav-text">性能优化关键指标小结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SINA FE Team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/xfe/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/xfe/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sinaad-xfe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+        //  do something with the error.  message[2] is the Error object that records the problem.
+        console.log(message);
+      });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+          var all = MathJax.Hub.getAllJax(), i;
+          for(i=0; i < all.length; i += 1) {
+              all[i].SourceElement().parentNode.className += ' has-jax';
+          }
+      });
+  </script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+
+</body>
+</html>
