@@ -8,7 +8,7 @@ categories: [devtool]
 > 本文根据 https://developers.google.com/web/tools/chrome-devtools/profile/rendering-tools/js-execution?hl=en 翻译
 > 作者：Kayce Basques(Technical Writer at Google)，Meggin Kearney(Meggin is a Tech Writer)
 
-使用Chrome开发工具的CPU分析器(CPU Profiler)来识别高耗的函数或功能。
+使用Chrome开发工具的CPU分析器(CPU Profiler)来识别高耗的函数。
 
 ![](cpu-profile.png)
 
