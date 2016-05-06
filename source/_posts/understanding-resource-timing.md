@@ -55,7 +55,7 @@ Resource Timing API提供了每一个单独资源被接收的详细时间细节�
     - 这个请求被挂起，等待一个非空闲TCP socket被释放。
     - 这个请求被挂起，因为浏览器在HTTP 1只支持[6个TCP连接](https://crbug.com/12066)。
 
-### <span style="color:#cdcdcd">▌</span>没有速度Stalled/阻塞Blocking
+### <span style="color:#cdcdcd">▌</span>停滞Stalled/阻塞Blocking
   - 请求在它可以被发送之前等待所花的时间。它会因为各种原因认为在排队等待。另外，这个时间包括代理协商过程所花的时间。
 
 ### <span style="color:#cdcdcd">▌</span>代理协商Proxy Negotiation
