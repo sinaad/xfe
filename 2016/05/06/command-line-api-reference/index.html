@@ -82,12 +82,13 @@ Command Line API&amp;#x">
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/06/command-line-api-reference/get-event-listeners.png">
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/06/command-line-api-reference/scrolling-list.png">
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/06/command-line-api-reference/scrolling-list-expanded.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/06/command-line-api-reference/keys-values.png">
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/06/command-line-api-reference/scrolling-list-expanded.png">
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/06/command-line-api-reference/monitor-events.png">
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/06/command-line-api-reference/monitor-key.png">
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/06/command-line-api-reference/grouped-profiles.png">
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/06/command-line-api-reference/table.png">
-<meta property="og:updated_time" content="2016-05-06T06:50:11.000Z">
+<meta property="og:updated_time" content="2016-05-06T06:53:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Command Line API参考文档">
 <meta name="twitter:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/debug/command-line/command-line-reference#profilename-and-profileendname &amp;#x7FFB;&amp;#x8BD1;
@@ -403,7 +404,7 @@ Command Line API&amp;#x">
 <p>&#x4F8B;&#x5982;&#xFF0C;&#x5047;&#x8BBE;&#x4F60;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x5B9A;&#x4E49;&#x4E86;&#x4E0B;&#x9762;&#x8FD9;&#x6837;&#x7684;&#x5BF9;&#x8C61;&#xFF1A;</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> player1 = { <span class="string">&quot;name&quot;</span>: <span class="string">&quot;Ted&quot;</span>, <span class="string">&quot;level&quot;</span>: <span class="number">42</span> }</span><br></pre></td></tr></table></figure>
 <p>&#x5047;&#x8BBE;<code>player1</code>&#x5B9A;&#x4E49;&#x5728;&#x5168;&#x5C40;&#x7A7A;&#x95F4;&#x5185;&#xFF08;&#x7B80;&#x5355;&#x8D77;&#x89C1;&#xFF09;, &#x5728;&#x63A7;&#x5236;&#x53F0;&#x4E2D;&#x8F93;&#x5165;<code>keys(player1)</code>&#x548C;<code>values(player1)</code>&#x80FD;&#x5F97;&#x5230;&#x4E0B;&#x9762;&#x7684;&#x7ED3;&#x679C;&#xFF1A;</p>
-<p>Example of <code>keys()</code> and <code>values()</code> methods</p>
+<p><img src="/xfe/2016/05/06/command-line-api-reference/keys-values.png" alt="Example of keys() and values() methods"></p>
 <h2 id="monitor-function"><a href="#monitor-function" class="headerlink" title="monitor(function)"></a>monitor(function)</h2><p>&#x5F53;&#x6307;&#x5B9A;&#x7684;&#x51FD;&#x6570;&#x88AB;&#x8C03;&#x7528;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x63A7;&#x5236;&#x53F0;&#x4E2D;&#x4F1A;&#x6253;&#x5370;&#x4E00;&#x4E2A;&#x6D88;&#x606F;&#xFF0C;&#x6307;&#x51FA;&#x88AB;&#x6267;&#x884C;&#x7684;&#x51FD;&#x6570;&#x7684;&#x51FD;&#x6570;&#x540D;&#x548C;&#x4F20;&#x9012;&#x7ED9;&#x5B83;&#x7684;&#x53C2;&#x6570;&#x3002;</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">x, y</span>) </span>{</span><br><span class="line">    <span class="keyword">return</span> x + y;</span><br><span class="line">}</span><br><span class="line">monitor(sum);</span><br></pre></td></tr></table></figure>
 <p><img src="/xfe/2016/05/06/command-line-api-reference/scrolling-list-expanded.png" alt="Example of monitor() method"></p>
