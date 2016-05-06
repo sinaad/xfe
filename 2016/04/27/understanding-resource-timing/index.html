@@ -57,16 +57,29 @@
 
 
 
-<meta name="description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/network-performance/understanding-resource-timing &amp;#x7FFB;&amp;#x8BD1;">
+<meta name="description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/network-performance/understanding-resource-timing &amp;#x7FFB;&amp;#x8BD1;
+
+&amp;#x7406;&amp;#x89E3;&amp;#x8D44;&amp;#x6E90;&amp;#">
 <meta property="og:type" content="article">
-<meta property="og:title" content="理解资源时间线(待翻译，彤阳)">
+<meta property="og:title" content="理解资源时间线">
 <meta property="og:url" content="http://sinaad.github.io/2016/04/27/understanding-resource-timing/index.html">
 <meta property="og:site_name" content="{XFE}">
-<meta property="og:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/network-performance/understanding-resource-timing &amp;#x7FFB;&amp;#x8BD1;">
-<meta property="og:updated_time" content="2016-04-27T09:13:35.000Z">
+<meta property="og:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/network-performance/understanding-resource-timing &amp;#x7FFB;&amp;#x8BD1;
+
+&amp;#x7406;&amp;#x89E3;&amp;#x8D44;&amp;#x6E90;&amp;#">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/27/understanding-resource-timing/./resource-timing-api.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/27/understanding-resource-timing/./resource-timing-data.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/27/understanding-resource-timing/./resource-timing-entry.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/27/understanding-resource-timing/./stalled-request-series.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/27/understanding-resource-timing/./indicator-of-high-ttfb.png">
+<meta property="og:image" content="http://sinaad.github.io/xfe/2016/04/27/understanding-resource-timing/./indicator-of-large-content.png">
+<meta property="og:updated_time" content="2016-05-06T03:49:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="理解资源时间线(待翻译，彤阳)">
-<meta name="twitter:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/network-performance/understanding-resource-timing &amp;#x7FFB;&amp;#x8BD1;">
+<meta name="twitter:title" content="理解资源时间线">
+<meta name="twitter:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://developers.google.com/web/tools/chrome-devtools/profile/network-performance/understanding-resource-timing &amp;#x7FFB;&amp;#x8BD1;
+
+&amp;#x7406;&amp;#x89E3;&amp;#x8D44;&amp;#x6E90;&amp;#">
+<meta name="twitter:image" content="http://sinaad.github.io/xfe/2016/04/27/understanding-resource-timing/./resource-timing-api.png">
 
 
 
@@ -84,7 +97,7 @@
   };
 </script>
 
-  <title> 理解资源时间线(待翻译，彤阳) | {XFE} </title>
+  <title> 理解资源时间线 | {XFE} </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -234,7 +247,7 @@
             
             
               
-                理解资源时间线(待翻译，彤阳)
+                理解资源时间线
               
             
           </h1>
@@ -254,7 +267,7 @@
           
           <span class="post-author">
             &nbsp; | &nbsp;
-            彤阳
+            徐DerDer
           </span>
           
 
@@ -308,6 +321,99 @@
         <blockquote>
 <p>&#x672C;&#x6587;&#x6839;&#x636E; <a href="https://developers.google.com/web/tools/chrome-devtools/profile/network-performance/understanding-resource-timing" target="_blank" rel="external">https://developers.google.com/web/tools/chrome-devtools/profile/network-performance/understanding-resource-timing</a> &#x7FFB;&#x8BD1;</p>
 </blockquote>
+<p>&#x7406;&#x89E3;&#x8D44;&#x6E90;&#x901A;&#x8FC7;&#x7F51;&#x7EDC;&#x88AB;&#x805A;&#x96C6;&#x5230;&#x4E00;&#x8D77;&#x7684;&#x9636;&#x6BB5;&#x975E;&#x5E38;&#x91CD;&#x8981;&#x3002;&#x8FD9;&#x662F;&#x4FEE;&#x590D;&#x52A0;&#x8F7D;&#x95EE;&#x9898;&#x7684;&#x57FA;&#x7840;&#x3002;</p>
+<p>&#x6240;&#x6709;&#x7F51;&#x7EDC;&#x8BF7;&#x6C42;&#x90FD;&#x88AB;&#x8BA4;&#x4E3A;&#x662F;&#x4E00;&#x4E2A;&#x8D44;&#x6E90;&#x3002;&#x5F53;&#x4ED6;&#x4EEC;&#x5728;&#x7F51;&#x7EDC;&#x4E2D;&#x88AB;&#x68C0;&#x7D22;&#xFF0C;&#x8D44;&#x6E90;&#x65F6;&#x95F4;&#x7EBF;&#x4E0A;&#x5C55;&#x793A;&#x4E86;&#x8D44;&#x6E90;&#x4E0D;&#x540C;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#x3002;NetWork&#x9762;&#x677F;&#x4F7F;&#x7528;&#x4E86;&#x4E0E;&#x5F00;&#x653E;&#x7ED9;&#x5F00;&#x53D1;&#x8005;&#x4F7F;&#x7528;&#x7684;<a href="http://www.w3.org/TR/resource-timing" target="_blank" rel="external">Resource Timing API</a>&#x76F8;&#x540C;&#x7684;API&#x3002;</p>
+<p>Resource Timing API&#x63D0;&#x4F9B;&#x4E86;&#x6BCF;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x8D44;&#x6E90;&#x88AB;&#x63A5;&#x6536;&#x7684;&#x8BE6;&#x7EC6;&#x65F6;&#x95F4;&#x7EC6;&#x8282;&#x3002;&#x8BF7;&#x6C42;&#x751F;&#x547D;&#x5468;&#x671F;&#x7684;&#x4E3B;&#x8981;&#x9636;&#x6BB5;&#x6709;&#xFF1A;</p>
+<ul>
+<li>&#x91CD;&#x5B9A;&#x5411;<ul>
+<li>&#x7ACB;&#x523B;&#x5F00;&#x59CB;startTime&#x3002;</li>
+<li>&#x5982;&#x679C;&#x53D1;&#x751F;&#x4E86;&#x91CD;&#x5B9A;&#x5411;&#xFF0C;&#x8BB0;&#x5F55;redirectStart&#x3002;</li>
+<li>&#x5982;&#x679C;&#x91CD;&#x5B9A;&#x5411;&#x53D1;&#x751F;&#x5728;&#x8FD9;&#x4E2A;&#x9636;&#x6BB5;&#x7684;&#x672B;&#x5C3E;&#xFF0C;&#x5219;redirectEnd&#x4F1A;&#x88AB;&#x8BB0;&#x5F55;&#x3002;</li>
+</ul>
+</li>
+<li>App&#x7F13;&#x5B58;<ul>
+<li>&#x5982;&#x679C;&#x662F;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x7F13;&#x5B58;&#xFF08;application cache&#xFF09;&#x586B;&#x5145;&#x4E86;&#x8BF7;&#x6C42;&#xFF0C;fetchStart&#x65F6;&#x95F4;&#x70B9;&#x4F1A;&#x88AB;&#x8BB0;&#x5F55;&#x3002;</li>
+</ul>
+</li>
+<li>DNS<ul>
+<li>&#x5728;DNS&#x8BF7;&#x6C42;&#x5F00;&#x59CB;&#x65F6;&#xFF0C;domainLookupStart&#x65F6;&#x95F4;&#x70B9;&#x4F1A;&#x88AB;&#x8BB0;&#x5F55;&#x3002;</li>
+<li>&#x5728;DNS&#x8BF7;&#x6C42;&#x7ED3;&#x675F;&#x65F6;&#xFF0C;domainLookupEnd&#x65F6;&#x95F4;&#x70B9;&#x4F1A;&#x88AB;&#x8BB0;&#x5F55;&#x3002;</li>
+</ul>
+</li>
+<li>TCP<ul>
+<li>&#x5728;&#x521D;&#x59CB;&#x5316;&#x8FDE;&#x63A5;&#x670D;&#x52A1;&#x5668;&#x7684;&#x8FDE;&#x63A5;&#x65F6;&#xFF0C;connectStart&#x4F1A;&#x88AB;&#x8BB0;&#x5F55;&#x3002;</li>
+<li>&#x5982;&#x679C;TSL&#x6216;SSL&#x5728;&#x4F7F;&#x7528;&#x4E2D;&#xFF0C;&#x5F53;&#x5B89;&#x5168;&#x8FDE;&#x63A5;&#x5F00;&#x59CB;&#x63E1;&#x624B;&#x65F6;&#xFF0C;secureConnectionStart&#x4F1A;&#x5F00;&#x59CB;&#x3002;</li>
+<li>&#x5982;&#x679C;&#x8FDE;&#x63A5;&#x670D;&#x52A1;&#x5668;&#x7684;&#x8FDE;&#x63A5;&#x5B8C;&#x6210;&#x4E86;&#xFF0C;connectEnd&#x4F1A;&#x88AB;&#x8BB0;&#x5F55;&#x3002;</li>
+</ul>
+</li>
+<li>&#x8BF7;&#x6C42;<ul>
+<li>&#x5411;&#x670D;&#x52A1;&#x5668;&#x8BF7;&#x6C42;&#x8D44;&#x6E90;&#x7684;&#x8BF7;&#x6C42;&#x88AB;&#x53D1;&#x9001;&#x65F6;&#xFF0C;requestStart&#x4F1A;&#x88AB;&#x8BB0;&#x5F55;&#x4E00;&#x6B21;&#x3002;</li>
+</ul>
+</li>
+<li>&#x54CD;&#x5E94;<ul>
+<li>responseStart&#x662F;&#x670D;&#x52A1;&#x5668;&#x521D;&#x59CB;&#x5316;&#x54CD;&#x5E94;&#x8BF7;&#x6C42;&#x7684;&#x65F6;&#x95F4;&#x70B9;&#x3002;</li>
+<li>responseEnd&#x662F;&#x8BF7;&#x6C42;&#x7ED3;&#x675F;&#x548C;&#x6570;&#x636E;&#x88AB;&#x63A5;&#x6536;&#x7684;&#x65F6;&#x95F4;&#x70B9;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<p><img src="/xfe/2016/04/27/understanding-resource-timing/./resource-timing-api.png" alt="resource-timing-api"></p>
+<h2 id="&#x5728;DevTools&#x4E2D;&#x67E5;&#x770B;"><a href="#&#x5728;DevTools&#x4E2D;&#x67E5;&#x770B;" class="headerlink" title="&#x5728;DevTools&#x4E2D;&#x67E5;&#x770B;"></a>&#x5728;DevTools&#x4E2D;&#x67E5;&#x770B;</h2><p>&#x60F3;&#x8981;&#x67E5;&#x770B;Network&#x9762;&#x677F;&#x4E2D;&#x7684;&#x5B9E;&#x4F53;&#x7684;&#x5B8C;&#x6574;timing&#x4FE1;&#x606F;&#xFF0C;&#x4F60;&#x6709;&#x4E09;&#x79CD;&#x505A;&#x6CD5;&#x3002;</p>
+<ol>
+<li>&#x5C06;&#x9F20;&#x6807;&#x60AC;&#x505C;&#x5728;Timeline&#x5217;&#x4E0B;&#x65B9;&#x7684;&#x65F6;&#x95F4;&#x56FE;&#x4E0A;&#xFF08;&#x8C8C;&#x4F3C;&#x9700;&#x8981;&#x70B9;&#x51FB;&#x4E00;&#x4E0B;&#x56FE;&#xFF09;&#xFF0C;&#x5C06;&#x4F1A;&#x5F39;&#x51FA;&#x6240;&#x6709;&#x7684;&#x65F6;&#x95F4;&#x6570;&#x636E;&#x3002;</li>
+<li>&#x70B9;&#x51FB;&#x4EFB;&#x610F;&#x7684;&#x6761;&#x76EE;&#xFF0C;&#x7136;&#x540E;&#x6253;&#x5F00;Timing&#x6807;&#x7B7E;&#x3002;</li>
+<li>&#x5728;js&#x4E2D;&#x4F7F;&#x7528;Resource Timing API&#x6765;&#x83B7;&#x5F97;&#x6570;&#x636E;&#x3002;</li>
+</ol>
+<p><img src="/xfe/2016/04/27/understanding-resource-timing/./resource-timing-data.png" alt="resource-timing-data"></p>
+<blockquote>
+<p>&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x80FD;&#x591F;&#x5728;DevTools&#x63A7;&#x5236;&#x53F0;&#x4E2D;&#x8FD0;&#x884C;&#x3002;&#x5B83;&#x4F1A;&#x7528;&#x7F51;&#x7EDC;&#x65F6;&#x95F4;&#x7EBF;API &#x6765;&#x83B7;&#x5F97;&#x6240;&#x6709;&#x8D44;&#x6E90;&#x3002;&#x7136;&#x540E;&#x5B83;&#x8FC7;&#x6EE4;&#x6761;&#x76EE;&#x5BFB;&#x627E;&#x4E00;&#x4E2A;&#x540D;&#x5B57;&#x662F;&#x201D;style.css&#x201D;&#x7684;&#x8D44;&#x6E90;&#x3002;&#x5982;&#x679C;&#x627E;&#x5230;&#x4E86;&#x5C31;&#x628A;&#x6570;&#x636E;&#x8FD4;&#x56DE;&#x3002;<br><img src="/xfe/2016/04/27/understanding-resource-timing/./resource-timing-entry.png" alt="resource-timing-entry"></p>
+</blockquote>
+<h3 id="&#x258C;&#x6392;&#x961F;&#x4E2D;Queuing"><a href="#&#x258C;&#x6392;&#x961F;&#x4E2D;Queuing" class="headerlink" title="&#x258C;&#x6392;&#x961F;&#x4E2D;Queuing"></a><span style="color:#fff;outline:1px solid #ccc;">&#x258C;</span>&#x6392;&#x961F;&#x4E2D;Queuing</h3><ul>
+<li>&#x5982;&#x679C;&#x4E00;&#x4E2A;&#x8BF7;&#x6C42;&#x5728;&#x6392;&#x961F;&#xFF0C;&#x5B83;&#x8868;&#x793A;&#xFF1A;<ul>
+<li>&#x8FD9;&#x4E2A;&#x8BF7;&#x6C42;&#x88AB;&#x6E32;&#x67D3;&#x5F15;&#x64CE;&#x63A8;&#x8FDF;&#xFF0C;&#x56E0;&#x4E3A;&#x5B83;&#x88AB;&#x8BA4;&#x4E3A;&#x662F;&#x6BD4;&#x91CD;&#x8981;&#x8D44;&#x6E90;&#xFF08;&#x6BD4;&#x5982;scripts&#x6216;styles&#xFF09;&#x4F18;&#x5148;&#x7EA7;&#x8981;&#x4F4E;&#x3002;&#x8FD9;&#x901A;&#x5E38;&#x53D1;&#x751F;&#x5728;&#x56FE;&#x7247;&#x4E0A;&#x3002;</li>
+<li>&#x8FD9;&#x4E2A;&#x8BF7;&#x6C42;&#x88AB;&#x6302;&#x8D77;&#xFF0C;&#x7B49;&#x5F85;&#x4E00;&#x4E2A;&#x975E;&#x7A7A;&#x95F2;TCP socket&#x88AB;&#x91CA;&#x653E;&#x3002;</li>
+<li>&#x8FD9;&#x4E2A;&#x8BF7;&#x6C42;&#x88AB;&#x6302;&#x8D77;&#xFF0C;&#x56E0;&#x4E3A;&#x6D4F;&#x89C8;&#x5668;&#x5728;HTTP 1&#x53EA;&#x652F;&#x6301;<a href="https://crbug.com/12066" target="_blank" rel="external">6&#x4E2A;TCP&#x8FDE;&#x63A5;</a>&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h3 id="&#x258C;&#x6CA1;&#x6709;&#x901F;&#x5EA6;Stalled-&#x963B;&#x585E;Blocking"><a href="#&#x258C;&#x6CA1;&#x6709;&#x901F;&#x5EA6;Stalled-&#x963B;&#x585E;Blocking" class="headerlink" title="&#x258C;&#x6CA1;&#x6709;&#x901F;&#x5EA6;Stalled/&#x963B;&#x585E;Blocking"></a><span style="color:#cdcdcd">&#x258C;</span>&#x6CA1;&#x6709;&#x901F;&#x5EA6;Stalled/&#x963B;&#x585E;Blocking</h3><ul>
+<li>&#x8BF7;&#x6C42;&#x5728;&#x5B83;&#x53EF;&#x4EE5;&#x88AB;&#x53D1;&#x9001;&#x4E4B;&#x524D;&#x7B49;&#x5F85;&#x6240;&#x82B1;&#x7684;&#x65F6;&#x95F4;&#x3002;&#x5B83;&#x4F1A;&#x56E0;&#x4E3A;&#x5404;&#x79CD;&#x539F;&#x56E0;&#x8BA4;&#x4E3A;&#x5728;&#x6392;&#x961F;&#x7B49;&#x5F85;&#x3002;&#x53E6;&#x5916;&#xFF0C;&#x8FD9;&#x4E2A;&#x65F6;&#x95F4;&#x5305;&#x62EC;&#x4EE3;&#x7406;&#x534F;&#x5546;&#x8FC7;&#x7A0B;&#x6240;&#x82B1;&#x7684;&#x65F6;&#x95F4;&#x3002;</li>
+</ul>
+<h3 id="&#x258C;&#x4EE3;&#x7406;&#x534F;&#x5546;Proxy-Negotiation"><a href="#&#x258C;&#x4EE3;&#x7406;&#x534F;&#x5546;Proxy-Negotiation" class="headerlink" title="&#x258C;&#x4EE3;&#x7406;&#x534F;&#x5546;Proxy Negotiation"></a><span style="color:#cdcdcd">&#x258C;</span>&#x4EE3;&#x7406;&#x534F;&#x5546;Proxy Negotiation</h3><ul>
+<li>&#x4EE3;&#x7406;&#x534F;&#x5546;&#x8FC7;&#x7A0B;&#x4E2D;&#x6240;&#x82B1;&#x7684;&#x65F6;&#x95F4;&#x3002;</li>
+</ul>
+<h3 id="&#x258C;DNS&#x67E5;&#x8BE2;DNS-Lookup"><a href="#&#x258C;DNS&#x67E5;&#x8BE2;DNS-Lookup" class="headerlink" title="&#x258C;DNS&#x67E5;&#x8BE2;DNS Lookup"></a><span style="color:#1f7c83">&#x258C;</span>DNS&#x67E5;&#x8BE2;DNS Lookup</h3><ul>
+<li>DNS&#x67E5;&#x8BE2;&#x6240;&#x82B1;&#x7684;&#x65F6;&#x95F4;&#x3002;&#x5728;&#x4E00;&#x4E2A;&#x7AD9;&#x4E0A;&#x6240;&#x6709;&#x65B0;&#x7684;&#x57DF;&#x4F1A;&#x8FDB;&#x884C;&#x5168;&#x9762;&#x7684;DNS&#x67E5;&#x8BE2;&#x3002;</li>
+</ul>
+<h3 id="&#x258C;&#x521D;&#x59CB;&#x5316;&#x8FDE;&#x63A5;Initial-Connection-&#x8FDE;&#x63A5;&#x4E2D;Connecting"><a href="#&#x258C;&#x521D;&#x59CB;&#x5316;&#x8FDE;&#x63A5;Initial-Connection-&#x8FDE;&#x63A5;&#x4E2D;Connecting" class="headerlink" title="&#x258C;&#x521D;&#x59CB;&#x5316;&#x8FDE;&#x63A5;Initial Connection / &#x8FDE;&#x63A5;&#x4E2D;Connecting"></a><span style="color:#e58226">&#x258C;</span>&#x521D;&#x59CB;&#x5316;&#x8FDE;&#x63A5;Initial Connection / &#x8FDE;&#x63A5;&#x4E2D;Connecting</h3><ul>
+<li>&#x5EFA;&#x7ACB;&#x4E00;&#x4E2A;&#x8FDE;&#x63A5;&#x6240;&#x82B1;&#x7684;&#x65F6;&#x95F4;&#xFF0C;&#x5305;&#x62EC;TCP&#x63E1;&#x624B;/&#x91CD;&#x8FDE;&#x548C;&#x901A;&#x8FC7;SSL&#x534F;&#x8BAE;&#x3002;</li>
+</ul>
+<h3 id="&#x258C;SSL"><a href="#&#x258C;SSL" class="headerlink" title="&#x258C;SSL"></a><span style="color:#e58226">&#x258C;</span>SSL</h3><ul>
+<li>&#x5B8C;&#x6210;SSL&#x63E1;&#x624B;&#x6240;&#x82B1;&#x7684;&#x65F6;&#x95F4;&#x3002;</li>
+</ul>
+<h3 id="&#x258C;&#x8BF7;&#x6C42;&#x53D1;&#x9001;Request-Sent-&#x53D1;&#x9001;&#x4E2D;Sending"><a href="#&#x258C;&#x8BF7;&#x6C42;&#x53D1;&#x9001;Request-Sent-&#x53D1;&#x9001;&#x4E2D;Sending" class="headerlink" title="&#x258C;&#x8BF7;&#x6C42;&#x53D1;&#x9001;Request Sent / &#x53D1;&#x9001;&#x4E2D;Sending"></a><span style="color:#5fdd5f">&#x258C;</span>&#x8BF7;&#x6C42;&#x53D1;&#x9001;Request Sent / &#x53D1;&#x9001;&#x4E2D;Sending</h3><ul>
+<li>&#x53D1;&#x51FA;&#x7F51;&#x7EDC;&#x8BF7;&#x6C42;&#x6240;&#x82B1;&#x7684;&#x65F6;&#x95F4;&#x3002;&#x901A;&#x5E38;&#x662F;&#x96F6;&#x70B9;&#x51E0;&#x6BEB;&#x79D2;</li>
+</ul>
+<h3 id="&#x258C;&#x7B49;&#x5F85;Waiting-TTFB"><a href="#&#x258C;&#x7B49;&#x5F85;Waiting-TTFB" class="headerlink" title="&#x258C;&#x7B49;&#x5F85;Waiting (TTFB)"></a><span style="color:#5fdd5f">&#x258C;</span>&#x7B49;&#x5F85;Waiting (TTFB)</h3><ul>
+<li>&#x7B49;&#x5F85;&#x521D;&#x59CB;&#x54CD;&#x5E94;&#x6240;&#x82B1;&#x7684;&#x65F6;&#x95F4;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x83B7;&#x5F97;&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x7684;&#x65F6;&#x95F4;&#xFF08;Time To First Byte&#xFF09;&#x3002;&#x8FD9;&#x4E2A;&#x65F6;&#x95F4;&#x662F;&#x6355;&#x83B7;&#x5F80;&#x8FD4;&#x670D;&#x52A1;&#x5668;&#x7684;&#x7B49;&#x5F85;&#x65F6;&#x95F4;&#xFF0C;&#x9664;&#x4E86;&#x7B49;&#x5F85;&#x670D;&#x52A1;&#x5668;&#x4F20;&#x9012;&#x54CD;&#x5E94;&#x7684;&#x65F6;&#x95F4;&#x3002;</li>
+</ul>
+<h3 id="&#x258C;&#x5185;&#x5BB9;&#x4E0B;&#x8F7D;Content-Download-&#x4E0B;&#x8F7D;&#x4E2D;Downloading"><a href="#&#x258C;&#x5185;&#x5BB9;&#x4E0B;&#x8F7D;Content-Download-&#x4E0B;&#x8F7D;&#x4E2D;Downloading" class="headerlink" title="&#x258C;&#x5185;&#x5BB9;&#x4E0B;&#x8F7D;Content Download / &#x4E0B;&#x8F7D;&#x4E2D;Downloading"></a><span style="color:#4189d7">&#x258C;</span>&#x5185;&#x5BB9;&#x4E0B;&#x8F7D;Content Download / &#x4E0B;&#x8F7D;&#x4E2D;Downloading</h3><ul>
+<li>&#x83B7;&#x53D6;&#x54CD;&#x5E94;&#x6570;&#x636E;&#x6240;&#x82B1;&#x7684;&#x65F6;&#x95F4;&#x3002;</li>
+</ul>
+<h2 id="&#x5224;&#x65AD;&#x7F51;&#x7EDC;&#x95EE;&#x9898;"><a href="#&#x5224;&#x65AD;&#x7F51;&#x7EDC;&#x95EE;&#x9898;" class="headerlink" title="&#x5224;&#x65AD;&#x7F51;&#x7EDC;&#x95EE;&#x9898;"></a>&#x5224;&#x65AD;&#x7F51;&#x7EDC;&#x95EE;&#x9898;</h2><p>&#x53EF;&#x4EE5;&#x901A;&#x8FC7;Network&#x9762;&#x677F;&#x6765;&#x53D1;&#x73B0;&#x5F88;&#x591A;&#x95EE;&#x9898;&#x3002;&#x60F3;&#x53D1;&#x73B0;&#x8FD9;&#x4E9B;&#x95EE;&#x9898;&#x9700;&#x8981;&#x5BF9;&#x5BA2;&#x6237;&#x7AEF;&#x548C;&#x670D;&#x52A1;&#x5668;&#x5982;&#x4F55;&#x4EA4;&#x4E92;&#x548C;&#x5BF9;&#x534F;&#x8BAE;&#x7684;&#x9650;&#x5236;&#x6709;&#x4E00;&#x5B9A;&#x7684;&#x7406;&#x89E3;&#x3002;</p>
+<h3 id="&#x4E00;&#x8FDE;&#x4E32;&#x7684;&#x6392;&#x961F;-Queued-&#x6216;&#x8005;&#x505C;&#x6EDE;-Stalled"><a href="#&#x4E00;&#x8FDE;&#x4E32;&#x7684;&#x6392;&#x961F;-Queued-&#x6216;&#x8005;&#x505C;&#x6EDE;-Stalled" class="headerlink" title="&#x4E00;&#x8FDE;&#x4E32;&#x7684;&#x6392;&#x961F;(Queued)&#x6216;&#x8005;&#x505C;&#x6EDE;(Stalled)"></a>&#x4E00;&#x8FDE;&#x4E32;&#x7684;&#x6392;&#x961F;(Queued)&#x6216;&#x8005;&#x505C;&#x6EDE;(Stalled)</h3><p>&#x6700;&#x666E;&#x904D;&#x7684;&#x95EE;&#x9898;&#x662F;&#x770B;&#x5230;&#x4E00;&#x8FDE;&#x4E32;&#x7684;&#x6392;&#x961F;&#x6216;&#x8005;&#x505C;&#x6EDE;&#x3002;&#x8FD9;&#x8868;&#x660E;&#x592A;&#x591A;&#x8D44;&#x6E90;&#x6765;&#x81EA;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x670D;&#x52A1;&#x5668;&#x3002;&#x5728;HTTP 1.0/1.1&#x8FDE;&#x63A5;&#xFF0C;Chrome&#x5F3A;&#x5236;&#x4E00;&#x4E2A;&#x4E3B;&#x673A;&#x6700;&#x591A;&#x6709;&#x516D;&#x4E2A;TCP&#x8FDE;&#x63A5;&#x3002;&#x5982;&#x679C;&#x4F60;&#x4E00;&#x6B21;&#x8BF7;&#x6C42;12&#x4E2A;&#x9879;&#x76EE;&#xFF0C;&#x524D;&#x516D;&#x4E2A;&#x8FDE;&#x63A5;&#x4F1A;&#x5F00;&#x59CB;&#xFF0C;&#x800C;&#x540E;&#x516D;&#x4E2A;&#x4F1A;&#x8FDB;&#x5165;&#x961F;&#x5217;&#x3002;&#x4E00;&#x65E6;&#x524D;&#x516D;&#x4E2A;&#x8FDE;&#x63A5;&#x5B8C;&#x6210;&#xFF0C;&#x961F;&#x5217;&#x4E2D;&#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x9879;&#x76EE;&#x4F1A;&#x5F00;&#x59CB;&#x5B83;&#x7684;&#x8BF7;&#x6C42;&#x8FC7;&#x7A0B;&#x3002;</p>
+<p><img src="/xfe/2016/04/27/understanding-resource-timing/./stalled-request-series.png" alt="stalled-request-series"></p>
+<p>&#x4E3A;&#x4E86;&#x4FEE;&#x590D;&#x8FD9;&#x4E2A;&#x4F20;&#x7EDF;HTTP 1&#x901A;&#x4FE1;&#x95EE;&#x9898;&#xFF0C;&#x4F60;&#x4F1A;&#x9700;&#x8981;&#x5B9E;&#x73B0;&#x57DF;&#x540D;&#x5206;&#x7247;&#x3002;&#x5728;&#x4F60;&#x7684;&#x5E94;&#x7528;&#x4ECE;&#x670D;&#x52A1;&#x5668;&#x83B7;&#x5F97;&#x7684;&#x8D44;&#x6E90;&#x4E0A;&#x5236;&#x4F5C;&#x591A;&#x4E2A;&#x5B50;&#x57DF;&#x3002;&#x7136;&#x540E;&#x628A;&#x8D44;&#x6E90;&#x5207;&#x5272;&#x6210;&#x5747;&#x5300;&#x7684;&#x5B50;&#x57DF;&#x3002;</p>
+<p>&#x4FEE;&#x590D;HTTP 1&#x8FDE;&#x63A5;&#x95EE;&#x9898;&#x7684;&#x65B9;&#x6CD5;<em>&#x4E0D;&#x9002;&#x7528;</em>&#x4E8E;HTTP 2&#x8FDE;&#x63A5;&#x7684;&#x95EE;&#x9898;&#x3002;&#x76F8;&#x53CD;&#x7684;&#xFF0C;&#x8FD9;&#x4F1A;&#x7834;&#x574F;&#x4ED6;&#x4EEC;&#x3002;&#x5982;&#x679C;&#x4F60;&#x6709;HTTP 2&#x7684;&#x90E8;&#x7F72;&#xFF0C;&#x4E0D;&#x8981;&#x5C06;&#x4F60;&#x7684;&#x8D44;&#x6E90;&#x8FDB;&#x884C;&#x5207;&#x7247;&#xFF0C;&#x8FD9;&#x4E0E;HTTP 2&#x7684;&#x8BBE;&#x8BA1;&#x80CC;&#x9053;&#x800C;&#x9A70;&#x3002;&#x5728;HTTP 2&#xFF0C;&#x53EA;&#x6709;&#x4E00;&#x4E2A;TCP&#x8FDE;&#x63A5;&#x901A;&#x5411;&#x670D;&#x52A1;&#x5668;&#x4F46;&#x5B9E;&#x9645;&#x4E0A;&#x6709;&#x591A;&#x4E2A;&#x8FDE;&#x63A5;&#x3002;&#x8FD9;&#x7A81;&#x7834;&#x4E86;HTTP 1&#x7684;&#x516D;&#x4E2A;&#x8FDE;&#x63A5;&#xFF0C;&#x591A;&#x4E2A;&#x8D44;&#x6E90;&#x4F1A;&#x540C;&#x6B65;&#x4F20;&#x8F93;&#x3002;</p>
+<h3 id="&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x65F6;&#x95F4;&#xFF08;TTFB&#xFF09;&#x592A;&#x6162;"><a href="#&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x65F6;&#x95F4;&#xFF08;TTFB&#xFF09;&#x592A;&#x6162;" class="headerlink" title="&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x65F6;&#x95F4;&#xFF08;TTFB&#xFF09;&#x592A;&#x6162;"></a>&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x65F6;&#x95F4;&#xFF08;TTFB&#xFF09;&#x592A;&#x6162;</h3><p>&#x7EFF;&#x8272;&#x90E8;&#x5206;<br><img src="/xfe/2016/04/27/understanding-resource-timing/./indicator-of-high-ttfb.png" alt="indicator-of-high-ttfb"></p>
+<p>&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x65F6;&#x95F4;&#xFF08;TTFB&#xFF09;&#x6162;&#x88AB;&#x8BA4;&#x4E3A;&#x6709;&#x4E00;&#x4E2A;&#x957F;&#x7684;&#x7B49;&#x5F85;&#x65F6;&#x95F4;&#x3002;&#x5EFA;&#x8BAE;&#x4F60;&#x628A;&#x8FD9;&#x4E2A;&#x65F6;&#x95F4;<a href="https://developers.google.com/speed/docs/insights/Server" target="_blank" rel="external">&#x964D;&#x4F4E;&#x5230;200ms&#x4EE5;&#x4E0B;</a>&#x3002;&#x4E00;&#x4E2A;&#x957F;&#x7684;TTFB&#x610F;&#x5473;&#x7740;&#x4E24;&#x4E2A;&#x4E3B;&#x8981;&#x95EE;&#x9898;&#x3002;&#x5206;&#x522B;&#x662F;&#xFF1A;</p>
+<ol>
+<li>&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x548C;&#x670D;&#x52A1;&#x5668;&#x95F4;&#x7684;&#x7F51;&#x7EDC;&#x73AF;&#x5883;&#x4E0D;&#x597D;</li>
+<li>&#x670D;&#x52A1;&#x5668;&#x7684;&#x7A0B;&#x5E8F;&#x54CD;&#x5E94;&#x5F88;&#x6162;</li>
+</ol>
+<p>&#x89E3;&#x51B3;&#x957F;&#x7684;TTFB&#xFF0C;&#x9996;&#x5148;&#x8981;&#x5C3D;&#x53EF;&#x80FD;&#x591A;&#x7684;&#x524A;&#x51CF;&#x7F51;&#x7EDC;&#x4F20;&#x8F93;&#x3002;&#x7406;&#x60F3;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x628A;&#x5E94;&#x7528;&#x653E;&#x5728;&#x672C;&#x5730;&#x4E3B;&#x673A;&#xFF0C;&#x770B;&#x770B;&#x662F;&#x5426;&#x4F9D;&#x7136;&#x6709;&#x5F88;&#x957F;&#x7684;TTFB&#xFF0C;&#x5982;&#x679C;&#x6709;&#xFF0C;&#x90A3;&#x4E48;&#x9700;&#x8981;&#x4F18;&#x5316;&#x5E94;&#x7528;&#x7684;&#x54CD;&#x5E94;&#x901F;&#x5EA6;&#x3002;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x9700;&#x8981;&#x4F18;&#x5316;&#x6570;&#x636E;&#x5E93;&#x67E5;&#x8BE2;&#xFF0C;&#x5B9E;&#x73B0;&#x7F13;&#x5B58;&#x67D0;&#x4E9B;&#x5185;&#x5BB9;&#xFF0C;&#x6216;&#x8005;&#x4FEE;&#x6539;web&#x670D;&#x52A1;&#x5668;&#x914D;&#x7F6E;&#x3002;&#x6709;&#x5F88;&#x591A;&#x539F;&#x56E0;&#x4F1A;&#x5BFC;&#x81F4;&#x540E;&#x53F0;&#x53D8;&#x6162;&#xFF0C;&#x4F60;&#x9700;&#x8981;&#x53BB;&#x6DF1;&#x5165;&#x67E5;&#x627E;&#x4F60;&#x7684;&#x8F6F;&#x4EF6;&#x4E3A;&#x4EC0;&#x4E48;&#x6CA1;&#x6709;&#x8FBE;&#x5230;&#x4F60;&#x7684;&#x9884;&#x671F;&#x3002;</p>
+<p>&#x5982;&#x679C;TTFB&#x5728;&#x672C;&#x5730;&#x60C5;&#x51B5;&#x4E0B;&#x53D8;&#x5C0F;&#xFF0C;&#x90A3;&#x4E48;&#x8BF4;&#x660E;&#x5BA2;&#x6237;&#x7AEF;&#x8DDF;&#x670D;&#x52A1;&#x5668;&#x4E4B;&#x95F4;&#x7684;&#x7F51;&#x7EDC;&#x662F;&#x6709;&#x95EE;&#x9898;&#x7684;&#x3002;&#x7F51;&#x7EDC;&#x4F20;&#x8F93;&#x4F1A;&#x56E0;&#x4E3A;&#x5F88;&#x591A;&#x4E8B;&#x60C5;&#x88AB;&#x963B;&#x788D;&#x3002;&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x5230;&#x670D;&#x52A1;&#x5668;&#x95F4;&#x6709;&#x5F88;&#x591A;&#x73AF;&#x8282;&#xFF0C;&#x5E76;&#x4E14;&#x6BCF;&#x4E00;&#x4E2A;&#x73AF;&#x8282;&#x6709;&#x5B83;&#x81EA;&#x5DF1;&#x7684;&#x8FDE;&#x63A5;&#x9650;&#x5236;&#xFF0C;&#x8FD9;&#x4E9B;&#x90FD;&#x53EF;&#x80FD;&#x4F1A;&#x5BFC;&#x81F4;&#x51FA;&#x95EE;&#x9898;&#x3002;&#x7B80;&#x5355;&#x7684;&#x6D4B;&#x8BD5;&#x8FD9;&#x79CD;&#x95EE;&#x9898;&#x7684;&#x65B9;&#x6CD5;&#x662F;&#x628A;&#x4F60;&#x7684;&#x5E94;&#x7528;&#x653E;&#x5728;&#x53E6;&#x4E00;&#x4E2A;&#x4E3B;&#x673A;&#x4E0A;&#x7136;&#x540E;&#x770B;&#x770B;TTFB&#x662F;&#x4E0D;&#x662F;&#x6709;&#x6539;&#x5584;&#x3002;</p>
+<h3 id="&#x67E5;&#x770B;&#x541E;&#x5410;&#x80FD;&#x529B;"><a href="#&#x67E5;&#x770B;&#x541E;&#x5410;&#x80FD;&#x529B;" class="headerlink" title="&#x67E5;&#x770B;&#x541E;&#x5410;&#x80FD;&#x529B;"></a>&#x67E5;&#x770B;&#x541E;&#x5410;&#x80FD;&#x529B;</h3><p>&#x84DD;&#x8272;&#x90E8;&#x5206;<br><img src="/xfe/2016/04/27/understanding-resource-timing/./indicator-of-large-content.png" alt="indicator-of-large-content"></p>
+<p>&#x5982;&#x679C;&#x4F60;&#x53D1;&#x73B0;&#x5F88;&#x591A;&#x65F6;&#x95F4;&#x82B1;&#x8D39;&#x5728;&#x5185;&#x5BB9;&#x4E0B;&#x8F7D;&#x9636;&#x6BB5;&#xFF0C;&#x6539;&#x5584;&#x670D;&#x52A1;&#x5668;&#x54CD;&#x5E94;&#x6216;&#x8005;&#x8FDE;&#x63A5;&#x662F;&#x4E0D;&#x4F1A;&#x6709;&#x5E2E;&#x52A9;&#x7684;&#x3002;&#x4E3B;&#x8981;&#x7684;&#x89E3;&#x51B3;&#x529E;&#x6CD5;&#x662F;&#x51CF;&#x5C11;&#x4F20;&#x8F93;&#x5B57;&#x8282;&#x3002;</p>
 
       
     </div>
@@ -357,7 +463,7 @@
     <div class="post-spread">
       
         <div class="ds-share flat" data-thread-key="2016/04/27/understanding-resource-timing/"
-     data-title="理解资源时间线(待翻译，彤阳)"
+     data-title="理解资源时间线"
      data-content=""
      data-url="http://sinaad.github.io/xfe/2016/04/27/understanding-resource-timing/">
   <div class="ds-share-inline">
@@ -387,7 +493,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/04/27/understanding-resource-timing/"
-           data-title="理解资源时间线(待翻译，彤阳)" data-url="http://sinaad.github.io/xfe/2016/04/27/understanding-resource-timing/">
+           data-title="理解资源时间线" data-url="http://sinaad.github.io/xfe/2016/04/27/understanding-resource-timing/">
       </div>
     
   </div>
@@ -507,7 +613,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在DevTools中查看"><span class="nav-number">1.</span> <span class="nav-text">在DevTools中查看</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#▌排队中Queuing"><span class="nav-number">1.1.</span> <span class="nav-text">▌排队中Queuing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#▌没有速度Stalled-阻塞Blocking"><span class="nav-number">1.2.</span> <span class="nav-text">▌没有速度Stalled/阻塞Blocking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#▌代理协商Proxy-Negotiation"><span class="nav-number">1.3.</span> <span class="nav-text">▌代理协商Proxy Negotiation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#▌DNS查询DNS-Lookup"><span class="nav-number">1.4.</span> <span class="nav-text">▌DNS查询DNS Lookup</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#▌初始化连接Initial-Connection-连接中Connecting"><span class="nav-number">1.5.</span> <span class="nav-text">▌初始化连接Initial Connection / 连接中Connecting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#▌SSL"><span class="nav-number">1.6.</span> <span class="nav-text">▌SSL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#▌请求发送Request-Sent-发送中Sending"><span class="nav-number">1.7.</span> <span class="nav-text">▌请求发送Request Sent / 发送中Sending</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#▌等待Waiting-TTFB"><span class="nav-number">1.8.</span> <span class="nav-text">▌等待Waiting (TTFB)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#▌内容下载Content-Download-下载中Downloading"><span class="nav-number">1.9.</span> <span class="nav-text">▌内容下载Content Download / 下载中Downloading</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#判断网络问题"><span class="nav-number">2.</span> <span class="nav-text">判断网络问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一连串的排队-Queued-或者停滞-Stalled"><span class="nav-number">2.1.</span> <span class="nav-text">一连串的排队(Queued)或者停滞(Stalled)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第一个字节时间（TTFB）太慢"><span class="nav-number">2.2.</span> <span class="nav-text">第一个字节时间（TTFB）太慢</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看吞吐能力"><span class="nav-number">2.3.</span> <span class="nav-text">查看吞吐能力</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
