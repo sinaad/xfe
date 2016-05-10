@@ -70,7 +70,7 @@
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/10/gpu-accelerated-compositing-in-chrome/HandlingMultipleContexts.png">
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/10/gpu-accelerated-compositing-in-chrome/CompositingwiththeGPUprocess.png">
 <meta property="og:image" content="http://sinaad.github.io/xfe/2016/05/10/gpu-accelerated-compositing-in-chrome/SoftwareRenderingArchitecture.png">
-<meta property="og:updated_time" content="2016-05-10T10:00:50.000Z">
+<meta property="og:updated_time" content="2016-05-10T10:13:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GPU加速合成">
 <meta name="twitter:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E;&amp;#xFF1A;http://www.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome &amp;#x7FFB;&amp;#x8BD1;
@@ -320,8 +320,8 @@
 <p>&#x786C;&#x4EF6;&#x5408;&#x6210;&#x6709;&#x4EE5;&#x4E0B;&#x51E0;&#x4E2A;&#x4F18;&#x70B9;&#xFF1A;</p>
 <ol>
 <li>GPU&#x5728;&#x5408;&#x6210;&#x9875;&#x9762;layer&#x4E0A;&#x7684;&#x6548;&#x7387;&#x8981;&#x6BD4;CPU&#x9AD8;&#x5F88;&#x591A;&#xFF0C;&#x5C24;&#x5176;&#x662F;&#x6D89;&#x53CA;&#x5927;&#x91CF;&#x50CF;&#x7D20;&#x7684;drawing[2]&#x548C;compositing&#x64CD;&#x4F5C;&#x3002;&#x5F53;&#x7136;&#xFF0C;GPU&#x8BBE;&#x8BA1;&#x51FA;&#x6765;&#x672C;&#x6765;&#x5C31;&#x662F;&#x505A;&#x8FD9;&#x4E9B;&#x5DE5;&#x4F5C;&#x7684;&#x3002;</li>
-<li>Expensive readbacks aren&#x2019;t necessary for content already on the GPU (such as accelerated video, Canvas2D, or WebGL).</li>
-<li>Parallelism between the CPU and GPU, which can operate at the same time to create an efficient graphics pipeline.</li>
+<li>&#x5BF9;&#x4E8E;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;GPU&#x4E2D;&#x7684;&#x5185;&#x5BB9;&#xFF0C;&#x56DE;&#x8BFB;&#x4EE3;&#x4EF7;&#x592A;&#x5927;&#x4E14;&#x6CA1;&#x6709;&#x5FC5;&#x8981;(&#x6BD4;&#x5982;&#x89C6;&#x9891;&#x52A0;&#x901F;, Canvas2D, &#x6216;&#x8005;WebGL).</li>
+<li>&#x901A;&#x8FC7;&#x5728;CPU&#x548C;GPU&#x4E4B;&#x95F4;&#x5E76;&#x884C;&#xFF0C;&#x53EF;&#x4EE5;&#x5728;&#x540C;&#x4E00;&#x4E2A;&#x65F6;&#x95F4;&#x64CD;&#x4F5C;&#xFF0C;&#x4E00;&#x6B21;&#x5F62;&#x6210;&#x4E00;&#x4E2A;&#x9AD8;&#x6548;&#x7684;&#x56FE;&#x5F62;&#x7BA1;&#x9053;&#x3002;</li>
 </ol>
 <h2 id="Part-1&#xFF1A;Blink-Rending-&#x57FA;&#x7840;"><a href="#Part-1&#xFF1A;Blink-Rending-&#x57FA;&#x7840;" class="headerlink" title="Part 1&#xFF1A;Blink Rending &#x57FA;&#x7840;"></a>Part 1&#xFF1A;Blink Rending &#x57FA;&#x7840;</h2><hr>
 <p>Blink Rending &#x5F15;&#x64CE;&#xFF08;&#x7531;Google&#x548C;Opera Software&#x5F00;&#x53D1;&#x7684;&#x6D4F;&#x89C8;&#x5668;&#x6392;&#x7248;&#x5F15;&#x64CE;&#xFF09;&#x7684;&#x6E90;&#x7801;&#x5341;&#x5206;&#x7E41;&#x591A;&#x548C;&#x590D;&#x6742;&#x3002;&#x4E3A;&#x66F4;&#x597D;&#x7406;&#x89E3;&#x5728;chrome&#x4E2D;GPU&#x52A0;&#x901F;&#x662F;&#x5982;&#x4F55;&#x5DE5;&#x4F5C;&#x7684;&#xFF0C;&#x6211;&#x4EEC;&#x9996;&#x5148;&#x9700;&#x8981;&#x4E86;&#x89E3;Blink&#x5F15;&#x64CE;&#x662F;&#x5982;&#x4F55;&#x6E32;&#x67D3;&#x9875;&#x9762;&#x7684;&#x3002;</p>
