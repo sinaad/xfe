@@ -5,7 +5,7 @@
   <link href="/xfe/atom.xml" rel="self"/>
   
   <link href="http://sinaad.github.io/"/>
-  <updated>2016-05-10T07:38:07.000Z</updated>
+  <updated>2016-05-10T07:39:57.000Z</updated>
   <id>http://sinaad.github.io/</id>
   
   <author>
@@ -20,14 +20,18 @@
     <link href="http://sinaad.github.io/2016/05/10/dependency-injection/"/>
     <id>http://sinaad.github.io/2016/05/10/dependency-injection/</id>
     <published>2016-05-10T05:56:58.000Z</published>
-    <updated>2016-05-10T07:38:07.000Z</updated>
+    <updated>2016-05-10T07:39:57.000Z</updated>
     
     <content type="html">&lt;h2 id=&quot;&amp;#x4EC0;&amp;#x4E48;&amp;#x662F;IOC&quot;&gt;&lt;a href=&quot;#&amp;#x4EC0;&amp;#x4E48;&amp;#x662F;IOC&quot; class=&quot;headerlink&quot; title=&quot;&amp;#x4EC0;&amp;#x4E48;&amp;#x662F;IOC&quot;&gt;&lt;/a&gt;&amp;#x4EC0;&amp;#x4E48;&amp;#x662F;IOC&lt;/h2&gt;&lt;p&gt;IoC(Inversion of Control)&amp;#x662F;&amp;#x8FD1;&amp;#x5E74;&amp;#x6765;&amp;#x5174;&amp;#x8D77;&amp;#x7684;&amp;#x4E00;&amp;#x79CD;&amp;#x7F16;&amp;#x7A0B;&amp;#x601D;&amp;#x60F3;&amp;#x3002;&amp;#x4E3B;&amp;#x8981;&amp;#x662F;&amp;#x534F;&amp;#x8C03;&amp;#x5404;&amp;#x7EC4;&amp;#x4EF6;&amp;#x95F4;&amp;#x76F8;&amp;#x4E92;&amp;#x7684;&amp;#x4F9D;&amp;#x8D56;&amp;#x5173;&amp;#x7CFB;&amp;#xFF0C;&amp;#x540C;&amp;#x65F6;&amp;#x5927;&amp;#x5927;&amp;#x63D0;&amp;#x9AD8;&amp;#x4E86;&amp;#x7EC4;&amp;#x4EF6;&amp;#x7684;&amp;#x53EF;&amp;#x79FB;&amp;#x690D;&amp;#x6027;&amp;#xFF0C;&amp;#x7EC4;&amp;#x4EF6;&amp;#x7684;&amp;#x91CD;&amp;#x7528;&amp;#x673A;&amp;#x4F1A;&amp;#x4E5F;&amp;#x53D8;&amp;#x5F97;&amp;#x66F4;&amp;#x591A;&amp;#x3002;&amp;#x5728;&amp;#x4F20;&amp;#x7EDF;&amp;#x7684;&amp;#x5B9E;&amp;#x73B0;&amp;#x4E2D;&amp;#xFF0C;&amp;#x7531;&amp;#x7A0B;&amp;#x5E8F;&amp;#x5185;&amp;#x90E8;&amp;#x4EE3;&amp;#x7801;&amp;#x6765;&amp;#x63A7;&amp;#x5236;&amp;#x7A0B;&amp;#x5E8F;&amp;#x4E4B;&amp;#x95F4;&amp;#x7684;&amp;#x5173;&amp;#x7CFB;&amp;#x3002;&amp;#x6211;&amp;#x4EEC;&amp;#x7ECF;&amp;#x5E38;&amp;#x4F7F;&amp;#x7528;new&amp;#x5173;&amp;#x952E;&amp;#x5B57;&amp;#x6765;&amp;#x5B9E;&amp;#x73B0;&amp;#x4E24;&amp;#x5BF9;&amp;#x8C61;&amp;#x7EC4;&amp;#x4EF6;&amp;#x95F4;&amp;#x5173;&amp;#x7CFB;&amp;#x7684;&amp;#x7EC4;&amp;#x5408;&amp;#xFF0C;&amp;#x8FD9;&amp;#x79CD;&amp;#x5B9E;&amp;#x73B0;&amp;#x7684;&amp;#x65B9;&amp;#x5F0F;&amp;#x4F1A;&amp;#x9020;&amp;#x6210;&amp;#x7EC4;&amp;#x4EF6;&amp;#x4E4B;&amp;#x95F4;&amp;#x8026;&amp;#x5408;&amp;#xFF08;&amp;#x4E00;&amp;#x4E2A;&amp;#x597D;&amp;#x7684;&amp;#x8BBE;&amp;#x8BA1;&amp;#xFF0C;&amp;#x4E0D;&amp;#x4F46;&amp;#x8981;&amp;#x5B9E;&amp;#x73B0;&amp;#x4EE3;&amp;#x7801;&amp;#x91CD;&amp;#x7528;&amp;#xFF0C;&amp;#x8FD8;&amp;#x8981;&amp;#x5C06;&amp;#x7EC4;&amp;#x4EF6;&amp;#x95F4;&amp;#x5173;&amp;#x7CFB;&amp;#x89E3;&amp;#x8026;&amp;#xFF09;&amp;#x3002;IoC&amp;#x5F88;&amp;#x597D;&amp;#x7684;&amp;#x89E3;&amp;#x51B3;&amp;#x4E86;&amp;#x8BE5;&amp;#x95EE;&amp;#x9898;&amp;#xFF0C;&amp;#x5B83;&amp;#x5C06;&amp;#x5B9E;&amp;#x73B0;&amp;#x7EC4;&amp;#x4EF6;&amp;#x95F4;&amp;#x5173;&amp;#x7CFB;&amp;#x4ECE;&amp;#x7A0B;&amp;#x5E8F;&amp;#x5185;&amp;#x90E8;&amp;#x63D0;&amp;#x5230;&amp;#x5916;&amp;#x90E8;&amp;#x5BB9;&amp;#x5668;&amp;#x6765;&amp;#x7BA1;&amp;#x7406;&amp;#x3002;&amp;#x4E5F;&amp;#x5C31;&amp;#x662F;&amp;#x8BF4;&amp;#x7531;&amp;#x5BB9;&amp;#x5668;&amp;#x5728;&amp;#x8FD0;&amp;#x884C;&amp;#x671F;&amp;#x5C06;&amp;#x7EC4;&amp;#x4EF6;&amp;#x95F4;&amp;#x7684;&amp;#x67D0;&amp;#x79CD;&amp;#x4F9D;&amp;#x8D56;&amp;#x5173;&amp;#x7CFB;&amp;#x52A8;&amp;#x6001;&amp;#x7684;&amp;#x6CE8;&amp;#x5165;&amp;#x5230;&amp;#x7EC4;&amp;#x4EF6;&amp;#x4E2D;&amp;#x3002;&amp;#x63A7;&amp;#x5236;&amp;#x7A0B;&amp;#x5E8F;&amp;#x95F4;&amp;#x5173;&amp;#x7CFB;&amp;#x7684;&amp;#x5B9E;&amp;#x73B0;&amp;#x4EA4;&amp;#x7ED9;&amp;#x4E86;&amp;#x5916;&amp;#x90E8;&amp;#x7684;&amp;#x5BB9;&amp;#x5668;&amp;#x6765;&amp;#x5B8C;&amp;#x6210;&amp;#x3002;&amp;#x5373;&amp;#x5E38;&amp;#x8BF4;&amp;#x7684;&amp;#x597D;&amp;#x83B1;&amp;#x575E;&amp;#x539F;&amp;#x5219;&amp;#x201C;Don&amp;#x2018;t call us, we&amp;#x2019;ll call you&amp;#x201D;&amp;#xFF08;&amp;#x4F60;&amp;#x4E0D;&amp;#x8981;&amp;#x627E;&amp;#x6211;&amp;#xFF0C;&amp;#x5230;&amp;#x65F6;&amp;#x6211;&amp;#x4F1A;&amp;#x627E;&amp;#x4F60;&amp;#xFF09;&amp;#x3002;&lt;/p&gt;
 &lt;h2 id=&quot;IOC&amp;#x6982;&amp;#x5FF5;&amp;#x56FE;&quot;&gt;&lt;a href=&quot;#IOC&amp;#x6982;&amp;#x5FF5;&amp;#x56FE;&quot; class=&quot;headerlink&quot; title=&quot;IOC&amp;#x6982;&amp;#x5FF5;&amp;#x56FE;&quot;&gt;&lt;/a&gt;IOC&amp;#x6982;&amp;#x5FF5;&amp;#x56FE;&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/xfe/2016/05/10/dependency-injection/DI1.jpg&quot; alt=&quot;DI1&quot;&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&amp;#x5B9E;&amp;#x73B0;IOC&amp;#x4E3B;&amp;#x8981;&amp;#x6709;&amp;#x4E24;&amp;#x79CD;&amp;#x65B9;&amp;#x5F0F;&amp;#xFF1A;&amp;#x4F9D;&amp;#x8D56;&amp;#x6CE8;&amp;#x5165;&amp;#x548C;&amp;#x4F9D;&amp;#x8D56;&amp;#x67E5;&amp;#x627E;&lt;/li&gt;
+&lt;li&gt;&amp;#x5B9E;&amp;#x73B0;IOC&amp;#x4E3B;&amp;#x8981;&amp;#x6709;&amp;#x4E24;&amp;#x79CD;&amp;#x65B9;&amp;#x5F0F;&amp;#xFF1A;&lt;strong&gt;&amp;#x4F9D;&amp;#x8D56;&amp;#x6CE8;&amp;#x5165;&lt;/strong&gt;&amp;#x548C;&lt;strong&gt;&amp;#x4F9D;&amp;#x8D56;&amp;#x67E5;&amp;#x627E;&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;&amp;#x4E24;&amp;#x8005;&amp;#x7684;&amp;#x533A;&amp;#x522B;&amp;#x5728;&amp;#x4E8E;&amp;#xFF0C;&amp;#x524D;&amp;#x8005;&amp;#x662F;&amp;#x88AB;&amp;#x52A8;&amp;#x7684;&amp;#x63A5;&amp;#x6536;&amp;#x5BF9;&amp;#x8C61;&amp;#xFF0C;&amp;#x800C;&amp;#x540E;&amp;#x8005;&amp;#x662F;&amp;#x4E3B;&amp;#x52A8;&amp;#x7D22;&amp;#x53D6;&amp;#x54CD;&amp;#x5E94;&amp;#x540D;&amp;#x79F0;&amp;#x7684;&amp;#x5BF9;&amp;#x8C61;&lt;/li&gt;
-&lt;li&gt;&amp;#x4F9D;&amp;#x8D56;&amp;#x6CE8;&amp;#x5165;&amp;#x7684;&amp;#x57FA;&amp;#x672C;&amp;#x539F;&amp;#x5219;&amp;#x662F;&amp;#xFF1A;&amp;#x5E94;&amp;#x7528;&amp;#x7EC4;&amp;#x4EF6;&amp;#x4E0D;&amp;#x5E94;&amp;#x8BE5;&amp;#x8D1F;&amp;#x8D23;&amp;#x67E5;&amp;#x627E;&amp;#x8D44;&amp;#x6E90;&amp;#x6216;&amp;#x8005;&amp;#x5176;&amp;#x4ED6;&amp;#x4F9D;&amp;#x8D56;&amp;#x7684;&amp;#x534F;&amp;#x4F5C;&amp;#x5BF9;&amp;#x8C61;&amp;#x3002;&amp;#x914D;&amp;#x7F6E;&amp;#x5BF9;&amp;#x8C61;&amp;#x7684;&amp;#x5DE5;&amp;#x4F5C;&amp;#x5E94;&amp;#x8BE5;&amp;#x7531;IoC&amp;#x5BB9;&amp;#x5668;&amp;#x8D1F;&amp;#x8D23;&amp;#xFF0C;&amp;#x201C;&amp;#x67E5;&amp;#x627E;&amp;#x8D44;&amp;#x6E90;&amp;#x201D;&amp;#x7684;&amp;#x903B;&amp;#x8F91;&amp;#x5E94;&amp;#x8BE5;&amp;#x4ECE;&amp;#x5E94;&amp;#x7528;&amp;#x7EC4;&amp;#x4EF6;&amp;#x7684;&amp;#x4EE3;&amp;#x7801;&amp;#x4E2D;&amp;#x62BD;&amp;#x53D6;&amp;#x51FA;&amp;#x6765;&amp;#xFF0C;&amp;#x4EA4;&amp;#x7ED9;IoC&amp;#x5BB9;&amp;#x5668;&amp;#x8D1F;&amp;#x8D23;&amp;#x3002;&lt;/li&gt;
+&lt;li&gt;&amp;#x4F9D;&amp;#x8D56;&amp;#x6CE8;&amp;#x5165;&amp;#x7684;&amp;#x57FA;&amp;#x672C;&amp;#x539F;&amp;#x5219;&amp;#x662F;&amp;#xFF1A;&lt;ul&gt;
+&lt;li&gt;&amp;#x5E94;&amp;#x7528;&amp;#x7EC4;&amp;#x4EF6;&amp;#x4E0D;&amp;#x5E94;&amp;#x8BE5;&amp;#x8D1F;&amp;#x8D23;&amp;#x67E5;&amp;#x627E;&amp;#x8D44;&amp;#x6E90;&amp;#x6216;&amp;#x8005;&amp;#x5176;&amp;#x4ED6;&amp;#x4F9D;&amp;#x8D56;&amp;#x7684;&amp;#x534F;&amp;#x4F5C;&amp;#x5BF9;&amp;#x8C61;&amp;#x3002;&lt;/li&gt;
+&lt;li&gt;&amp;#x914D;&amp;#x7F6E;&amp;#x5BF9;&amp;#x8C61;&amp;#x7684;&amp;#x5DE5;&amp;#x4F5C;&amp;#x5E94;&amp;#x8BE5;&amp;#x7531;IoC&amp;#x5BB9;&amp;#x5668;&amp;#x8D1F;&amp;#x8D23;&amp;#xFF0C;&amp;#x201C;&amp;#x67E5;&amp;#x627E;&amp;#x8D44;&amp;#x6E90;&amp;#x201D;&amp;#x7684;&amp;#x903B;&amp;#x8F91;&amp;#x5E94;&amp;#x8BE5;&amp;#x4ECE;&amp;#x5E94;&amp;#x7528;&amp;#x7EC4;&amp;#x4EF6;&amp;#x7684;&amp;#x4EE3;&amp;#x7801;&amp;#x4E2D;&amp;#x62BD;&amp;#x53D6;&amp;#x51FA;&amp;#x6765;&amp;#xFF0C;&amp;#x4EA4;&amp;#x7ED9;IoC&amp;#x5BB9;&amp;#x5668;&amp;#x8D1F;&amp;#x8D23;&amp;#x3002;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;&amp;#x4F9D;&amp;#x8D56;&amp;#x67E5;&amp;#x627E;-Dependency-Lookup&quot;&gt;&lt;a href=&quot;#&amp;#x4F9D;&amp;#x8D56;&amp;#x67E5;&amp;#x627E;-Dependency-Lookup&quot; class=&quot;headerlink&quot; title=&quot;&amp;#x4F9D;&amp;#x8D56;&amp;#x67E5;&amp;#x627E;(Dependency Lookup)&quot;&gt;&lt;/a&gt;&amp;#x4F9D;&amp;#x8D56;&amp;#x67E5;&amp;#x627E;(Dependency Lookup)&lt;/h2&gt;&lt;p&gt;&amp;#x4E0B;&amp;#x9762;&amp;#x4EE3;&amp;#x7801;&amp;#x5C55;&amp;#x793A;&amp;#x4E86;&amp;#x57FA;&amp;#x4E8E;JNDI&amp;#x5B9E;&amp;#x73B0;&amp;#x7684;&amp;#x4F9D;&amp;#x8D56;&amp;#x67E5;&amp;#x627E;&amp;#x673A;&amp;#x5236;&amp;#x3002;&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyBusniessObject&lt;/span&gt; &lt;/span&gt;{&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; DataSource ds;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; MyCollaborator myCollaborator;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyBusnissObject&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;{&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Context ctx = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt;{&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      ctx = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; InitialContext();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      ds = (DataSource) ctx.lookup(&lt;span class=&quot;string&quot;&gt;&amp;quot;java:comp/env/dataSourceName&amp;quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      myCollaborator = (MyCollaborator)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      ctx.lookup(&lt;span class=&quot;string&quot;&gt;&amp;quot;java:comp/env/myCollaboratorName&amp;quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    }&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  }&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;}&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -712,9 +716,9 @@
       <category term="devtool" scheme="http://sinaad.github.io/categories/devtool/"/>
     
     
-      <category term="devtool" scheme="http://sinaad.github.io/tags/devtool/"/>
-    
       <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
+    
+      <category term="devtool" scheme="http://sinaad.github.io/tags/devtool/"/>
     
   </entry>
   
@@ -837,13 +841,13 @@
       <category term="devtool" scheme="http://sinaad.github.io/categories/devtool/"/>
     
     
+      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
+    
       <category term="devtool" scheme="http://sinaad.github.io/tags/devtool/"/>
     
       <category term="guide" scheme="http://sinaad.github.io/tags/guide/"/>
     
       <category term="translate" scheme="http://sinaad.github.io/tags/translate/"/>
-    
-      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
     
   </entry>
   
@@ -1177,13 +1181,13 @@
       <category term="devtool" scheme="http://sinaad.github.io/categories/devtool/"/>
     
     
+      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
+    
       <category term="devtool" scheme="http://sinaad.github.io/tags/devtool/"/>
     
       <category term="guide" scheme="http://sinaad.github.io/tags/guide/"/>
     
       <category term="translate" scheme="http://sinaad.github.io/tags/translate/"/>
-    
-      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
     
   </entry>
   
@@ -1278,11 +1282,11 @@
       <category term="devtool" scheme="http://sinaad.github.io/categories/devtool/"/>
     
     
+      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
+    
       <category term="devtool" scheme="http://sinaad.github.io/tags/devtool/"/>
     
       <category term="guide" scheme="http://sinaad.github.io/tags/guide/"/>
-    
-      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
     
   </entry>
   
