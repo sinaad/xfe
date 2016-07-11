@@ -17,8 +17,8 @@ categories: chrome
 硬件合成有以下几个优点：
 
 1. GPU在合成页面layer上的效率要比CPU高很多，尤其是涉及大量像素的drawing[2]和compositing操作。当然，GPU设计出来本来就是做这些工作的。
-2. Expensive readbacks aren’t necessary for content already on the GPU (such as accelerated video, Canvas2D, or WebGL).
-3. Parallelism between the CPU and GPU, which can operate at the same time to create an efficient graphics pipeline.
+2. 对于已经存在GPU中的内容，回读代价太大且没有必要(比如视频加速, Canvas2D, 或者WebGL).
+3. 通过在CPU和GPU之间并行，可以在同一个时间操作，以此形成一个高效的图形管道。
 
 ## Part 1：Blink Rending 基础
 ----
