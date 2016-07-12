@@ -1,0 +1,922 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/xfe/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+
+
+<link href="/xfe/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/xfe/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="translate,es6,generator," />
+
+
+
+
+
+  <link rel="alternate" href="/xfe/atom.xml" title="{XFE}" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/xfe/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://davidwalsh.name/async-generators &amp;#x7FFB;&amp;#x8BD1;
+&amp;#x73B0;&amp;#x5728;&amp;#x4F60;&amp;#x5DF2;&amp;#x7ECF;&amp;#x4E86;&amp;#x89E3;&amp;#x4E86;ES6 genderators&amp;#x548C;&amp;#x5173;&amp;#x4E8E;&amp;#x4ED">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用ES6 Generator实现异步">
+<meta property="og:url" content="http://sinaad.github.io/2016/07/12/going-async-with-es6-generators/index.html">
+<meta property="og:site_name" content="{XFE}">
+<meta property="og:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://davidwalsh.name/async-generators &amp;#x7FFB;&amp;#x8BD1;
+&amp;#x73B0;&amp;#x5728;&amp;#x4F60;&amp;#x5DF2;&amp;#x7ECF;&amp;#x4E86;&amp;#x89E3;&amp;#x4E86;ES6 genderators&amp;#x548C;&amp;#x5173;&amp;#x4E8E;&amp;#x4ED">
+<meta property="og:updated_time" content="2016-07-12T06:15:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用ES6 Generator实现异步">
+<meta name="twitter:description" content="&amp;#x672C;&amp;#x6587;&amp;#x6839;&amp;#x636E; https://davidwalsh.name/async-generators &amp;#x7FFB;&amp;#x8BD1;
+&amp;#x73B0;&amp;#x5728;&amp;#x4F60;&amp;#x5DF2;&amp;#x7ECF;&amp;#x4E86;&amp;#x89E3;&amp;#x4E86;ES6 genderators&amp;#x548C;&amp;#x5173;&amp;#x4E8E;&amp;#x4ED">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 用ES6 Generator实现异步 | {XFE} </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?13989991106bdad30ea927ab9ae93a09";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/xfe/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">{XFE}</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xfe/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/xfe/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/xfe/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/xfe/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xfe/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                用ES6 Generator实现异步
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-12T10:39:04+08:00" content="2016-07-12">
+              2016-07-12
+            </time>
+          </span>
+
+          
+          <span class="post-author">
+            &nbsp; | &nbsp;
+            acelan
+          </span>
+          
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/xfe/categories/translate/" itemprop="url" rel="index">
+                    <span itemprop="name">translate</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/xfe/2016/07/12/going-async-with-es6-generators/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/12/going-async-with-es6-generators/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#x672C;&#x6587;&#x6839;&#x636E; <a href="https://davidwalsh.name/async-generators" target="_blank" rel="external">https://davidwalsh.name/async-generators</a> &#x7FFB;&#x8BD1;</p>
+<p>&#x73B0;&#x5728;&#x4F60;&#x5DF2;&#x7ECF;&#x4E86;&#x89E3;&#x4E86;ES6 genderators&#x548C;&#x5173;&#x4E8E;&#x4ED6;&#x4EEC;&#x66F4;&#x6DF1;&#x5165;&#x7684;&#x4E00;&#x4E9B;&#x5185;&#x5BB9;&#xFF0C;&#x662F;&#x65F6;&#x5019;&#x771F;&#x6B63;&#x5229;&#x7528;&#x4ED6;&#x4EEC;&#x6765;&#x6539;&#x5584;&#x6211;&#x4EEC;&#x7684;&#x4EE3;&#x7801;&#x4E86;&#x3002;</p>
+<p>generators&#x7684;&#x4E3B;&#x8981;&#x80FD;&#x529B;&#x5728;&#x4E8E;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x5355;&#x7EBF;&#x7A0B;&#xFF0C;&#x770B;&#x8D77;&#x6765;&#x540C;&#x6B65;&#x7684;&#x4EE3;&#x7801;&#x98CE;&#x683C;&#xFF0C;&#x800C;&#x9690;&#x85CF;&#x4E86;&#x5F02;&#x6B65;&#x5B9E;&#x73B0;&#x7684;&#x7EC6;&#x8282;&#x3002;&#x8FD9;&#x8BA9;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x7528;&#x975E;&#x5E38;&#x81EA;&#x7136;&#x7684;&#x65B9;&#x5F0F;&#x6765;&#x5B9E;&#x73B0;&#x7A0B;&#x5E8F;&#x6B65;&#x9AA4;/&#x63CF;&#x8FF0;&#xFF0C;&#x80FD;&#x591F;&#x540C;&#x65F6;&#x907F;&#x5F00;&#x5F02;&#x6B65;&#x8BED;&#x6CD5;&#x548C;&#x9677;&#x9631;&#x3002;</p>
+<p>&#x6362;&#x53E5;&#x8BDD;&#x8BF4;&#xFF0C;&#x901A;&#x8FC7;&#x5206;&#x79BB;&#x503C;&#x7684;&#x4F7F;&#x7528;&#xFF08;generator&#x7684;&#x903B;&#x8F91;&#xFF09;&#x548C;&#x5F02;&#x6B65;&#x586B;&#x5145;&#x503C;&#x7684;&#x5B9E;&#x73B0;&#x7EC6;&#x8282;&#xFF08;generator&#x8FED;&#x4EE3;&#x5668;&#x7684;<code>next(..)</code>&#xFF09;&#xFF0C;&#x6211;&#x4EEC;&#x8FBE;&#x6210;&#x4E86;&#x4E00;&#x4E2A;&#x5F88;&#x597D;&#x7684;&#x80FD;&#x529B;/&#x5173;&#x6CE8;&#x5206;&#x79BB;&#x3002;</p>
+<p>&#x7ED3;&#x679C;&#x662F;&#xFF1F;&#x6211;&#x4EEC;&#x80FD;&#x591F;&#x5F97;&#x5230;&#x6240;&#x6709;&#x7684;&#x5F02;&#x6B65;&#x4EE3;&#x7801;&#x7684;&#x80FD;&#x529B;&#xFF0C;&#x8FD8;&#x6709;&#x7B80;&#x5355;&#x7684;&#x6613;&#x7EF4;&#x62A4;&#x7684;&#x540C;&#x6B65;&#x6837;&#x5F0F;&#x4EE3;&#x7801;&#x3002;</p>
+<p>&#x90A3;&#x4E48;&#x6211;&#x4EEC;&#x8BE5;&#x5982;&#x4F55;&#x5B8C;&#x6210;&#x8FD9;&#x4E00;&#x58EE;&#x4E3E;&#x5462;&#xFF1F;</p>
+<h2 id="&#x7B80;&#x5355;&#x7684;&#x5F02;&#x6B65;"><a href="#&#x7B80;&#x5355;&#x7684;&#x5F02;&#x6B65;" class="headerlink" title="&#x7B80;&#x5355;&#x7684;&#x5F02;&#x6B65;"></a>&#x7B80;&#x5355;&#x7684;&#x5F02;&#x6B65;</h2><p>&#x6700;&#x7B80;&#x5355;&#x7684;&#xFF0C;&#x5BF9;&#x4E8E;&#x4E0D;&#x5177;&#x5907;&#x5F02;&#x6B65;&#x80FD;&#x529B;&#x7684;&#x7A0B;&#x5E8F;&#xFF0C;generators&#x4E0D;&#x9700;&#x8981;&#x4EFB;&#x4F55;&#x989D;&#x5916;&#x7684;&#x5904;&#x7406;&#x3002;</p>
+<p>&#x6BD4;&#x5982;&#xFF0C;&#x60F3;&#x8C61;&#x4E0B;&#x6709;&#x4E0B;&#x9762;&#x8FD9;&#x6837;&#x7684;&#x4EE3;&#x7801;&#xFF1A;<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeAjaxCall</span>(<span class="params">url,cb</span>) </span>{</span><br><span class="line">    <span class="comment">// do some ajax fun</span></span><br><span class="line">    <span class="comment">// call `cb(result)` when complete</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">makeAjaxCall( <span class="string">&quot;http://some.url.1&quot;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">result1</span>)</span>{</span><br><span class="line">    <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse( result1 );</span><br><span class="line"></span><br><span class="line">    makeAjaxCall( <span class="string">&quot;http://some.url.2/?id=&quot;</span> + data.id, <span class="function"><span class="keyword">function</span>(<span class="params">result2</span>)</span>{</span><br><span class="line">        <span class="keyword">var</span> resp = <span class="built_in">JSON</span>.parse( result2 );</span><br><span class="line">        <span class="built_in">console</span>.log( <span class="string">&quot;The value you asked for: &quot;</span> + resp.value );</span><br><span class="line">    });</span><br><span class="line">} );</span><br></pre></td></tr></table></figure></p>
+<p>&#x4F7F;&#x7528;generator(&#x4E0D;&#x9700;&#x8981;&#x989D;&#x5916;&#x7684;&#x4FEE;&#x9970;)&#x6765;&#x8868;&#x8FBE;&#x76F8;&#x540C;&#x7684;&#x7A0B;&#x5E8F;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x8FD9;&#x4E48;&#x5199;&#xFF1A;<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">request</span>(<span class="params">url</span>) </span>{</span><br><span class="line">    <span class="comment">// this is where we&apos;re hiding the asynchronicity,</span></span><br><span class="line">    <span class="comment">// away from the main code of our generator</span></span><br><span class="line">    <span class="comment">// `it.next(..)` is the generator&apos;s iterator-resume</span></span><br><span class="line">    <span class="comment">// call</span></span><br><span class="line">    makeAjaxCall( url, <span class="function"><span class="keyword">function</span>(<span class="params">response</span>)</span>{</span><br><span class="line">        it.next( response );</span><br><span class="line">    } );</span><br><span class="line">    <span class="comment">// Note: nothing returned here!</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> *<span class="title">main</span>(<span class="params"></span>) </span>{</span><br><span class="line">    <span class="keyword">var</span> result1 = <span class="keyword">yield</span> request( <span class="string">&quot;http://some.url.1&quot;</span> );</span><br><span class="line">    <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse( result1 );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> result2 = <span class="keyword">yield</span> request( <span class="string">&quot;http://some.url.2?id=&quot;</span> + data.id );</span><br><span class="line">    <span class="keyword">var</span> resp = <span class="built_in">JSON</span>.parse( result2 );</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">&quot;The value you asked for: &quot;</span> + resp.value );</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> it = main();</span><br><span class="line">it.next(); <span class="comment">// get it all started</span></span><br></pre></td></tr></table></figure></p>
+<p>&#x8BA9;&#x6211;&#x4EEC;&#x6765;&#x68C0;&#x67E5;&#x4E0B;&#x4ED6;&#x662F;&#x600E;&#x4E48;&#x5DE5;&#x4F5C;&#x7684;</p>
+<p><code>request(..)</code>&#x8F85;&#x52A9;&#x65B9;&#x6CD5;&#x4E3B;&#x8981;&#x662F;&#x5305;&#x88F9;&#x6B63;&#x5E38;&#x7684;<code>makeAjaxCall(..)</code>&#x5355;&#x5143;&#xFF0C;&#x7528;&#x6765;&#x786E;&#x4FDD;&#x5B83;&#x7684;&#x56DE;&#x8C03;&#x4F1A;&#x8C03;&#x7528;generator&#x8FED;&#x4EE3;&#x5668;&#x7684;<code>next(..)</code>&#x65B9;&#x6CD5;&#x3002;</p>
+<p>&#x968F;&#x7740;<code>request(..)</code>&#x7684;&#x8C03;&#x7528;&#xFF0C;&#x4F60;&#x4F1A;&#x6CE8;&#x610F;&#x5230;&#x5B83;&#x6CA1;&#x6709;&#x8FD4;&#x56DE;&#x503C;&#xFF08;&#x6362;&#x53E5;&#x8BDD;&#x8BF4;&#xFF0C;&#x4ED6;&#x7684;&#x8FD4;&#x56DE;&#x503C;&#x662F;undefined&#xFF09;&#x3002;&#x8FD9;&#x6CA1;&#x6709;&#x4EC0;&#x4E48;&#x5927;&#x4E0D;&#x4E86;&#x7684;&#xFF0C;&#x4F46;&#x662F;&#x5BF9;&#x4E8E;&#x5BF9;&#x6BD4;&#x6211;&#x4EEC;&#x5982;&#x4F55;&#x9A8C;&#x8BC1;&#x6587;&#x7AE0;&#x540E;&#x9762;&#x6240;&#x8BF4;&#x7684;&#x4E8B;&#x60C5;&#xFF1A;&#x6211;&#x4EEC;&#x6709;&#x6548;&#x7684;&#x5728;&#x8FD9;&#x91CC;yield&#x4E86;&#x4E00;&#x4E2A;undfined&#xFF0C;&#x8FD9;&#x6709;&#x70B9;&#x91CD;&#x8981;&#x3002;</p>
+<p>&#x7136;&#x540E;&#x6211;&#x4EEC;&#x8C03;&#x7528;<code>yield ..</code>(&#x4F7F;&#x7528;undefined&#x7684;&#x503C;)&#xFF0C;&#x4ED6;&#x57FA;&#x672C;&#x4E0A;&#x4E0D;&#x505A;&#x4EC0;&#x4E48;&#x53EA;&#x662F;&#x5728;&#x8FD9;&#x91CC;&#x6682;&#x505C;&#x4E86;generator&#x3002;&#x5B83;&#x5C06;&#x7B49;&#x5F85;&#x77E5;&#x9053;<code>it.next(..)</code>&#x8C03;&#x7528;&#x7136;&#x540E;&#x6062;&#x590D;&#x6267;&#x884C;&#xFF0C;&#x5B83;&#x6392;&#x961F;&#x7B49;&#x5F85;Ajax&#x8C03;&#x7528;&#x7ED3;&#x675F;&#x540E;&#x53D1;&#x751F;&#xFF08;&#x4F5C;&#x4E3A;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#xFF09;&#x3002;</p>
+<p>&#x4F46;&#x662F;&#x5BF9;&#x4E8E;<code>yield ..</code>&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x7ED3;&#x679C;&#x5177;&#x4F53;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;&#x6211;&#x4EEC;&#x628A;&#x5B83;&#x8D4B;&#x503C;&#x7ED9;&#x4E86;&#x53D8;&#x91CF;<code>result1</code>. &#x5B83;&#x662F;&#x600E;&#x4E48;&#x5F97;&#x5230;&#x7B2C;&#x4E00;&#x4E2A;Ajax&#x8C03;&#x7528;&#x7684;&#x7ED3;&#x679C;&#x7684;&#x5462;&#xFF1F;</p>
+<p>&#x56E0;&#x4E3A;&#x5F53;<code>it.next(..)</code>&#x88AB;&#x4F5C;&#x4E3A;ajax&#x7684;&#x56DE;&#x8C03;&#x8C03;&#x7528;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5B83;&#x4F20;&#x9012;&#x4E86;ajax&#x7684;&#x8FD4;&#x56DE;&#xFF0C;&#x610F;&#x5473;&#x7740;&#x8FD9;&#x4E2A;&#x503C;&#x88AB;&#x56DE;&#x4F20;&#x56DE;&#x7ED9;&#x5F53;&#x65F6;&#x6682;&#x505C;&#x7684;&#x90A3;&#x4E2A;generator&#xFF0C;&#x5728;&#x4E2D;&#x95F4;&#x7684;<code>result1 = yield ..</code>&#x8BED;&#x53E5;&#x8FD9;&#x3002;</p>
+<p>&#x8FD9;&#x771F;&#x7684;&#x5F88;&#x9177;&#x800C;&#x4E14;&#x5F88;&#x5F3A;&#x5927;&#x3002;&#x672C;&#x8D28;&#x4E0A;&#xFF0C;<code>result1 = yield request(..)</code>&#x8BF7;&#x6C42;&#x6570;&#x636E;&#xFF0C;&#x4F46;&#x4ED6;&#x7684;&#x5B9E;&#x73B0;&#x7EC6;&#x8282;&#x5BF9;&#x6211;&#x4EEC;&#x900F;&#x660E;&#xFF08;&#x5B8C;&#x5168;&#x7684;&#xFF01;&#xFF09;&#x2014;&#x2014; &#x81F3;&#x5C11;&#x5728;&#x8FD9;&#x91CC;&#x6211;&#x4EEC;&#x4E0D;&#x9700;&#x8981;&#x53BB;&#x5173;&#x5FC3; &#x2014;&#x2014; &#x5C3D;&#x7BA1;&#x5728;&#x8FD9;&#x4E2A;&#x5B9E;&#x73B0;&#x7684;&#x8986;&#x76D6;&#x4E0B;&#x8FD9;&#x4E2A;&#x6B65;&#x9AA4;&#x662F;&#x5F02;&#x6B65;&#x7684;&#x3002;&#x4ED6;&#x5B8C;&#x6210;&#x4E86;&#x901A;&#x8FC7;yield&#x9690;&#x5F0F;&#x6682;&#x505C;&#x7684;&#x80FD;&#x529B;&#x5B9E;&#x73B0;&#x5F02;&#x6B65;&#xFF0C;&#x4E14;&#x5206;&#x79BB;&#x51FA;generator&#x7684;&#x6062;&#x590D;&#x529F;&#x80FD;&#x7ED9;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x4F7F;&#x5F97;&#x6211;&#x4EEC;&#x7684;&#x4E3B;&#x8981;&#x4EE3;&#x7801;&#x53EA;&#x770B;&#x8D77;&#x6765;&#x53EA;&#x662F;&#x521B;&#x5EFA;&#x4E86;&#x4E00;&#x4E2A;&#x540C;&#x6B65;&#x98CE;&#x683C;&#x7684;&#x503C;&#x8BF7;&#x6C42;&#x3002;</p>
+<p>&#x540C;&#x6837;&#x7684;&#xFF0C;&#x7B2C;&#x4E8C;&#x4E2A;<code>result2 = yield result(..)</code>&#x8BED;&#x53E5;&#xFF1A;&#x4ED6;&#x900F;&#x660E;&#x5316;&#x4E86;&#x6682;&#x505C;&amp;&#x56DE;&#x590D;&#xFF0C;&#x5E76;&#x4E14;&#x7ED9;&#x4E86;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x7684;&#x503C;&#xFF0C;&#x5728;&#x8FD9;&#x91CC;&#x6211;&#x4EEC;&#x4E0D;&#x9700;&#x8981;&#x5173;&#x5FC3;&#x4EFB;&#x4F55;&#x7684;&#x5F02;&#x6B65;&#x7684;&#x7EC6;&#x8282;&#x3002;</p>
+<p>&#x5F53;&#x7136;yield&#x662F;&#x5B58;&#x5728;&#x7684;&#xFF0C;&#x7A0D;&#x5FAE;&#x63D0;&#x793A;&#x4E86;&#x6709;&#x4E9B;&#x795E;&#x5947;&#x7684;&#x4E1C;&#x897F;&#xFF08;&#x6307;&#x5F02;&#x6B65;&#xFF09;&#x53EF;&#x80FD;&#x53D1;&#x751F;&#x5728;&#x8FD9;&#x91CC;&#x3002;&#x4F46;&#x662F;yield&#x662F;&#x4E00;&#x4E2A;&#x5F88;&#x5C0F;&#x7684;&#x8BED;&#x6CD5;&#x4FE1;&#x53F7;/&#x5F00;&#x9500;&#xFF0C;&#x76F8;&#x6BD4;&#x5D4C;&#x5957;&#x56DE;&#x8C03;&#x5669;&#x68A6;&#xFF08;&#x751A;&#x81F3;&#x662F;promise&#x94FE;&#xFF01;&#xFF09;&#x3002;</p>
+<p>&#x5F53;&#x7136;&#x4E5F;&#x8981;&#x6CE8;&#x610F;&#x6211;&#x8BF4;&#x7684;&#x201C;&#x53EF;&#x80FD;&#x53D1;&#x751F;&#x201D;&#xFF0C;&#x8FD9;&#x672C;&#x8EAB;&#x662F;&#x4E00;&#x4E2A;&#x975E;&#x5E38;&#x5F3A;&#x5927;&#x7684;&#x4E1C;&#x897F;&#x3002;&#x4E0A;&#x9762;&#x7684;&#x7A0B;&#x5E8F;&#x603B;&#x662F;&#x4EA7;&#x751F;&#x4E00;&#x4E2A;&#x5F02;&#x6B65;&#x7684;ajax&#x8BF7;&#x6C42;&#xFF0C;&#x4F46;&#x5982;&#x679C;&#x5B83;&#x6CA1;&#x6709;&#x5462;&#xFF1F;&#x5982;&#x679C;&#x540E;&#x9762;&#x6539;&#x53D8;&#x6211;&#x4EEC;&#x7A0B;&#x5E8F;&#x7684;&#x662F;&#x4E00;&#x4E2A;&#x4E4B;&#x524D;ajax&#x54CD;&#x5E94;&#x7684;&#x7F13;&#x5B58;&#xFF08;&#x6216;&#x8005;&#x9884;&#x53D6;&#xFF09;&#x5462;&#xFF1F;&#x6216;&#x8005;&#x67D0;&#x4E9B;&#x590D;&#x6742;&#x7684;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;URL&#x8DEF;&#x7531;&#x80FD;&#x591F;&#x4EE5;&#x6B63;&#x786E;&#x7684;&#x65B9;&#x5F0F;&#x6765;&#x586B;&#x5145;ajax&#x8BF7;&#x6C42;&#xFF0C;&#x800C;&#x4E0D;&#x9700;&#x8981;&#x5B9E;&#x9645;&#x5230;&#x670D;&#x52A1;&#x5668;&#x53BB;&#x83B7;&#x53D6;&#x5462;&#xFF1F;</p>
+<p>&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x50CF;&#x8FD9;&#x6837;&#x6765;&#x6539;&#x53D8;<code>request(..)</code>&#x7684;&#x5B9E;&#x73B0;&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cache = {};</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">request</span>(<span class="params">url</span>) </span>{</span><br><span class="line">    <span class="keyword">if</span> (cache[url]) {</span><br><span class="line">        <span class="comment">// &quot;defer&quot; cached response long enough for current</span></span><br><span class="line">        <span class="comment">// execution thread to complete</span></span><br><span class="line">        setTimeout( <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{</span><br><span class="line">            it.next( cache[url] );</span><br><span class="line">        }, <span class="number">0</span> );</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> {</span><br><span class="line">        makeAjaxCall( url, <span class="function"><span class="keyword">function</span>(<span class="params">resp</span>)</span>{</span><br><span class="line">            cache[url] = resp;</span><br><span class="line">            it.next( resp );</span><br><span class="line">        } );</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>&#x6CE8;&#x610F;&#xFF1A;&#x4E00;&#x4E2A;&#x5F88;&#x5FAE;&#x5999;&#x7684;&#x7EC6;&#x8282;&#xFF0C;&#x5728;&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x7528;<code>setTimeout(..0)</code>&#x5EF6;&#x8FDF;&#x5230;&#x5DF2;&#x7ECF;&#x6709;&#x7ED3;&#x679C;&#x88AB;&#x7F13;&#x5B58;&#x3002;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x53EA;&#x662F;&#x76F4;&#x63A5;&#x8C03;&#x7528;<code>it.next(..)</code>, &#x5C06;&#x4F1A;&#x89E6;&#x53D1;&#x4E00;&#x4E2A;&#x9519;&#x8BEF;&#xFF0C;&#x56E0;&#x4E3A;&#xFF08;&#x4E14;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x6BD4;&#x8F83;&#x9EBB;&#x70E6;&#x7684;&#x90E8;&#x5206;&#xFF09;generator&#x6280;&#x672F;&#x4E0A;&#x8FD8;&#x6CA1;&#x6709;&#x5904;&#x4E8E;&#x6682;&#x505C;&#x72B6;&#x6001;&#x3002;&#x51FD;&#x6570;&#x8C03;&#x7528;<code>request(..)</code>&#x6700;&#x5148;&#x88AB;&#x6267;&#x884C;&#xFF0C;&#x7136;&#x540E;&#x624D;&#x662F;yield&#x6682;&#x505C;&#x3002;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x5F53;&#x524D;&#x4E0D;&#x80FD;&#x7ACB;&#x5373;&#x8C03;&#x7528;<code>request(..)</code>&#x4E2D;&#x7684;<code>it.next(&#x3002;&#x3002;)</code>, &#x56E0;&#x4E3A;&#x6B64;&#x523B;generator&#x4F9D;&#x7136;&#x5728;&#x6267;&#x884C;&#xFF08;yield&#x8FD8;&#x6CA1;&#x88AB;&#x5904;&#x7406;)&#x3002;&#x4F46;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x8C03;&#x7528;<code>it.next(..)</code>&#x201C;&#x4E4B;&#x540E;&#x201D;&#xFF0C;&#x5728;&#x5F53;&#x524D;&#x7EBF;&#x7A0B;&#x6267;&#x884C;&#x5B8C;&#x6210;&#x540E;&#x7ACB;&#x5373;&#x8C03;&#x7528;&#xFF0C;&#x8FD9;&#x5C31;&#x662F;&#x6211;&#x4EEC;&#x7684;<code>setTimeout(..0)</code>&#x6240;&#x505A;&#x7684;&#x4E8B;&#x60C5;&#x3002;&#x63A5;&#x4E0B;&#x6765;&#x4F1A;&#x6709;&#x4E00;&#x4E2A;&#x66F4;&#x597D;&#x7684;&#x7B54;&#x6848;&#x3002;</p>
+</blockquote>
+<p>&#x800C;&#xFF0C;&#x6211;&#x4EEC;&#x4E3B;&#x8981;&#x7684;generator&#x4EE3;&#x7801;&#x662F;&#x8FD9;&#x6837;&#x7684;&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result1 = <span class="keyword">yield</span> request( <span class="string">&quot;http://some.url.1&quot;</span> );</span><br><span class="line"><span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse( result1 );</span><br><span class="line">..</span><br></pre></td></tr></table></figure>
+<p>&#x770B;&#x89C1;&#x4E86;&#x5427;&#xFF01;&#xFF1F;generator&#x903B;&#x8F91;&#xFF08;&#x6307;&#x6211;&#x4EEC;&#x7684;&#x6D41;&#x63A7;&#x5236;&#xFF09;&#x76F8;&#x6BD4;&#x4E0A;&#x9762;&#x7684;&#x6CA1;&#x6709;&#x7F13;&#x5B58;&#x7684;&#x7248;&#x672C;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x505A;&#x4EFB;&#x4F55;&#x6539;&#x53D8;&#x3002;</p>
+<p>&#x5728;<code>*main()</code>&#x4EE3;&#x7801;&#x4E2D;&#x4F9D;&#x7136;&#x53EA;&#x662F;&#x8BF7;&#x6C42;&#x503C;&#xFF0C;&#x5E76;&#x4E14;&#x6682;&#x505C;&#x76F4;&#x5230;&#x83B7;&#x53D6;&#x5230;&#x503C;&#x624D;&#x7EE7;&#x7EED;&#x3002;&#x5728;&#x5F53;&#x524D;&#x7684;&#x65B9;&#x6848;&#x4E2D;&#xFF0C;&#x201C;&#x6682;&#x505C;&#x201D;&#x53EF;&#x80FD;&#x6BD4;&#x8F83;&#x957F;&#xFF08;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5B9E;&#x9645;&#x7684;&#x670D;&#x52A1;&#x7AEF;&#x8BF7;&#x6C42;&#xFF0C;&#x53EF;&#x80FD;&#x5728;300-800ms&#x5DE6;&#x53F3;&#xFF09;&#x6216;&#x8005;&#x51E0;&#x4E4E;&#x7ACB;&#x5373;&#xFF08;<code>setTimeout(..0)</code>&#x5EF6;&#x8FDF;hack&#xFF09;&#x3002;&#x4F46;&#x6211;&#x4EEC;&#x7684;&#x63A7;&#x5236;&#x6D41;&#x4E0D;&#x9700;&#x8981;&#x5173;&#x5FC3;&#x3002;</p>
+<p>&#x8FD9;&#x662F;&#x628A;&#x5F02;&#x6B65;&#x5B9E;&#x73B0;&#x7684;&#x7EC6;&#x8282;&#x62BD;&#x8C61;&#x51FA;&#x6765;&#x7684;&#x771F;&#x6B63;&#x529B;&#x91CF;&#x3002;</p>
+<h2 id="&#x66F4;&#x597D;&#x7684;&#x5F02;&#x6B65;"><a href="#&#x66F4;&#x597D;&#x7684;&#x5F02;&#x6B65;" class="headerlink" title="&#x66F4;&#x597D;&#x7684;&#x5F02;&#x6B65;"></a>&#x66F4;&#x597D;&#x7684;&#x5F02;&#x6B65;</h2><p>&#x4E0A;&#x9762;&#x63CF;&#x8FF0;&#x5BF9;&#x4E8E;&#x8BF4;&#x660E;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x5F02;&#x6B65;generator&#x5DE5;&#x4F5C;&#x662F;&#x4E0D;&#x9519;&#x7684;&#x3002;&#x4F46;&#x662F;&#x5B83;&#x5F88;&#x5FEB;&#x5C06;&#x6210;&#x4E3A;&#x9650;&#x5236;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x4E00;&#x4E2A;&#x66F4;&#x5F3A;&#x5927;&#x7684;&#x5F02;&#x6B65;&#x673A;&#x5236;&#x4E0E;generators&#x6765;&#x914D;&#x5BF9;&#xFF0C;&#x7528;&#x6765;&#x5904;&#x7406;&#x66F4;&#x591A;&#x7E41;&#x7410;&#x7684;&#x4E8B;&#x60C5;&#x3002;&#x8FD9;&#x4E2A;&#x673A;&#x5236;&#x662F;&#xFF1F;Promises&#x3002;</p>
+<p>&#x5982;&#x679C;&#x4F60;&#x4ECD;&#x7136;&#x5BF9;ES6 Promise&#x6709;&#x70B9;&#x8FF7;&#x60D1;&#xFF0C;&#x6211;&#x5199;&#x4E86;&#x4E00;&#x4E2A;&#x8FDE;&#x7EED;&#x7684;5&#x7BC7;&#x7CFB;&#x5217;&#x535A;&#x5BA2;&#x6765;&#x4ECB;&#x7ECD;&#x5B83;&#x3002;&#x5148;&#x53BB;&#x770B;&#x770B;&#xFF0C;&#x6211;&#x4F1A;&#x7B49;&#x4F60;&#x56DE;&#x6765;&#x7684;&#x3002;( &#xFFE3; &#x25BD;&#xFFE3;)o&#x256D;&#x256F; &#x4E00;&#x4E2A;&#x8001;&#x6389;&#x7259;&#x7684;&#x7B11;&#x8BDD;&#x3002;</p>
+<p>&#x65E9;&#x671F;&#x7684;ajax&#x4EE3;&#x7801;&#x7684;&#x79BB;&#x804C;&#x5728;&#x8FD9;&#x91CC;&#x906D;&#x53D7;&#x4E86;&#x76F8;&#x540C;&#x7684;&#x63A7;&#x5236;&#x53CD;&#x8F6C;&#x95EE;&#x9898;&#xFF08;&#x6307;&#x201C;&#x56DE;&#x8C03;&#x91D1;&#x5B57;&#x5854;&#x201D;&#xFF09;&#x4EE5;&#x6211;&#x4EEC;&#x521D;&#x59CB;&#x5D4C;&#x5957;&#x56DE;&#x8C03;&#x7684;&#x4F8B;&#x5B50;&#x3002;&#x76EE;&#x524D;&#x4F4D;&#x7F6E;&#x5BF9;&#x4E8E;&#x6211;&#x4EEC;&#x6765;&#x8BF4;&#xFF0C;&#x4E00;&#x4E9B;&#x89C2;&#x5BDF;&#x662F;&#x7F3A;&#x4E4F;&#x7684;&#x3002;<br>//Some observations of where things are lacking for us so far:</p>
+<p>&#x9519;&#x8BEF;&#x5904;&#x7406;&#x6CA1;&#x6709;&#x660E;&#x786E;&#x7684;&#x8DEF;&#x5F84;&#x3002;&#x6B63;&#x5982;&#x6211;&#x4EEC;&#x5728;&#x4EE5;&#x524D;&#x7684;&#x6587;&#x7AE0;&#x4E2D;&#x4E86;&#x89E3;&#x5230;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x7528;Ajax&#x8C03;&#x7528;&#x68C0;&#x6D4B;&#x5230;&#x4E00;&#x4E2A;&#x9519;&#x8BEF;&#xFF08;&#x4E0D;&#x77E5;&#xFF09;&#xFF0C;&#x901A;&#x8FC7;&#x5B83;&#x56DE;&#x5230;&#x6211;&#x4EEC;&#x7684;&#x53D1;&#x7535;&#x673A;&#xFF0C;&#x628A;&#xFF08;..&#xFF09;&#xFF0C;&#x7136;&#x540E;&#x7528;&#x8BD5;&#x8BD5;&#x3002;&#x8D76;&#x5728;&#x6211;&#x4EEC;&#x7684;&#x53D1;&#x7535;&#x673A;&#x7684;&#x903B;&#x8F91;&#x6765;&#x5904;&#x7406;&#x5B83;&#x3002;&#x4F46;&#x8FD9;&#x53EA;&#x662F;&#x66F4;&#x591A;&#x7684;&#x624B;&#x5DE5;&#x5DE5;&#x4F5C;&#xFF0C;&#x5728;&#x201C;&#x540E;&#x7AEF;&#x201D;&#xFF08;&#x4EE3;&#x7801;&#x5904;&#x7406;&#x6211;&#x4EEC;&#x7684;&#x751F;&#x6210;&#x5668;&#x8FED;&#x4EE3;&#x5668;&#xFF09;&#xFF0C;&#x5B83;&#x53EF;&#x80FD;&#x4E0D;&#x662F;&#x4EE3;&#x7801;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x91CD;&#x65B0;&#x4F7F;&#x7528;&#xFF0C;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x6B63;&#x5728;&#x505A;&#x5927;&#x91CF;&#x7684;&#x53D1;&#x7535;&#x673A;&#x5728;&#x6211;&#x4EEC;&#x7684;&#x8BA1;&#x5212;&#x3002;<br>&#x5982;&#x679C;makeajaxcall&#xFF08;..&#xFF09;&#x672C;&#x4E0D;&#x5728;&#x6211;&#x4EEC;&#x7684;&#x63A7;&#x5236;&#x4E4B;&#x4E0B;&#xFF0C;&#x5B83;&#x4F1A;&#x8C03;&#x7528;&#x56DE;&#x8C03;&#x591A;&#x6B21;&#xFF0C;&#x6216;&#x4FE1;&#x53F7;&#x6210;&#x529F;&#x548C;&#x9519;&#x8BEF;&#x7684;&#x540C;&#x65F6;&#xFF0C;&#x7B49;&#x7B49;&#xFF0C;&#x90A3;&#x4E48;&#x6211;&#x4EEC;&#x7684;&#x53D1;&#x7535;&#x673A;&#x5C06;&#x5931;&#x63A7;&#xFF08;&#x672A;&#x6355;&#x83B7;&#x7684;&#x9519;&#x8BEF;&#xFF0C;&#x610F;&#x60F3;&#x4E0D;&#x5230;&#x7684;&#x4EF7;&#x503C;&#xFF0C;&#x7B49;&#xFF09;&#x3002;&#x5904;&#x7406;&#x548C;&#x9884;&#x9632;&#x8FD9;&#x4E9B;&#x95EE;&#x9898;&#x662F;&#x5927;&#x91CF;&#x7684;&#x91CD;&#x590D;&#x7684;&#x624B;&#x5DE5;&#x5DE5;&#x4F5C;&#xFF0C;&#x4E5F;&#x53EF;&#x80FD;&#x662F;&#x4E0D;&#x53EF;&#x79FB;&#x690D;&#x7684;&#x3002;<br>&#x6211;&#x4EEC;&#x7ECF;&#x5E38;&#x9700;&#x8981;&#x591A;&#x4E2A;&#x4EFB;&#x52A1;&#x201C;&#x5E76;&#x884C;&#x201D;&#xFF08;&#x5982;&#x4E24;&#x4E2A;&#x540C;&#x6B65;&#x7684;Ajax&#x8C03;&#x7528;&#xFF0C;&#x4F8B;&#x5982;&#xFF09;&#x3002;&#x7531;&#x4E8E;&#x53D1;&#x7535;&#x673A;&#x4EA7;&#x91CF;&#x62A5;&#x8868;&#x90FD;&#x662F;&#x4E00;&#x4E2A;&#x5355;&#x4E00;&#x7684;&#x505C;&#x987F;&#x70B9;&#xFF0C;&#x4E24;&#x4E2A;&#x6216;&#x4E24;&#x4E2A;&#x4EE5;&#x4E0A;&#x7684;&#x4E0D;&#x80FD;&#x540C;&#x65F6;&#x8FD0;&#x884C;&#xFF0C;&#x5FC5;&#x987B;&#x8FD0;&#x884C;&#x5728;&#x4E00;&#x4E2A;&#x65F6;&#x95F4;&#x4E3A;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x5B83;&#x4E0D;&#x662F;&#x5F88;&#x6E05;&#x695A;&#x5982;&#x4F55;&#x5728;&#x4E00;&#x4E2A;&#x5355;&#x4E00;&#x7684;&#x53D1;&#x7535;&#x673A;&#x5C48;&#x670D;&#x70B9;&#x4E0A;&#x53D1;&#x5C04;&#x591A;&#x4E2A;&#x4EFB;&#x52A1;&#xFF0C;&#x800C;&#x4E0D;&#x9700;&#x5927;&#x91CF;&#x7684;&#x624B;&#x5DE5;&#x4EE3;&#x7801;&#x7684;&#x8986;&#x76D6;&#x4E0B;&#x3002;<br>&#x6B63;&#x5982;&#x4F60;&#x6240;&#x770B;&#x5230;&#x7684;&#xFF0C;&#x6240;&#x6709;&#x8FD9;&#x4E9B;&#x95EE;&#x9898;&#x90FD;&#x662F;&#x53EF;&#x4EE5;&#x89E3;&#x51B3;&#x7684;&#xFF0C;&#x4F46;&#x8C01;&#x771F;&#x7684;&#x60F3;&#x6539;&#x9020;&#x8FD9;&#x4E9B;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#xFF0C;&#x6BCF;&#x4E00;&#x6B21;&#x3002;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x4E00;&#x4E2A;&#x66F4;&#x5F3A;&#x5927;&#x7684;&#x6A21;&#x5F0F;&#x662F;&#x4E13;&#x4E3A;&#x4E00;&#x4E2A;&#x503C;&#x5F97;&#x4FE1;&#x8D56;&#x7684;&#xFF0C;&#x5F02;&#x6B65;&#x7F16;&#x7801;&#x53D1;&#x751F;&#x5668;&#x53EF;&#x91CD;&#x7528;&#x7684;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#x3002;<br>&#x8FD9;&#x79CD;&#x6A21;&#x5F0F;&#xFF1F;&#x627F;&#x8BFA;&#x7684;&#x627F;&#x8BFA;&#xFF0C;&#x8BA9;&#x4ED6;&#x4EEC;&#x6062;&#x590D;&#x53D1;&#x7535;&#x673A;&#x65F6;&#xFF0C;&#x4ED6;&#x4EEC;&#x5C65;&#x884C;&#x3002;<br>&#x53EC;&#x56DE;&#x4EE5;&#x4E0A;&#xFF0C;&#x6211;&#x4EEC;&#x505A;&#x4E86;&#x5C48;&#x670D;&#x8BF7;&#x6C42;&#xFF08;..&#xFF09;&#xFF0C;&#x548C;&#x8981;&#x6C42;&#xFF08;..&#xFF09;&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#x6CA1;&#x6709;&#x4EFB;&#x4F55;&#x56DE;&#x62A5;&#x503C;&#xFF0C;&#x6240;&#x4EE5;&#x5B83;&#x662F;&#x6709;&#x6548;&#x7684;&#x53EA;&#x662F;&#x4EA7;&#x751F;&#x4E0D;&#x786E;&#x5B9A;&#x7684;&#xFF1F;<br>&#x8BA9;&#x6211;&#x4EEC;&#x8C03;&#x6574;&#x4E00;&#x4E0B;&#x3002;&#x8BA9;&#x6211;&#x4EEC;&#x6539;&#x53D8;&#x6211;&#x4EEC;&#x7684;&#x8981;&#x6C42;&#xFF08;..&#xFF09;&#x5B9E;&#x7528;&#x7A0B;&#x5E8F;&#xFF0C;&#x4EE5;&#x627F;&#x8BFA;&#x4E3A;&#x57FA;&#x7840;&#xFF0C;&#x4F7F;&#x5B83;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x627F;&#x8BFA;&#xFF0C;&#x56E0;&#x6B64;&#xFF0C;&#x6211;&#x4EEC;&#x6240;&#x4EA7;&#x751F;&#x7684;&#x5B9E;&#x9645;&#x4E0A;&#x662F;&#x4E00;&#x4E2A;&#x627F;&#x8BFA;&#xFF08;&#x800C;&#x4E0D;&#x662F;&#x672A;&#x5B9A;&#x4E49;&#xFF09;&#x3002;</p>
+<ol>
+<li>&#x9519;&#x8BEF;&#x5904;&#x7406;&#x6CA1;&#x6709;&#x660E;&#x786E;&#x7684;&#x8DEF;&#x5F84;&#x3002;&#x6B63;&#x5982;&#x6211;&#x4EEC;&#x5728;&#x4E4B;&#x524D;&#x7684;&#x6587;&#x7AE0;&#x4E2D;&#x4E86;&#x89E3;&#x5230;&#x7684;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x76D1;&#x6D4B;ajax&#x8C03;&#x7528;&#xFF08;&#x672A;&#x77E5;&#xFF09;&#x7684;&#x9519;&#x8BEF;&#xFF0C;&#x901A;&#x8FC7;<code>it.throw(..)</code>&#x628A;&#x4ED6;&#x4F20;&#x9012;&#x7ED9;generator, &#x7136;&#x540E;&#x5728;generator&#x903B;&#x8F91;&#x4E2D;&#x4F7F;&#x7528;<code>try..catch</code>&#x5904;&#x7406;&#x5B83;&#x3002;&#x4F46;&#x662F;&#x8FD9;&#x66F4;&#x591A;&#x7684;&#x662F;&#x6307;&#x4EBA;&#x5DE5;&#x64CD;&#x4F5C;&#xFF0C;&#x5728;&#x201C;&#x540E;&#x7AEF;&#x201D;&#xFF08;&#x6307;&#x4EE3;&#x7801;&#x5904;&#x7406;&#x6211;&#x4EEC;&#x7684;generator&#x8FED;&#x4EE3;&#x5668;&#x903B;&#x8F91;&#xFF09;&#xFF0C;&#x5B83;&#x53EF;&#x80FD;&#x4E0D;&#x662F;&#x6211;&#x4EEC;&#x80FD;&#x91CD;&#x7528;&#x7684;&#x4EE3;&#x7801;&#xFF0C;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x5728;&#x7A0B;&#x5E8F;&#x4E2D;&#x4F7F;&#x7528;&#x4E86;&#x5927;&#x91CF;&#x7684;generators.</li>
+<li>&#x5982;&#x679C;<code>makeAjaxCall(..)</code>&#x672C;&#x6765;&#x5C31;&#x4E0D;&#x5728;&#x6211;&#x4EEC;&#x7684;&#x63A7;&#x5236;&#x4E0B;&#xFF0C;&#x5E76;&#x4E14;&#x5B83;&#x4F1A;&#x591A;&#x6B21;&#x8C03;&#x7528;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#xFF0C;&#x6216;&#x8005;&#x540C;&#x65F6;&#x6709;&#x6210;&#x529F;&#x6216;&#x8005;&#x5931;&#x8D25;&#x7684;&#x4FE1;&#x53F7;&#xFF0C;&#x7B49;&#x7B49;&#xFF0C;&#x90A3;&#x4E48;&#x6211;&#x4EEC;&#x7684;generator&#x5C06;&#x4F1A;&#x5931;&#x63A7;&#xFF08;&#x5BFC;&#x81F4;&#x9519;&#x8BEF;&#xFF0C;&#x975E;&#x9884;&#x671F;&#x7684;&#x503C;&#xFF0C;&#x7B49;&#x7B49;&#xFF09;&#x3002;&#x5904;&#x7406;&#x548C;&#x9632;&#x6B62;&#x8FD9;&#x6837;&#x7684;&#x95EE;&#x9898;&#x662F;&#x5927;&#x91CF;&#x91CD;&#x590D;&#x7684;&#x624B;&#x5DE5;&#x5DE5;&#x4F5C;&#xFF0C;&#x4E5F;&#x53EF;&#x80FD;&#x662F;&#x4E0D;&#x53EF;&#x590D;&#x7528;&#x7684;&#x3002;</li>
+<li>&#x6211;&#x4EEC;&#x7ECF;&#x5E38;&#x9700;&#x8981;&#x591A;&#x4E2A;&#x4EFB;&#x52A1;&#x201C;&#x5E76;&#x884C;&#x201D;&#xFF08;&#x5C31;&#x50CF;&#x4E24;&#x4E2A;&#x540C;&#x6B65;&#x7684;ajax&#x8C03;&#x7528;&#xFF09;&#x3002;&#x7531;&#x4E8E;generator yield&#x8BED;&#x53E5;&#x4E00;&#x6B21;&#x53EA;&#x505A;&#x4E00;&#x4E2A;&#x6682;&#x505C;&#xFF0C;&#x65E0;&#x6CD5;&#x4E24;&#x4E2A;&#x6216;&#x8005;&#x66F4;&#x591A;&#x540C;&#x65F6;&#x6267;&#x884C; &#x2014;&#x2014; &#x4ED6;&#x4EEC;&#x5FC5;&#x987B;&#x6309;&#x987A;&#x5E8F;&#x4E00;&#x6B21;&#x4E00;&#x4E2A;&#x5730;&#x6267;&#x884C;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x5E76;&#x4E0D;&#x662F;&#x5F88;&#x6E05;&#x695A;&#x5982;&#x4F55;&#x5728;&#x4E0D;&#x9700;&#x8981;&#x5927;&#x91CF;&#x4EBA;&#x5DE5;&#x4EE3;&#x7801;&#x7684;&#x8986;&#x76D6;&#x4E0B;&#xFF0C;&#x5728;&#x4E00;&#x4E2A;&#x5355;&#x4E00;&#x7684;generator yield&#x70B9;&#x4E0A;&#x89E6;&#x53D1;&#x591A;&#x4E2A;&#x4EFB;&#x52A1;&#x3002;</li>
+</ol>
+<p>&#x5982;&#x4F60;&#x6240;&#x89C1;&#xFF0C;&#x6240;&#x6709;&#x7684;&#x8FD9;&#x4E9B;&#x95EE;&#x9898;&#x90FD;&#x662F;&#x53EF;&#x4EE5;&#x89E3;&#x51B3;&#x7684;&#xFF0C;&#x4F46;&#x8C01;&#x771F;&#x7684;&#x60F3;&#x6BCF;&#x6B21;&#x90FD;&#x9700;&#x8981;&#x6539;&#x9020;&#x8FD9;&#x4E9B;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#x3002;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x4E00;&#x4E2A;&#x66F4;&#x5F3A;&#x5927;&#x7684;&#x6A21;&#x5F0F;&#xFF0C;&#x4E13;&#x95E8;&#x8BBE;&#x8BA1;&#x7684;&#x503C;&#x5F97;&#x4FE1;&#x8D56;&#x7684;&#x53EF;&#x91CD;&#x7528;&#x7684;&#x57FA;&#x4E8E;generator&#x7684;&#x5F02;&#x6B65;&#x7F16;&#x7801;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#x3002;</p>
+<p>&#x8FD9;&#x4E2A;&#x6A21;&#x5F0F;&#xFF1F;yielding&#x51FA;promises, &#x7136;&#x540E;&#x5F53;promise&#x88AB;fulfill&#x7684;&#x65F6;&#x5019;&#x8BA9;&#x4ED6;&#x4EEC;&#x56DE;&#x590D;generator.</p>
+<p>&#x91CD;&#x65B0;&#x56DE;&#x987E;&#x4E0A;&#x9762;&#x6211;&#x4EEC;&#x505A;&#x8FC7;&#x7684;<code>yield request(..)</code>, <code>request(..)</code>&#x5E76;&#x6CA1;&#x6709;&#x4EFB;&#x4F55;&#x8FD4;&#x56DE;&#x503C;&#xFF0C;&#x56E0;&#x6B64;&#x5B83;&#x7684;&#x6548;&#x679C;&#x53EA;&#x662F;yield&#x4E86;&#x4E00;&#x4E2A;undefined?</p>
+<p>&#x8BA9;&#x6211;&#x4EEC;&#x7A0D;&#x5FAE;&#x8C03;&#x6574;&#x4E00;&#x4E0B;&#x3002;&#x628A;&#x6211;&#x4EEC;&#x7684;<code>request(..)</code>&#x6539;&#x9020;&#x6210;&#x57FA;&#x4E8E;promise&#x7684;&#xFF0C;&#x8BA9;&#x5B83;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;promise, &#x90A3;&#x4E48;&#x6211;&#x4EEC;&#x8FD4;&#x56DE;&#x7684;&#x5B9E;&#x9645;&#x4E0A;&#x5C31;&#x662F;&#x4E00;&#x4E2A;promise&#x4E86;&#xFF08;&#x4E0D;&#x662F;undefined&#xFF09;.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">request</span>(<span class="params">url</span>) </span>{</span><br><span class="line">    <span class="comment">// Note: returning a promise now!</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>( <span class="function"><span class="keyword">function</span>(<span class="params">resolve,reject</span>)</span>{</span><br><span class="line">        makeAjaxCall( url, resolve );</span><br><span class="line">    } );</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p><code>request(..)</code>&#x73B0;&#x5728;&#x6784;&#x9020;&#x4E86;&#x4E00;&#x4E2A;promise&#xFF0C;&#x5B83;&#x5C06;&#x5728;ajax&#x8C03;&#x7528;&#x7ED3;&#x675F;&#x7684;&#x65F6;&#x5019;&#x88AB;resolve&#xFF0C;&#x5E76;&#x4E14;&#x6211;&#x4EEC;&#x8FD4;&#x56DE;&#x4E86;&#x8FD9;&#x4E2A;promise&#xFF0C;&#x6240;&#x4EE5;&#x5B83;&#x80FD;&#x591F;&#x88AB;yield&#x51FA;&#x6765;&#x3002;&#x90A3;&#x4E48;&#x63A5;&#x4E0B;&#x6765;&#x5462;&#xFF1F;</p>
+<p>&#x6211;&#x4EEC;&#x9700;&#x8981;&#x4E00;&#x4E2A;&#x7A0B;&#x5E8F;&#x80FD;&#x591F;&#x63A7;&#x5236;&#x6211;&#x4EEC;&#x7684;generator&#x7684;&#x8FED;&#x4EE3;&#x5668;&#xFF0C;&#x5B83;&#x5C06;&#x63A5;&#x6536;yield&#x51FA;&#x6765;&#x7684;promises&#x5E76;&#x4E14;&#x5F15;&#x5BFC;&#x4ED6;&#x4EEC;&#x6062;&#x590D;generator&#xFF08;&#x901A;&#x8FC7;<code>next(..)</code>&#xFF09;. &#x73B0;&#x5728;&#x6211;&#x5C06;&#x8C03;&#x7528;<code>runGenerator(..)</code>.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// run (async) a generator to completion</span></span><br><span class="line"><span class="comment">// Note: simplified approach: no error handling here</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">runGenerator</span>(<span class="params">g</span>) </span>{</span><br><span class="line">    <span class="keyword">var</span> it = g(), ret;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// asynchronously iterate over generator</span></span><br><span class="line">    (<span class="function"><span class="keyword">function</span> <span class="title">iterate</span>(<span class="params">val</span>)</span>{</span><br><span class="line">        ret = it.next( val );</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!ret.done) {</span><br><span class="line">            <span class="comment">// poor man&apos;s &quot;is it a promise?&quot; test</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;then&quot;</span> <span class="keyword">in</span> ret.value) {</span><br><span class="line">                <span class="comment">// wait on the promise</span></span><br><span class="line">                ret.value.then( iterate );</span><br><span class="line">            }</span><br><span class="line">            <span class="comment">// immediate value: just send right back in</span></span><br><span class="line">            <span class="keyword">else</span> {</span><br><span class="line">                <span class="comment">// avoid synchronous recursion</span></span><br><span class="line">                setTimeout( <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{</span><br><span class="line">                    iterate( ret.value );</span><br><span class="line">                }, <span class="number">0</span> );</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    })();</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x5173;&#x952E;&#x70B9;&#xFF1A;</p>
+<ol>
+<li>&#x6211;&#x4EEC;&#x81EA;&#x52A8;&#x521D;&#x59CB;&#x5316;&#x4E86;generator(&#x521B;&#x5EFA;&#x4E86;&#x4ED6;&#x7684;it&#x8FED;&#x4EE3;&#x5668;)&#xFF0C;&#x5E76;&#x4E14;&#x6211;&#x4EEC;&#x5F02;&#x6B65;&#x5730;&#x5C06;&#x5B83;&#x6267;&#x884C;&#x5230;&#x7ED3;&#x675F;(done:true).</li>
+<li>&#x6211;&#x4EEC;&#x786E;&#x8BA4;promise&#x88AB;yield&#x51FA;&#x6765;&#xFF08;&#x6307;&#x6BCF;&#x4E00;&#x4E2A;<code>it.next(..)</code>&#x8C03;&#x7528;&#x7684;&#x8FD4;&#x56DE;&#x503C;&#xFF09;&#x3002;&#x5982;&#x679C;&#x662F;&#xFF0C;&#x6211;&#x4EEC;&#x901A;&#x8FC7;&#x5728;promise&#x4E0A;&#x6CE8;&#x518C;<code>then(..)</code>&#x7B49;&#x5F85;&#x5B83;&#x5B8C;&#x6210;&#x3002;</li>
+<li>&#x5982;&#x679C;&#x6709;&#x4EFB;&#x4F55;&#x7684;&#x7ACB;&#x5373;&#x503C;&#x88AB;&#x8FD4;&#x56DE;&#x51FA;&#x6765;(&#x6307;&#x975E;promise), &#x6211;&#x4EEC;&#x7B80;&#x5355;&#x7684;&#x628A;&#x503C;&#x9001;&#x56DE;generator&#x56E0;&#x6B64;&#x4ED6;&#x7ACB;&#x5373;&#x7EE7;&#x7EED;&#x3002;</li>
+</ol>
+<p>&#x73B0;&#x5728;&#xFF0C;&#x6211;&#x4EEC;&#x600E;&#x4E48;&#x4F7F;&#x7528;&#xFF1F;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">runGenerator( <span class="function"><span class="keyword">function</span> *<span class="title">main</span>(<span class="params"></span>)</span>{</span><br><span class="line">    <span class="keyword">var</span> result1 = <span class="keyword">yield</span> request( <span class="string">&quot;http://some.url.1&quot;</span> );</span><br><span class="line">    <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse( result1 );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> result2 = <span class="keyword">yield</span> request( <span class="string">&quot;http://some.url.2?id=&quot;</span> + data.id );</span><br><span class="line">    <span class="keyword">var</span> resp = <span class="built_in">JSON</span>.parse( result2 );</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">&quot;The value you asked for: &quot;</span> + resp.value );</span><br><span class="line">} );</span><br></pre></td></tr></table></figure>
+<p>Bam&#xFF01;&#x7B49;&#x4E0B;&#x2026; &#x8FD9;&#x786E;&#x5B9E;&#x8DDF;&#x4E4B;&#x524D;&#x7684;generator&#x4EE3;&#x7801;&#x4E00;&#x6837;&#x4E48;? &#x662F;&#x7684;&#x3002;&#x518D;&#x6B21;&#x7684;&#xFF0C;generator&#x7684;&#x80FD;&#x529B;&#x88AB;&#x663E;&#x793A;&#x51FA;&#x6765;&#x4E86;&#x3002;&#x4E8B;&#x5B9E;&#x4E0A;&#xFF0C;&#x6211;&#x4EEC;&#x73B0;&#x5728;&#x521B;&#x5EFA;&#x4E86;promise&#xFF0C;yield&#x51FA;&#x4E86;&#x4ED6;&#x4EEC;&#xFF0C;&#x5E76;&#x4E14;&#x5728;&#x4ED6;&#x4EEC;&#x5B8C;&#x6210;&#x7684;&#x65F6;&#x5019;&#x6062;&#x590D;&#x4E86;generator &#x2014;&#x2014; <strong>&#x6240;&#x6709;&#x8FD9;&#x4E9B;&#x90FD;&#x9690;&#x85CF;&#x4E86;&#x5B9E;&#x73B0;&#x7EC6;&#x8282;&#xFF01;</strong> &#x8FD9;&#x4E0D;&#x662F;&#x771F;&#x7684;&#x9690;&#x85CF;&#xFF0C;&#x53EA;&#x662F;&#x4ECE;&#x6D88;&#x8D39;&#x4EE3;&#x7801;&#x4E2D;&#x5206;&#x79BB;&#x4E86;&#x51FA;&#x6765;&#xFF08;&#x6211;&#x4EEC;&#x7684;&#x63A7;&#x5236;&#x6D41;&#x5728;&#x6211;&#x4EEC;&#x7684;generator&#x4E2D;&#xFF09;&#x3002;</p>
+<p>&#x901A;&#x8FC7;&#x5728;yield&#x51FA;&#x6765;&#x7684;promise&#x4E0A;&#x8FDB;&#x884C;&#x7B49;&#x5F85;&#xFF0C;&#x7136;&#x540E;&#x53D1;&#x9001;&#x4ED6;&#x7684;&#x5B8C;&#x6210;&#x503C;&#x5230;<code>it.next(..)</code>&#xFF0C; <code>result1 = yield request(..)</code>&#x540C;&#x4E4B;&#x524D;&#x4E00;&#x6837;&#x5F97;&#x5230;&#x4E86;&#x4ED6;&#x9700;&#x8981;&#x7684;&#x51C6;&#x786E;&#x503C;&#x3002;</p>
+<p>&#x73B0;&#x5728;&#x6211;&#x4EEC;&#x4F7F;&#x7528;&#x4E86;promises&#x6765;&#x7BA1;&#x7406;generator&#x4EE3;&#x7801;&#x4E2D;&#x7684;&#x5F02;&#x6B65;&#x90E8;&#x5206;&#xFF0C;&#x6211;&#x4EEC;&#x89E3;&#x51B3;&#x4E86;&#x6240;&#x6709;callback-only&#x4EE3;&#x7801;&#x5B9E;&#x73B0;&#x4E2D;&#x7684;&#x53CD;&#x8F6C;/&#x4FE1;&#x4EFB;&#x95EE;&#x9898;&#x3002;&#x6211;&#x4EEC;&#x901A;&#x8FC7;&#x4F7F;&#x7528;<code>generator+promise</code>&#x89E3;&#x51B3;&#x4E86;&#x6240;&#x6709;&#x7684;&#x4E0A;&#x9762;&#x63D0;&#x5230;&#x7684;&#x6240;&#x6709;&#x95EE;&#x9898;&#x3002;</p>
+<p>&#x73B0;&#x5728;&#x6211;&#x4EEC;&#x6709;&#x4E86;&#x4E00;&#x4E9B;&#x5BB9;&#x6613;&#x8DDF;&#x8E2A;&#x7684;&#x5185;&#x5EFA;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x3002;&#x6211;&#x4EEC;&#x6CA1;&#x6709;&#x5728;&#x4E0A;&#x9762;&#x63D0;&#x5230;&#x7684;<code>runGenerator(..)</code>&#x4E2D;&#x4F53;&#x73B0;&#x5B83;&#xFF0C;&#x4F46;&#x4ECE;promise&#x4E2D;&#x76D1;&#x542C;&#x9519;&#x8BEF;&#xFF0C;&#x5E76;&#x4E14;&#x628A;&#x4ED6;&#x4EEC;&#x5BFC;&#x5411;<code>it.throw(..)</code>&#x4E00;&#x70B9;&#x4E0D;&#x96BE; &#x2014;&#x2014; &#x4E4B;&#x540E;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;generator&#x4EE3;&#x7801;&#x4E2D;&#x4F7F;&#x7528;<code>try..catch</code>&#x6765;&#x6355;&#x83B7;&#x548C;&#x5904;&#x7406;&#x8FD9;&#x4E9B;&#x9519;&#x8BEF;&#x3002;</p>
+<p>&#x6211;&#x4EEC;&#x6536;&#x5230;&#x4E86;&#x6240;&#x6709;promise&#x63D0;&#x4F9B;&#x7684;&#x63A7;&#x5236;/&#x53EF;&#x4FE1;&#x8D56;&#x3002;&#x6CA1;&#x6709;&#x62C5;&#x5FC3;&#xFF0C;&#x6CA1;&#x6709;&#x5927;&#x60CA;&#x5C0F;&#x602A;&#x3002;Promises&#x6709;&#x5F88;&#x591A;&#x5F3A;&#x5927;&#x7684;&#x62BD;&#x8C61;&#x80FD;&#x591F;&#x81EA;&#x52A8;&#x5904;&#x7406;&#x590D;&#x6742;&#x548C;&#x591A;&#x6837;&#x5316;&#x7684;&#x201C;&#x5E76;&#x884C;&#x201D;&#x4EFB;&#x52A1;&#xFF0C;&#x7B49;&#x7B49;&#x3002;</p>
+<p>&#x4F8B;&#x5982;&#xFF0C;<code>yield Promise.all([..])</code>&#x53EF;&#x4EE5;&#x5904;&#x7406;&#x4E00;&#x4E2A;promises&#x6570;&#x7EC4;&#x7684;&#x5E76;&#x884C;&#x4EFB;&#x52A1;&#xFF0C;&#x5E76;&#x4E14;yield&#x51FA;&#x4E00;&#x4E2A;&#x5355;&#x4E00;&#x7684;promise&#xFF08;&#x4E3A;&#x4E86;generator&#x7684;&#x5904;&#x7406;&#xFF09;&#xFF0C;&#x5B83;&#x7B49;&#x5F85;&#x6240;&#x6709;&#x7684;&#x5B50;promise&#x5B8C;&#x6210;&#xFF08;&#x65E0;&#x5173;&#x987A;&#x5E8F;&#xFF09;.&#x4F60;&#x4ECE;yield&#x8868;&#x554A;&#x65F6;&#x4E2D;&#x5F97;&#x5230;&#x7684;&#xFF08;&#x5F53;promise&#x5B8C;&#x6210;&#x65F6;&#xFF09;&#x662F;&#x4E00;&#x4E2A;&#x6240;&#x6709;&#x5B50;promise&#x54CD;&#x5E94;&#x7684;&#x6570;&#x7EC4;&#xFF0C;&#x4F9D;&#x7167;&#x4ED6;&#x4EEC;&#x88AB;&#x8BF7;&#x6C42;&#x7684;&#x987A;&#x5E8F;&#x3002;&#xFF08;&#x6240;&#x4EE5;&#x4ED6;&#x662F;&#x786E;&#x5B9A;&#x7684;&#xFF0C;&#x65E0;&#x5173;&#x5B8C;&#x6210;&#x987A;&#x5E8F;&#xFF09;</p>
+<p>&#x9996;&#x5148;&#xFF0C;&#x8BA9;&#x6211;&#x4EEC;&#x63A2;&#x7D22;&#x4E0B;&#x9519;&#x8BEF;&#x5904;&#x7406;&#xFF1A;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// assume: `makeAjaxCall(..)` now expects an &quot;error-first style&quot; callback (omitted for brevity)</span></span><br><span class="line"><span class="comment">// assume: `runGenerator(..)` now also handles error handling (omitted for brevity)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">request</span>(<span class="params">url</span>) </span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>( <span class="function"><span class="keyword">function</span>(<span class="params">resolve,reject</span>)</span>{</span><br><span class="line">        <span class="comment">// pass an error-first style callback</span></span><br><span class="line">        makeAjaxCall( url, <span class="function"><span class="keyword">function</span>(<span class="params">err,text</span>)</span>{</span><br><span class="line">            <span class="keyword">if</span> (err) reject( err );</span><br><span class="line">            <span class="keyword">else</span> resolve( text );</span><br><span class="line">        } );</span><br><span class="line">    } );</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">runGenerator( <span class="function"><span class="keyword">function</span> *<span class="title">main</span>(<span class="params"></span>)</span>{</span><br><span class="line">    <span class="keyword">try</span> {</span><br><span class="line">        <span class="keyword">var</span> result1 = <span class="keyword">yield</span> request( <span class="string">&quot;http://some.url.1&quot;</span> );</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">catch</span> (err) {</span><br><span class="line">        <span class="built_in">console</span>.log( <span class="string">&quot;Error: &quot;</span> + err );</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse( result1 );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> {</span><br><span class="line">        <span class="keyword">var</span> result2 = <span class="keyword">yield</span> request( <span class="string">&quot;http://some.url.2?id=&quot;</span> + data.id );</span><br><span class="line">    } <span class="keyword">catch</span> (err) {</span><br><span class="line">        <span class="built_in">console</span>.log( <span class="string">&quot;Error: &quot;</span> + err );</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">var</span> resp = <span class="built_in">JSON</span>.parse( result2 );</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">&quot;The value you asked for: &quot;</span> + resp.value );</span><br><span class="line">} );</span><br></pre></td></tr></table></figure>
+<p>&#x5982;&#x679C;&#x4E00;&#x4E2A;promise&#x5728;url&#x83B7;&#x53D6;&#x53D1;&#x751F;&#x7684;&#x65F6;&#x5019;&#x4EA7;&#x751F;&#x4E86;&#x62D2;&#x7EDD;&#xFF08;&#x56E0;&#x4E3A;&#x67D0;&#x4E9B;&#x9519;&#x8BEF;/&#x975E;&#x9884;&#x671F;&#xFF09;&#xFF0C;promise&#x62D2;&#x7EDD;&#x5C06;&#x88AB;&#x6620;&#x5C04;&#x5230;generator&#x9519;&#x8BEF;&#xFF08;&#x4F7F;&#x7528;&#x90A3;&#x4E2A;&#x2014;&#x2014;&#x6CA1;&#x6709;&#x663E;&#x793A;&#x51FA;&#x6765;&#x7684;&#x2014;&#x2014;<code>runGenerator(..)</code>&#x4E2D;&#x7684;<code>it.throw(..)</code>&#xFF09;&#xFF0C;&#x5B83;&#x5C06;&#x88AB;<code>try..catch</code>&#x8BED;&#x53E5;&#x6355;&#x83B7;&#x3002;</p>
+<p>&#x73B0;&#x5728;&#xFF0C;&#x8BA9;&#x6211;&#x4EEC;&#x770B;&#x770B;&#x66F4;&#x591A;&#x590D;&#x6742;&#x7684;&#x4F8B;&#x5B50;&#xFF0C;&#x4ED6;&#x4EEC;&#x4F7F;&#x7528;&#x4E86;promise&#x6765;&#x7BA1;&#x7406;&#x66F4;&#x591A;&#x590D;&#x6742;&#x7684;&#x5F02;&#x6B65;&#x8C03;&#x7528;&#x3002;</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">request</span>(<span class="params">url</span>) </span>{</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>( <span class="function"><span class="keyword">function</span>(<span class="params">resolve,reject</span>)</span>{</span><br><span class="line">        makeAjaxCall( url, resolve );</span><br><span class="line">    } )</span><br><span class="line">    <span class="comment">// do some post-processing on the returned text</span></span><br><span class="line">    .then( <span class="function"><span class="keyword">function</span>(<span class="params">text</span>)</span>{</span><br><span class="line">        <span class="comment">// did we just get a (redirect) URL back?</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="regexp">/^https?:\/\/.+/</span>.test( text )) {</span><br><span class="line">            <span class="comment">// make another sub-request to the new URL</span></span><br><span class="line">            <span class="keyword">return</span> request( text );</span><br><span class="line">        }</span><br><span class="line">        <span class="comment">// otherwise, assume text is what we expected to get back</span></span><br><span class="line">        <span class="keyword">else</span> {</span><br><span class="line">            <span class="keyword">return</span> text;</span><br><span class="line">        }</span><br><span class="line">    } );</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">runGenerator( <span class="function"><span class="keyword">function</span> *<span class="title">main</span>(<span class="params"></span>)</span>{</span><br><span class="line">    <span class="keyword">var</span> search_terms = <span class="keyword">yield</span> <span class="built_in">Promise</span>.all( [</span><br><span class="line">        request( <span class="string">&quot;http://some.url.1&quot;</span> ),</span><br><span class="line">        request( <span class="string">&quot;http://some.url.2&quot;</span> ),</span><br><span class="line">        request( <span class="string">&quot;http://some.url.3&quot;</span> )</span><br><span class="line">    ] );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> search_results = <span class="keyword">yield</span> request(</span><br><span class="line">        <span class="string">&quot;http://some.url.4?search=&quot;</span> + search_terms.join( <span class="string">&quot;+&quot;</span> )</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">var</span> resp = <span class="built_in">JSON</span>.parse( search_results );</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">&quot;Search results: &quot;</span> + resp.value );</span><br><span class="line">} );</span><br></pre></td></tr></table></figure>
+<p>&#x627F;&#x8BFA;&#x3002;&#x6240;&#x6709;&#xFF08;[ ..]&#xFF09;&#x6784;&#x5EFA;&#x4E86;&#x4E00;&#x4E2A;&#x627F;&#x8BFA;&#xFF0C;&#x7B49;&#x5F85;&#x7740;&#x4E09;&#x6B21;&#x7684;&#x627F;&#x8BFA;&#xFF0C;&#x548C;&#x5B83;&#x7684;&#x4E3B;&#x8981;&#x627F;&#x8BFA;&#x662F;&#x4EA7;&#x751F;&#x51FA;&#x6765;&#x7684;rungenerator&#xFF08;..&#xFF09;&#x5B9E;&#x7528;&#x542C;&#x53D1;&#x7535;&#x673A;&#x6062;&#x590D;&#x3002;&#x8BE5;&#x5B50;&#x627F;&#x8BFA;&#x53EF;&#x4EE5;&#x63A5;&#x6536;&#x4E00;&#x4E2A;&#x770B;&#x8D77;&#x6765;&#x50CF;&#x53E6;&#x4E00;&#x4E2A;&#x7F51;&#x5740;&#x91CD;&#x5B9A;&#x5411;&#x5230;&#x7684;&#x54CD;&#x5E94;&#xFF0C;&#x5E76;&#x5173;&#x95ED;&#x53E6;&#x4E00;&#x4E2A;&#x5B50;&#x8BF7;&#x6C42;&#x7684;&#x627F;&#x8BFA;&#xFF0C;&#x4EE5;&#x65B0;&#x7684;&#x4F4D;&#x7F6E;&#x3002;&#x8981;&#x4E86;&#x89E3;&#x66F4;&#x591A;&#x5173;&#x4E8E;&#x627F;&#x8BFA;&#x7684;&#x94FE;&#x63A5;&#xFF0C;&#x9605;&#x8BFB;&#x8FD9;&#x7BC7;&#x6587;&#x7AE0;&#x7684;&#x90E8;&#x5206;&#x3002;<br>&#x4EFB;&#x4F55;&#x4E00;&#x79CD;&#x80FD;&#x529B;/&#x590D;&#x6742;&#x6027;&#xFF0C;&#x627F;&#x8BFA;&#x53EF;&#x4EE5;&#x5904;&#x7406;&#x5F02;&#x6B65;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x540C;&#x6B65;&#x770B;&#x4EE3;&#x7801;&#x7684;&#x597D;&#x5904;&#x5229;&#x7528;&#x53D1;&#x7535;&#x673A;&#x4EA7;&#x751F;&#x7684;&#x627F;&#x8BFA;&#xFF08;&#x627F;&#x8BFA;&#x7684;&#x627F;&#x8BFA;&#x2026;&#xFF09;&#x3002;&#x8FD9;&#x662F;&#x4E24;&#x4E2A;&#x4E16;&#x754C;&#x7684;&#x6700;&#x597D;&#x7684;&#x3002;</p>
+<p><code>Promise.all([ .. ])</code>&#x6784;&#x5EFA;&#x4E86;&#x4E00;&#x4E2A;promise&#x5B83;&#x7B49;&#x5F85;&#x4E09;&#x4E2A;&#x5B50;promises&#xFF0C;&#x5E76;&#x4E14;&#x5B83;&#x662F;&#x90A3;&#x4E2A;&#x4E3B;&#x8981;&#x7684;promise&#x88AB;yield&#x51FA;&#x6765;&#x7ED9; <code>runGenerator(..)</code>&#x5355;&#x5143;&#x7528;&#x6765;&#x76D1;&#x542C;generator&#x7684;&#x6062;&#x590D;&#x3002; &#x5B50;promises&#x53EF;&#x4EE5;&#x63A5;&#x53D7;&#x4E00;&#x4E2A;&#x770B;&#x8D77;&#x6765;&#x50CF;&#x662F;&#x4ECE;&#x53E6;&#x5916;&#x4E00;&#x4E2A;URL&#x91CD;&#x5B9A;&#x5411;&#x8FC7;&#x6765;&#x7684;&#x54CD;&#x5E94;&#xFF0C;&#x5E76;&#x4E14;&#x94FE;&#x5F0F;&#x8FD4;&#x56DE;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x5230;&#x65B0;&#x5730;&#x5740;&#x7684;&#x5B50;&#x8BF7;&#x6C42;&#x7684;promise&#xFF0C;&#x8DDF;&#x591A;&#x5173;&#x4E8E;promis chain&#x7684;&#x4FE1;&#x606F;&#xFF0C;&#x8BF7;&#x9605;&#x8BFB;&#x8FD9;&#x7BC7;&#x6587;&#x7AE0;&#x3002;</p>
+<p>&#x4EFB;&#x4F55;&#x4E00;&#x79CD;&#x80FD;&#x529B;/&#x590D;&#x6742;&#x6027;&#xFF0C;promises&#x53EF;&#x4EE5;&#x5904;&#x7406;&#x5F02;&#x6B65;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4F7F;&#x7528;generator yield&#x51FA;&#x4E00;&#x4E2A;promise&#xFF08;&#x7684;promise&#x7684;promise&#x7684;&#x2026;&#xFF09;&#x6765;&#x5229;&#x7528;&#x540C;&#x6B65;&#x4EE3;&#x7801;&#x7684;&#x597D;&#x5904;&#x3002;&#x8FD9;&#x662F;&#x8FD9;&#x4E24;&#x4E2A;&#x4E16;&#x754C;&#x6700;&#x597D;&#x7684;&#x4E1C;&#x897F;&#x3002;</p>
+<h2 id="runGenerator-&#x4EE3;&#x7801;&#x5E93;&#x5B9E;&#x7528;&#x5DE5;&#x5177;"><a href="#runGenerator-&#x4EE3;&#x7801;&#x5E93;&#x5B9E;&#x7528;&#x5DE5;&#x5177;" class="headerlink" title="runGenerator(..): &#x4EE3;&#x7801;&#x5E93;&#x5B9E;&#x7528;&#x5DE5;&#x5177;"></a>runGenerator(..): &#x4EE3;&#x7801;&#x5E93;&#x5B9E;&#x7528;&#x5DE5;&#x5177;</h2><p>&#x6211;&#x4EEC;&#x5FC5;&#x987B;&#x5B9A;&#x4E49;&#x6211;&#x4EEC;&#x81EA;&#x5DF1;&#x7684;<code>runGenerator(..)</code>&#x5B9E;&#x7528;&#x5DE5;&#x5177;&#x6765;&#x5F00;&#x542F;&#x5E76;&#x4E14;&#x65E0;&#x7F1D;&#x8FDE;&#x63A5;generator+promise&#x7684;&#x9B45;&#x529B;&#x3002;&#x6211;&#x4EEC;<br>We had to define our own runGenerator(..) utility above to enable and smooth out this generator+promise awesomeness. We even omitted (for brevity sake) the full implementation of such a utility, as there&#x2019;s more nuance details related to error-handling to deal with.<br>&#x6211;&#x4EEC;&#x751A;&#x81F3;&#x7565;&#xFF08;&#x7B80;&#x6D01;&#x7701;&#x7565;&#xFF09;&#x8FD9;&#x6837;&#x4E00;&#x4E2A;&#x5B9E;&#x7528;&#x7684;&#x5168;&#x9762;&#x5B9E;&#x65BD;&#xFF0C;&#x4E3A;&#x6709;&#x66F4;&#x591A;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x6765;&#x5904;&#x7406;&#x76F8;&#x5173;&#x7684;&#x7EC6;&#x5FAE;&#x5DEE;&#x522B;&#x7684;&#x7EC6;&#x8282;&#x3002;</p>
+<p>&#x4F46;&#x662F;&#xFF0C;&#x4F60;&#x4E0D;&#x60F3;&#x5199;&#x4F60;&#x81EA;&#x5DF1;&#x7684;<code>runGenerator(..)</code>&#x662F;&#x5427;?<br>But, you don&#x2019;t want to write your own runGenerator(..) do you?</p>
+<p>&#x6211;&#x4E0D;&#x8BA4;&#x4E3A;&#x8FD9;&#x6837;&#x3002;<br>I didn&#x2019;t think so.</p>
+<p>A variety of promise/async libs provide just such a utility. I won&#x2019;t cover them here, but you can take a look at Q.spawn(..), the co(..) lib, etc.</p>
+<p>I will however briefly cover my own library&#x2019;s utility: asynquence&#x2019;s runner(..) plugin, as I think it offers some unique capabilities over the others out there. I wrote an in-depth 2-part blog post series on asynquence if you&#x2019;re interested in learning more than the brief exploration here.</p>
+<p>First off, asynquence provides utilities for automatically handling the &#x201C;error-first style&#x201D; callbacks from the above snippets:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">request</span>(<span class="params">url</span>) </span>{</span><br><span class="line">    <span class="keyword">return</span> ASQ( <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>{</span><br><span class="line">        <span class="comment">// pass an error-first style callback</span></span><br><span class="line">        makeAjaxCall( url, done.errfcb );</span><br><span class="line">    } );</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<p>That&#x2019;s much nicer, isn&#x2019;t it!?</p>
+<p>Next, asynquence&#x2019;s runner(..) plugin consumes a generator right in the middle of an asynquence sequence (asynchronous series of steps), so you can pass message(s) in from the preceding step, and your generator can pass message(s) out, onto the next step, and all errors automatically propagate as you&#x2019;d expect:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// first call `getSomeValues()` which produces a sequence/promise,</span></span><br><span class="line"><span class="comment">// then chain off that sequence for more async steps</span></span><br><span class="line">getSomeValues()</span><br><span class="line"></span><br><span class="line"><span class="comment">// now use a generator to process the retrieved values</span></span><br><span class="line">.runner( <span class="function"><span class="keyword">function</span>*(<span class="params">token</span>)</span>{</span><br><span class="line">    <span class="comment">// token.messages will be prefilled with any messages</span></span><br><span class="line">    <span class="comment">// from the previous step</span></span><br><span class="line">    <span class="keyword">var</span> value1 = token.messages[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">var</span> value2 = token.messages[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">var</span> value3 = token.messages[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// make all 3 Ajax requests in parallel, wait for</span></span><br><span class="line">    <span class="comment">// all of them to finish (in whatever order)</span></span><br><span class="line">    <span class="comment">// Note: `ASQ().all(..)` is like `Promise.all(..)`</span></span><br><span class="line">    <span class="keyword">var</span> msgs = <span class="keyword">yield</span> ASQ().all(</span><br><span class="line">        request( <span class="string">&quot;http://some.url.1?v=&quot;</span> + value1 ),</span><br><span class="line">        request( <span class="string">&quot;http://some.url.2?v=&quot;</span> + value2 ),</span><br><span class="line">        request( <span class="string">&quot;http://some.url.3?v=&quot;</span> + value3 )</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// send this message onto the next step</span></span><br><span class="line">    <span class="keyword">yield</span> (msgs[<span class="number">0</span>] + msgs[<span class="number">1</span>] + msgs[<span class="number">2</span>]);</span><br><span class="line">} )</span><br><span class="line"></span><br><span class="line"><span class="comment">// now, send the final result of previous generator</span></span><br><span class="line"><span class="comment">// off to another request</span></span><br><span class="line">.seq( <span class="function"><span class="keyword">function</span>(<span class="params">msg</span>)</span>{</span><br><span class="line">    <span class="keyword">return</span> request( <span class="string">&quot;http://some.url.4?msg=&quot;</span> + msg );</span><br><span class="line">} )</span><br><span class="line"></span><br><span class="line"><span class="comment">// now we&apos;re finally all done!</span></span><br><span class="line">.val( <span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>{</span><br><span class="line">    <span class="built_in">console</span>.log( result ); <span class="comment">// success, all done!</span></span><br><span class="line">} )</span><br><span class="line"></span><br><span class="line"><span class="comment">// or, we had some error!</span></span><br><span class="line">.or( <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>{</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">&quot;Error: &quot;</span> + err );</span><br><span class="line">} );</span><br></pre></td></tr></table></figure></p>
+<p>The asynquence runner(..) utility receives (optional) messages to start the generator, which come from the previous step of the sequence, and are accessible in the generator in the token.messages array.</p>
+<p>Then, similar to what we demonstrated above with the runGenerator(..) utility, runner(..) listens for either a yielded promise or yielded asynquence sequence (in this case, an ASQ().all(..) sequence of &#x201C;parallel&#x201D; steps), and waits for it to complete before resuming the generator.</p>
+<p>When the generator finishes, the final value it yields out passes along to the next step in the sequence.</p>
+<p>Moreover, if any error happens anywhere in this sequence, even inside the generator, it will bubble out to the single or(..) error handler registered.</p>
+<p>asynquence tries to make mixing and matching promises and generators as dead-simple as it could possibly be. You have the freedom to wire up any generator flows alongside promise-based sequence step flows, as you see fit.</p>
+<h2 id="ES7-async"><a href="#ES7-async" class="headerlink" title="ES7 async"></a>ES7 async</h2><p>There is a proposal for the ES7 timeline, which looks fairly likely to be accepted, to create still yet another kind of function: an async function, which is like a generator that&#x2019;s automatically wrapped in a utility like runGenerator(..) (or asynquence&#x2019;s&#x2019; runner(..)). That way, you can send out promises and the async function automatically wires them up to resume itself on completion (no need even for messing around with iterators!).</p>
+<p>It will probably look something like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>{</span><br><span class="line">    <span class="keyword">var</span> result1 = <span class="keyword">await</span> request( <span class="string">&quot;http://some.url.1&quot;</span> );</span><br><span class="line">    <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse( result1 );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> result2 = <span class="keyword">await</span> request( <span class="string">&quot;http://some.url.2?id=&quot;</span> + data.id );</span><br><span class="line">    <span class="keyword">var</span> resp = <span class="built_in">JSON</span>.parse( result2 );</span><br><span class="line">    <span class="built_in">console</span>.log( <span class="string">&quot;The value you asked for: &quot;</span> + resp.value );</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">main();</span><br></pre></td></tr></table></figure>
+<p>As you can see, an async function can be called directly (like main()), with no need for a wrapper utility like runGenerator(..) or ASQ().runner(..) to wrap it. Inside, instead of using yield, you&#x2019;ll use await (another new keyword) that tells the async function to wait for the promise to complete before proceeding.</p>
+<p>Basically, we&#x2019;ll have most of the capability of library-wrapped generators, but directly supported by native syntax.</p>
+<p>Cool, huh!?</p>
+<p>In the meantime, libraries like asynquence give us these runner utilities to make it pretty darn easy to get the most out of our asynchronous generators!</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Put simply: a generator + yielded promise(s) combines the best of both worlds to get really powerful and elegant sync(-looking) async flow control expression capabilities. With simple wrapper utilities (which many libraries are already providing), we can automatically run our generators to completion, including sane and sync(-looking) error handling!</p>
+<p>And in ES7+ land, we&#x2019;ll probably see async functions that let us do that stuff even without a library utility (at least for the base cases)!</p>
+<p>The future of async in JavaScript is bright, and only getting brighter! I gotta wear shades.</p>
+<p>But it doesn&#x2019;t end here. There&#x2019;s one last horizon we want to explore:</p>
+<p>What if you could tie 2 or more generators together, let them run independently but &#x201C;in parallel&#x201D;, and let them send messages back and forth as they proceed? That would be some super powerful capability, right!?! This pattern is called &#x201C;CSP&#x201D; (communicating sequential processes). We&#x2019;ll explore and unlock the power of CSP in the next article. Keep an eye out!</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/xfe/tags/translate/" rel="tag">#translate</a>
+          
+            <a href="/xfe/tags/es6/" rel="tag">#es6</a>
+          
+            <a href="/xfe/tags/generator/" rel="tag">#generator</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xfe/2016/07/11/diving-deeper-with-es6-generators/" rel="next" title="深入ES6 Generator">
+                <i class="fa fa-chevron-left"></i> 深入ES6 Generator
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/07/12/going-async-with-es6-generators/"
+     data-title="用ES6 Generator实现异步"
+     data-content=""
+     data-url="http://sinaad.github.io/xfe/2016/07/12/going-async-with-es6-generators/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/12/going-async-with-es6-generators/"
+           data-title="用ES6 Generator实现异步" data-url="http://sinaad.github.io/xfe/2016/07/12/going-async-with-es6-generators/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://tp4.sinaimg.cn/2231440955/180/5749469848/1"
+               alt="SINA FE Team" />
+          <p class="site-author-name" itemprop="name">SINA FE Team</p>
+          <p class="site-description motion-element" itemprop="description">我们一直努力贴好小广告</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/xfe/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/xfe/categories">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/xfe/tags">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/xfe/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/orgs/sinaad/teams/xfe" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/acelan" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的异步"><span class="nav-number">1.</span> <span class="nav-text">简单的异步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更好的异步"><span class="nav-number">2.</span> <span class="nav-text">更好的异步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runGenerator-代码库实用工具"><span class="nav-number">3.</span> <span class="nav-text">runGenerator(..): 代码库实用工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES7-async"><span class="nav-number">4.</span> <span class="nav-text">ES7 async</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">5.</span> <span class="nav-text">Summary</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SINA FE Team</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/xfe/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/xfe/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/xfe/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/xfe/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xfe/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sinaad-xfe"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+      MathJax.Hub.Register.MessageHook("Math Processing Error",function (message) {
+        //  do something with the error.  message[2] is the Error object that records the problem.
+        console.log(message);
+      });
+  </script>
+
+  <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+          var all = MathJax.Hub.getAllJax(), i;
+          for(i=0; i < all.length; i += 1) {
+              all[i].SourceElement().parentNode.className += ' has-jax';
+          }
+      });
+  </script>
+
+  <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+
+</body>
+</html>
