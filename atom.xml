@@ -1391,9 +1391,9 @@
       <category term="devtool" scheme="http://sinaad.github.io/categories/devtool/"/>
     
     
-      <category term="devtool" scheme="http://sinaad.github.io/tags/devtool/"/>
-    
       <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
+    
+      <category term="devtool" scheme="http://sinaad.github.io/tags/devtool/"/>
     
   </entry>
   
@@ -1516,13 +1516,13 @@
       <category term="devtool" scheme="http://sinaad.github.io/categories/devtool/"/>
     
     
+      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
+    
       <category term="devtool" scheme="http://sinaad.github.io/tags/devtool/"/>
     
       <category term="guide" scheme="http://sinaad.github.io/tags/guide/"/>
     
       <category term="translate" scheme="http://sinaad.github.io/tags/translate/"/>
-    
-      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
     
   </entry>
   
@@ -1856,13 +1856,13 @@
       <category term="devtool" scheme="http://sinaad.github.io/categories/devtool/"/>
     
     
+      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
+    
       <category term="devtool" scheme="http://sinaad.github.io/tags/devtool/"/>
     
       <category term="guide" scheme="http://sinaad.github.io/tags/guide/"/>
     
       <category term="translate" scheme="http://sinaad.github.io/tags/translate/"/>
-    
-      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
     
   </entry>
   
@@ -1957,11 +1957,11 @@
       <category term="devtool" scheme="http://sinaad.github.io/categories/devtool/"/>
     
     
+      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
+    
       <category term="devtool" scheme="http://sinaad.github.io/tags/devtool/"/>
     
       <category term="guide" scheme="http://sinaad.github.io/tags/guide/"/>
-    
-      <category term="tool" scheme="http://sinaad.github.io/tags/tool/"/>
     
   </entry>
   
