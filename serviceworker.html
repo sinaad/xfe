@@ -35,19 +35,21 @@
         .catch((err) => {
           console.log(`SW注册失败: ${err}`)
         })
-    }
-    // 注册发送message逻辑
-    document.querySelector('form').onsubmit = (e) => {
-      let val = document.querySelector('input[type="text"]').value || '这个家伙很懒，什么也没发'
-      navigator.serviceWorker.controller.postMessage(val)
-      e.preventDefault()
+
+      // 注册发送message逻辑
+      document.querySelector('form').onsubmit = (e) => {
+        let val = document.querySelector('input[type="text"]').value || '这个家伙很懒，什么也没发'
+        navigator.serviceWorker.controller.postMessage(val)
+        e.preventDefault()
+      }
+
+      // 注册SW响应message的消息
+      navigator.serviceWorker.addEventListener('message', ({data}) => {
+        let relay = document.querySelector('#relay')
+        relay.innerHTML = relay.innerHTML + `<li>${data.message}</li>`
+      })
     }
 
-    // 注册SW响应message的消息
-    navigator.serviceWorker.addEventListener('message', ({data}) => {
-      let relay = document.querySelector('#relay')
-      relay.innerHTML = relay.innerHTML + `<li>${data.message}</li>`
-    })
 
     // 测试安装完成后不刷新加载的请求, 也不会被捕获
     setTimeout(() => {
