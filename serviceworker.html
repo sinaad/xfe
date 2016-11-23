@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title> sw 生命周期测试 </title>
+  <!-- TODO add manifest here -->
+  <link rel="manifest" href="./manifest.json">
+  <!-- Add to home screen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="DEMO">
+  <link rel="apple-touch-icon" href="src/icons/152_152.png">
+</head>
+<body>
+  <img src="src/logo.png" alt="logo"/>
+  <ul id="relay"></ul>
+  <form>
+    <input type="text" placeholder="输入发给sw的信息" />
+    <input type="submit" value="发送" />
+  </form>
+  <script>
+    /**
+     * 1、默认scope是sw.js所在的目录
+     * 2、可以通过scope参数设置sw的scope, 不能设置大于sw.js所在目录的scope，所以一般把sw.js放在根目录/
+     *
+     * @param  {[type]} 'serviceWorker' in            navigator [description]
+     * @return {[type]}                 [description]
+     */
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('sw.js'/*, {scope: '/src/scope'} */)
+        .then((sw) => {
+          console.log(`SW注册成功, scope是：${sw.scope}`)
+        })
+        .catch((err) => {
+          console.log(`SW注册失败: ${err}`)
+        })
+    }
+    // 注册发送message逻辑
+    document.querySelector('form').onsubmit = (e) => {
+      let val = document.querySelector('input[type="text"]').value || '这个家伙很懒，什么也没发'
+      navigator.serviceWorker.controller.postMessage(val)
+      e.preventDefault()
+    }
+
+    // 注册SW响应message的消息
+    navigator.serviceWorker.addEventListener('message', ({data}) => {
+      let relay = document.querySelector('#relay')
+      relay.innerHTML = relay.innerHTML + `<li>${data.message}</li>`
+    })
+
+    // 测试安装完成后不刷新加载的请求, 也不会被捕获
+    setTimeout(() => {
+      console.log('do setTimeout')
+      let img = new Image()
+      img.src = 'src/logo.png'
+    }, 2000)
+  </script>
+</body>
+</html>
