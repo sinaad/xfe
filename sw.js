@@ -2,8 +2,8 @@ importScripts('src/sw-util.js')
 
 let CACHE_VERSION = '2.0'
 let cacheList = [
-  '/serviceworker.html',
-  '/src/logo.png'
+  'serviceworker.html',
+  'src/logo.png'
 ]
 let CACHE_NAME = 'acelan-v' + CACHE_VERSION
 
