@@ -1,6 +1,7 @@
 importScripts('src/sw-util.js')
+console.log(self, clients)
 
-let CACHE_VERSION = '2.0'
+let CACHE_VERSION = '3.0'
 let cacheList = [
   'serviceworker.html',
   'src/logo.png'
@@ -57,11 +58,43 @@ self.addEventListener('message', ({data, source}) => {
     .then((clientList) => {
       clientList.forEach(function(client) {
         client.postMessage({
+          type: 'message',
           client: source.id,
-          message: `很高兴收到你(${source.id})的消息(${data}), 我还活着`
+          message: `收到client(${source.id})的消息(${data}), 回复：我还活着`
         })
       })
     })
+})
+self.addEventListener('push', (e) => {
+  console.log('SW get push', e)
+  // @get e.data.json()
+  // @
+  let info = {
+    type: 'push',
+    body: e.data.text(),
+    icon: 'src/icons/128_128.png',
+    tag: 'tag'
+  }
+
+  // 弹出通知
+  e.waitUntil(
+    this.registration.showNotification('通知', info)
+  )
+  // 把消息发送给页面
+  this.clients.matchAll()
+    .then((clientList) => {
+      clientList.forEach(function(client) {
+        client.postMessage(info)
+      })
+    })
+})
+
+self.addEventListener('notificationclick', (e) => {
+  console.log('[Service Worker] Notification click Received.')
+  e.notification.close()
+  e.waitUntil(
+    clients.openWindow('http://sina.com.cn')
+  )
 })
 
 // ================
