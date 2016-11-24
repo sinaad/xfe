@@ -19,7 +19,10 @@
     <input type="text" placeholder="输入发给sw的信息" />
     <input type="submit" value="发送" />
   </form>
+  <input type="button" value="打开push通知" id="subscribe"/>
   <script>
+    // 请求权限
+    Notification.requestPermission()
     /**
      * 1、默认scope是sw.js所在的目录
      * 2、可以通过scope参数设置sw的scope, 不能设置大于sw.js所在目录的scope，所以一般把sw.js放在根目录/
@@ -30,8 +33,8 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('sw.js'/*, {scope: '/src/scope'} */)
-        .then((sw) => {
-          console.log(`SW注册成功, scope是：${sw.scope}`)
+        .then((reg) => {
+          console.log(`SW注册成功, scope是：${reg.scope}`)
         })
         .catch((err) => {
           console.log(`SW注册失败: ${err}`)
@@ -46,9 +49,39 @@
 
       // 注册SW响应message的消息
       navigator.serviceWorker.addEventListener('message', ({data}) => {
+        let body = ''
+        switch (data.type) {
+          case 'message':
+            body = data.message
+            break
+          case 'push':
+            body = data.body
+            break
+          default:
+            break
+        }
+
         let relay = document.querySelector('#relay')
-        relay.innerHTML = relay.innerHTML + `<li>${data.message}</li>`
+        relay.innerHTML = relay.innerHTML + `<li>${body}</li>`
       })
+
+      // 添加订阅push
+      document.querySelector('#subscribe').onclick = () => {
+        navigator.serviceWorker.ready.then((reg) => {
+          reg.pushManager.subscribe({userVisibleOnly: true})
+            .then((subscription) => {
+              let endpoint = subscription.endpoint
+              let key = subscription.getKey('p256dh')
+              key = btoa(String.fromCharCode.apply(null, new Uint8Array(key)))
+              console.log(endpoint, key)
+              // 订阅的时候需要做的是将生成的endpoint跟key发送到服务器，让服务器记录下这两个值
+              // 从而能正确帮忙推送到确定的webapp中
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        })
+      }
     }
 
 
