@@ -116,6 +116,7 @@
         navigator.serviceWorker.ready.then((reg) => {
           return reg.sync.register('mySync')
         })
+        .catch(console.log)
       }
 
       // 注册一个更新worker事件
