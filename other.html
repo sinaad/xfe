@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> 另一个sw </title>
+  <!-- TODO add manifest here -->
+  <link rel="manifest" href="./manifest.json">
+  <!-- Add to home screen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="DEMO">
+  <link rel="apple-touch-icon" href="src/icons/152_152.png">
+</head>
+<body>
+  <img src="src/logo.png" alt="logo"/>
+  <ul id="relay"></ul>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('sw.js'/*, {scope: '/src/scope'} */)
+        .then((reg) => {
+          console.log(`SW注册成功, scope是：${reg.scope}`)
+        })
+        .catch((err) => {
+          console.log(`SW注册失败: ${err}`)
+        })
+
+      // 注册SW响应message的消息
+      navigator.serviceWorker.addEventListener('message', ({data}) => {
+        let body = ''
+        switch (data.type) {
+          case 'message':
+            body = data.message
+            break
+          case 'push':
+            body = data.body
+            break
+          default:
+            break
+        }
+
+        let relay = document.querySelector('#relay')
+        relay.innerHTML = relay.innerHTML + `<li>我也收到了消息：${body}</li>`
+      })
+    }
+  </script>
+</body>
+</html>
