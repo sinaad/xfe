@@ -11,6 +11,18 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="DEMO">
   <link rel="apple-touch-icon" href="src/icons/152_152.png">
+  <style>
+    .pic{
+      float: left;
+      list-style: none;
+    }
+    .pic img{
+      margin: 10px;
+      width: 200px;
+      border: 1px solid #ccc;
+      padding: 4px;
+    }
+  </style>
 </head>
 <body>
   <img src="src/logo.png" alt="logo"/>
@@ -20,15 +32,31 @@
     <input type="submit" value="发送" />
   </form>
   <input type="button" value="打开push通知" id="subscribe"/>
+  <input type="button" value="断开网络，然后猛戳一下" id="sync"/>
+  <input type="button" value="手动更新worker" id="update"/>
+  <div>
+    <a href="other.html">测试另外一个页面是否一样拥有sw</a>
+  </div>
+  <ul>
+    <li class="pic">
+      <img src="src/images/1.jpeg">
+    </li>
+    <li class="pic">
+      <img src="src/images/2.jpeg">
+    </li>
+    <li class="pic">
+      <img src="src/images/3.jpeg">
+    </li>
+    <li class="pic">
+      <img src="src/images/4.jpeg">
+    </li>
+  </ul>
   <script>
     // 请求权限
     Notification.requestPermission()
     /**
      * 1、默认scope是sw.js所在的目录
      * 2、可以通过scope参数设置sw的scope, 不能设置大于sw.js所在目录的scope，所以一般把sw.js放在根目录/
-     *
-     * @param  {[type]} 'serviceWorker' in            navigator [description]
-     * @return {[type]}                 [description]
      */
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
@@ -80,6 +108,20 @@
             .catch((err) => {
               console.log(err)
             })
+        })
+      }
+
+      // 注册一个background sync
+      document.querySelector('#sync').onclick = () => {
+        navigator.serviceWorker.ready.then((reg) => {
+          return reg.sync.register('mySync')
+        })
+      }
+
+      // 注册一个更新worker事件
+      document.querySelector('#update').onclick = () => {
+        navigator.serviceWorker.ready.then((reg) => {
+          return reg.update()
         })
       }
     }
