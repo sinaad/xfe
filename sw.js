@@ -1,10 +1,15 @@
 importScripts('src/sw-util.js')
-console.log(self, clients)
+console.log('update2')
 
-let CACHE_VERSION = '3.0'
+let CACHE_VERSION = '1.0'
 let cacheList = [
   'serviceworker.html',
-  'src/logo.png'
+  'src/logo.png',
+  'other.html',
+  'src/images/1.jpeg',
+  'src/images/2.jpeg',
+  'src/images/3.jpeg',
+  'src/images/4.jpeg'
 ]
 let CACHE_NAME = 'acelan-v' + CACHE_VERSION
 
@@ -29,10 +34,7 @@ self.addEventListener('activate', (e) => {
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            console.log(`删除过期的cache: ${key}`)
-            return caches.delete(key)
-          }
+          return caches.delete(key)
         })
       )
     })
@@ -46,10 +48,25 @@ self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request)
       .then((response) => {
-        // cache-first
-        return response || fetch(e.request)
-      }
-    )
+        // return response || fetch(e.request)
+        // Cache-First
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
+
+        //否则需要请求
+        let fetchRequect = e.request.clone()
+        return fetch(fetchRequect)
+          .then((response) => {
+            let cacheResponse = response.clone()
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(e.request, cacheResponse)
+              })
+            return response
+          })
+      })
   )
 })
 self.addEventListener('message', ({data, source}) => {
@@ -97,10 +114,15 @@ self.addEventListener('notificationclick', (e) => {
   )
 })
 
-// ================
-self.addEventListener('update', (e) => {
-  console.log('SW update')
-})
+// 接受background sync处理状态
 self.addEventListener('sync', (e) => {
   console.log('SW sync')
+  if (e.tag == 'mySync') {
+    e.waitUntil(
+      this.registration.showNotification('同步通知', {
+        icon: 'src/icons/128_128.png',
+        body: '刚离线的时候，逗逼戳了你一下~'
+      })
+    )
+  }
 })
